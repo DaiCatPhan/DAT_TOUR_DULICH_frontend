@@ -2,11 +2,20 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import Register from "./pages/Register";
+import Header from "./components/Header/Header";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
+
+import AuthService from "./services/AuthService";
+import { useDispatch } from "react-redux";
+import { doLoginAction } from "./redux/account/accountSlide";
 
 const Layout = () => {
   return (
     <div>
-      <h1>Header</h1>
+      <Header />
       <Outlet />
       <h1>Footer</h1>
     </div>
@@ -14,6 +23,17 @@ const Layout = () => {
 };
 
 function App() {
+  const dispatch = useDispatch();
+  const getAccount = async () => {
+    const res = await AuthService.fetchProfile();
+    if (res && res.data.EC === 0) {
+      dispatch(doLoginAction(res.data.DT));
+    }
+  };
+  useEffect(() => {
+    getAccount();
+  });
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -39,6 +59,19 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   );
 }

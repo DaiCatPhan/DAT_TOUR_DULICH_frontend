@@ -6,10 +6,6 @@ import { Button, Checkbox, Divider, Form, Input } from "antd";
 import { GoogleLogin } from "@react-oauth/google";
 
 function RegisterPage() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
   return (
     <div className={cx("wrapper pt-4")}>
       <div
@@ -17,16 +13,7 @@ function RegisterPage() {
         style={{ border: "1px solid ", maxWidth: 600, margin: "0 auto" }}
       >
         <h2 className={cx("text-center ")}>Đăng Ký Tài Khoản</h2>
-        <div>
-          <GoogleLogin
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
-        </div>
+
         <Form onFinish={onFinish} autoComplete="off">
           <Form.Item
             labelCol={{ span: 24 }}

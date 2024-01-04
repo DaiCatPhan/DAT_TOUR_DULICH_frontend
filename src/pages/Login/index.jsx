@@ -5,20 +5,32 @@ const cx = className.bind(styles);
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 
+import AuthService from "../../services/AuthService";
+
 import { Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import { useGoogleLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
+
+import { useDispatch } from "react-redux";
+import { doLoginAction } from "../../redux/account/accountSlide";
 
 function LoginPage() {
-  const onFinish = (values) => {
+  const dispatch = useDispatch();
+  
+  const onFinish = async (values) => {
     // Khi nhấn nút submit thì nó chạy vô đây
-    console.log("Success:", values);
-  };
+    const { email, password } = values;
+    const res = await AuthService.loginApi({ email, password });
+    console.log("res>>>>>", res);
+    if (res && res.data.EC == 0) {
+      localStorage.setItem("accsessToken", res.data.DT.accsessToken);
+      dispatch(doLoginAction(res.data.DT.tokentData));
+      toast.success("Đăng nhập thành công");
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
-  });
+      // kiểm tra role rồi chuyển hướng
+    } else {
+      toast.error(res.data.EM);
+    }
+  };
 
   return (
     <div className={cx("wrapper")}>
@@ -32,33 +44,18 @@ function LoginPage() {
             style={{ minWidth: 500, margin: "0 auto" }}
           >
             <h2 className={cx("py-3 text-center")}>Đăng nhập</h2>
-            <div>
-              <GoogleLogin
-                onSuccess={(credentialResponse) => {
-                  const decoded = jwtDecode(credentialResponse.credential);
 
-                  console.log("decoded", decoded);
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-              />
-              {/* <button className={cx('btn btn-primary')} onClick={() => login()}>
-                Sign in with Google 🚀
-              </button> */}
-              ;
-            </div>
             <Form
               name="normal_login"
               className={cx("login-form")}
               onFinish={onFinish}
             >
               <Form.Item
-                name="username"
+                name="email"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Username!",
+                    message: "Vui lòng nhập Email!",
                   },
                 ]}
               >
@@ -66,15 +63,16 @@ function LoginPage() {
                   prefix={
                     <UserOutlined className={cx("site-form-item-icon")} />
                   }
-                  placeholder="Username"
+                  placeholder="Email"
                 />
               </Form.Item>
+
               <Form.Item
                 name="password"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Password!",
+                    message: "Vui lòng nhập mật khẩu !",
                   },
                 ]}
               >
@@ -83,16 +81,16 @@ function LoginPage() {
                     <LockOutlined className={cx("site-form-item-icon")} />
                   }
                   type="password"
-                  placeholder="Password"
+                  placeholder="Mật khẩu"
                 />
               </Form.Item>
               <Form.Item>
                 <Form.Item name="remember" valuePropName="checked" noStyle>
-                  <Checkbox>Remember me</Checkbox>
+                  <Checkbox>Ghi nhớ tôi</Checkbox>
                 </Form.Item>
 
                 <a className={cx("login-form-forgot")} href="">
-                  Forgot password
+                  Quên mật khẩu
                 </a>
               </Form.Item>
 
@@ -102,9 +100,9 @@ function LoginPage() {
                   htmlType="submit"
                   className={cx("login-form-button")}
                 >
-                  Log in
+                  Đăng nhập
                 </Button>
-                Or <Link to={"/register"}>register now!</Link>
+                Hoặc <Link to={"/register"}>Đăng ký!</Link>
               </Form.Item>
             </Form>
           </div>
