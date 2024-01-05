@@ -9,8 +9,13 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 
 import AuthService from "./services/AuthService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doLoginAction } from "./redux/account/accountSlide";
+
+import Loading from "./components/Loading";
+import NotFound from "./components/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminPage from "./pages/AdminPage";
 
 const Layout = () => {
   return (
@@ -22,9 +27,32 @@ const Layout = () => {
   );
 };
 
+const LayoutAdmin = () => {
+  const isAdminRoute = window.location.pathname.startsWith("/admin");
+  const user = useSelector((state) => state.account.user);
+  const userRole = user.role;
+  return (
+    <div>
+      {isAdminRoute && userRole === "admin" && <h1>Header Admin</h1>}
+      <Outlet />
+      {isAdminRoute && userRole === "admin" && <h1>Footer Admin</h1>}
+    </div>
+  );
+};
+
 function App() {
   const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  const isLoading = useSelector((state) => state.account.isLoading);
+
   const getAccount = async () => {
+    if (
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/register"
+    ) {
+      return;
+    }
+
     const res = await AuthService.fetchProfile();
     if (res && res.data.EC === 0) {
       dispatch(doLoginAction(res.data.DT));
@@ -32,15 +60,37 @@ function App() {
   };
   useEffect(() => {
     getAccount();
-  });
+  }, []);
 
   const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
-      errorElement: <div>404 not found</div>,
+      errorElement: <NotFound />,
       children: [
-        { index: true, element: <div>HOME PAGE</div> },
+        {
+          index: true,
+          element: <div>HOME PAGE</div>,
+        },
+        {
+          path: "contact",
+          element: <div>CONTACT PAGE</div>,
+        },
+      ],
+    },
+    {
+      path: "/admin",
+      element: <LayoutAdmin />,
+      errorElement: <NotFound />,
+      children: [
+        {
+          index: true,
+          element: (
+            <ProtectedRoute>
+              <AdminPage />
+            </ProtectedRoute>
+          ),
+        },
         {
           path: "contact",
           element: <div>CONTACT PAGE</div>,
@@ -58,7 +108,16 @@ function App() {
   ]);
   return (
     <>
-      <RouterProvider router={router} />
+      {isLoading === false ||
+      window.location.pathname === "/login" ||
+      window.location.pathname === "/register" ||
+      window.location.pathname === "/" ? (
+        <RouterProvider router={router} />
+      ) : (
+        <Loading />
+      )}
+
+      {/* <RouterProvider router={router} /> */}
 
       <ToastContainer
         position="top-right"

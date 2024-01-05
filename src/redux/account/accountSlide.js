@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isAuthticated: false,
+  isAuthenticated: false,
+  isLoading: true,
   user: {
     id: "",
     email: "",
@@ -17,13 +18,27 @@ export const accountSlice = createSlice({
   initialState,
   reducers: {
     doLoginAction: (state, action) => {
-      state.isAuthticated = true;
-      state.user = action.payload; 
+      state.isAuthenticated = true;
+      state.isLoading = false;
+      state.user = action.payload;
+    },
+
+    doLogoutAction: (state, action) => {
+      localStorage.removeItem("accsessToken");
+      state.isAuthenticated = false;
+      state.user = {
+        id: "",
+        email: "",
+        phone: "",
+        username: "",
+        avatar: "",
+        role: "",
+      };
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { doLoginAction } = accountSlice.actions;
+export const { doLoginAction , doLogoutAction } = accountSlice.actions;
 
 export default accountSlice.reducer;

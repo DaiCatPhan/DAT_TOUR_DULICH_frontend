@@ -1,6 +1,7 @@
 import className from "classnames/bind";
 import styles from "./Login.module.scss";
 const cx = className.bind(styles);
+import { useNavigate } from "react-router-dom";
 
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
@@ -10,23 +11,22 @@ import AuthService from "../../services/AuthService";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { doLoginAction } from "../../redux/account/accountSlide";
 
 function LoginPage() {
   const dispatch = useDispatch();
-  
+  const navigate = useNavigate();
+
   const onFinish = async (values) => {
-    // Khi nhấn nút submit thì nó chạy vô đây
     const { email, password } = values;
     const res = await AuthService.loginApi({ email, password });
-    console.log("res>>>>>", res);
     if (res && res.data.EC == 0) {
       localStorage.setItem("accsessToken", res.data.DT.accsessToken);
       dispatch(doLoginAction(res.data.DT.tokentData));
       toast.success("Đăng nhập thành công");
 
-      // kiểm tra role rồi chuyển hướng
+      navigate("/");
     } else {
       toast.error(res.data.EM);
     }

@@ -2,8 +2,25 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import AuthService from "../../services/AuthService";
+import { useDispatch } from "react-redux";
+import { doLogoutAction } from "../../redux/account/accountSlide";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const handleLogout = async () => {
+    const res = await AuthService.LogoutApi();
+    if (res && res.data.EC === 0) {
+      dispatch(doLogoutAction());
+      toast.success("Đăng xuất thành công");
+      navigate("/");
+    }
+  };
+
   return (
     <div>
       <Navbar expand="lg" className="bg-body-tertiary">

@@ -22,4 +22,19 @@ const fetchProfile = () => {
   return axios.get("/api/v1/auth/fetchProfile");
 };
 
-export default { registerApi, loginApi, fetchProfile, logoutApi };
+const LogoutApi = () => {
+  return axios.get("/api/v1/auth/logout");
+};
+
+const refetshTokenApi = () => {
+  return axios.get("/api/v1/auth/refresh");
+};
+
+export default {
+  registerApi,
+  loginApi,
+  fetchProfile,
+  logoutApi,
+  LogoutApi,
+  refetshTokenApi,
+};
