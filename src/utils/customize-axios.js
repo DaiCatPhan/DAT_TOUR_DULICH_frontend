@@ -12,8 +12,12 @@ instance.defaults.headers.common = {
 
 const handleRefetshToken = async () => {
   // const res = await instance.get("/api/v1/auth/refresh");
-  // console.log("checkRefetsh", res);
-  console.log("handleRefetshToken");
+  // console.log("checkRefetsh >>>>>>>>>>>>>", res);
+  // if (res) {
+  //   return res.data.accsessToken;
+  // } else {
+  //   return null;
+  // }
 };
 
 // Add a request interceptor
@@ -28,6 +32,8 @@ instance.interceptors.request.use(
   }
 );
 
+const NO_RETRY_HEADER = "x-no-retry";
+
 // Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
@@ -35,12 +41,21 @@ instance.interceptors.response.use(
     // Do something with response data
     return response;
   },
-  function (error) {
-    if (error.config && error.response && +error.response.status === 401) {
-      handleRefetshToken();
-      // return updateToken().then((token) => {
+  async function (error) {
+    if (
+      error.config &&
+      error.response &&
+      +error.response.status === 401 &&
+      !error.config.headers[NO_RETRY_HEADER]
+    ) {
+      const accsessToken = await handleRefetshToken();
+      error.config.headers[NO_RETRY_HEADER] = "true";
 
-      // });
+      if (accsessToken) {
+        error.config.headers["Authorization"] = `Bearer ${accsessToken}`;
+        localStorage.setItem("accsessToken", accsessToken);
+        return instance.request(error.config);
+      }
     }
     return Promise.reject(error);
   }

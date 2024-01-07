@@ -2,7 +2,6 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import LoginPage from "./pages/Login";
 import Register from "./pages/Register";
-import Header from "./components/Header/Header";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,30 +14,37 @@ import { doLoginAction } from "./redux/account/accountSlide";
 import Loading from "./components/Loading";
 import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminPage from "./pages/AdminPage";
+import AdminHomePage from "./pages/ADMIN/AdminPage";
+import HomePage from "./pages/Home";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+
+import LayoutAdmin from "./layouts/LayoutAdmin";
 
 const Layout = () => {
   return (
     <div>
       <Header />
       <Outlet />
-      <h1>Footer</h1>
+      <Footer />
     </div>
   );
 };
 
-const LayoutAdmin = () => {
-  const isAdminRoute = window.location.pathname.startsWith("/admin");
-  const user = useSelector((state) => state.account.user);
-  const userRole = user.role;
-  return (
-    <div>
-      {isAdminRoute && userRole === "admin" && <h1>Header Admin</h1>}
-      <Outlet />
-      {isAdminRoute && userRole === "admin" && <h1>Footer Admin</h1>}
-    </div>
-  );
-};
+// const LayoutAdmin = () => {
+//   const isAdminRoute = window.location.pathname.startsWith("/admin");
+//   const user = useSelector((state) => state.account.user);
+//   const userRole = user.role;
+
+  
+//   return (
+//     <div>
+//       {isAdminRoute && userRole === "admin" && <h1>Header Admin</h1>}
+//       <Outlet />
+//       {isAdminRoute && userRole === "admin" && <h1>Footer Admin</h1>}
+//     </div>
+//   );
+// };
 
 function App() {
   const dispatch = useDispatch();
@@ -54,6 +60,7 @@ function App() {
     }
 
     const res = await AuthService.fetchProfile();
+    console.log("res fetchProfile", res);
     if (res && res.data.EC === 0) {
       dispatch(doLoginAction(res.data.DT));
     }
@@ -66,29 +73,33 @@ function App() {
     {
       path: "/",
       element: <Layout />,
-      errorElement: <NotFound />,
+      // errorElement: <NotFound />,
       children: [
         {
           index: true,
-          element: <div>HOME PAGE</div>,
+          element: <HomePage />,
         },
         {
-          path: "contact",
-          element: <div>CONTACT PAGE</div>,
+          path: "tours",
+          element: <div>TOUR</div>,
+        },
+        {
+          path: "tours/:id",
+          element: <div>TOUR DETAIL</div>,
         },
       ],
     },
     {
       path: "/admin",
       element: <LayoutAdmin />,
-      errorElement: <NotFound />,
+      // errorElement: <NotFound />,
       children: [
         {
           index: true,
           element: (
-            <ProtectedRoute>
-              <AdminPage />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+              <AdminHomePage />
+            // </ProtectedRoute>
           ),
         },
         {
@@ -108,16 +119,17 @@ function App() {
   ]);
   return (
     <>
-      {isLoading === false ||
+      {/* {isLoading === false ||
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
+      window.location.pathname.startsWith("/tours") ||
       window.location.pathname === "/" ? (
         <RouterProvider router={router} />
       ) : (
         <Loading />
-      )}
+      )} */}
 
-      {/* <RouterProvider router={router} /> */}
+      <RouterProvider router={router} />
 
       <ToastContainer
         position="top-right"
