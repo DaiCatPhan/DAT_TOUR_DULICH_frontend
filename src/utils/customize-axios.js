@@ -11,13 +11,12 @@ instance.defaults.headers.common = {
 };
 
 const handleRefetshToken = async () => {
-  // const res = await instance.get("/api/v1/auth/refresh");
-  // console.log("checkRefetsh >>>>>>>>>>>>>", res);
-  // if (res) {
-  //   return res.data.accsessToken;
-  // } else {
-  //   return null;
-  // }
+  const res = await instance.post("/api/v1/auth/refresh");
+  if (res) {
+    return res.data.DT;
+  } else {
+    return null;
+  }
 };
 
 // Add a request interceptor

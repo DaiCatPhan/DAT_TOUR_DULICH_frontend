@@ -1,0 +1,21 @@
+.fse-sm {
+  font-size: 14px;
+}
+
+.listAddress {
+  display: grid;
+  grid-template-columns: auto auto;
+  color: #00abc5;
+}
+
+.textHandle {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 170px;
+  text-overflow: ellipsis;
+}
+
+.price {
+  color: #00abc5;
+  margin-top: 5px;
+}

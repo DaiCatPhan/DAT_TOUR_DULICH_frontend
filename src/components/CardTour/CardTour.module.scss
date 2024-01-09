@@ -1,0 +1,50 @@
+.wrapper {
+}
+
+.cardTour {
+  width: 350px;
+  border: 1px solid red;
+  position: relative;
+}
+
+.cardTour img {
+  width: 100%;
+  height: 215px;
+}
+
+.content {
+  .title {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.color-text {
+  color: #003563;
+}
+
+.fse-sm {
+  font-size: 14px;
+}
+
+.listAddress {
+  display: grid;
+  grid-template-columns: auto auto;
+  color: #00abc5;
+}
+
+.textHandle {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 170px;
+    text-overflow: ellipsis;
+}
+
+.price {
+    font-weight: 700;
+    color: #f79321;
+}
+
+

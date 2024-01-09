@@ -14,12 +14,16 @@ import { doLoginAction } from "./redux/account/accountSlide";
 import Loading from "./components/Loading";
 import NotFound from "./components/NotFound";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminHomePage from "./pages/ADMIN/AdminPage";
 import HomePage from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
 import LayoutAdmin from "./layouts/LayoutAdmin";
+
+import AdminHomePage from "./pages/ADMIN/AdminPage";
+
+import TourDetail from "./pages/TourDetail";
+import Tours from "./pages/Tours";
 
 const Layout = () => {
   return (
@@ -36,7 +40,6 @@ const Layout = () => {
 //   const user = useSelector((state) => state.account.user);
 //   const userRole = user.role;
 
-  
 //   return (
 //     <div>
 //       {isAdminRoute && userRole === "admin" && <h1>Header Admin</h1>}
@@ -81,11 +84,11 @@ function App() {
         },
         {
           path: "tours",
-          element: <div>TOUR</div>,
+          element: <Tours />,
         },
         {
           path: "tours/:id",
-          element: <div>TOUR DETAIL</div>,
+          element: <TourDetail />,
         },
       ],
     },
@@ -98,7 +101,7 @@ function App() {
           index: true,
           element: (
             // <ProtectedRoute>
-              <AdminHomePage />
+            <AdminHomePage />
             // </ProtectedRoute>
           ),
         },
@@ -119,7 +122,7 @@ function App() {
   ]);
   return (
     <>
-      {/* {isLoading === false ||
+      {isLoading === false ||
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
       window.location.pathname.startsWith("/tours") ||
@@ -127,9 +130,9 @@ function App() {
         <RouterProvider router={router} />
       ) : (
         <Loading />
-      )} */}
+      )}
 
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} /> */}
 
       <ToastContainer
         position="top-right"

@@ -15,7 +15,7 @@
 
 .cardIntroduce {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 
   .item {
@@ -26,6 +26,8 @@
   .item img {
     object-fit: cover;
     border-radius: 5px;
+    width: 275px;
+    height: 360px;
   }
 
   .item .content {
@@ -80,5 +82,14 @@
 
   .item:hover img {
     filter: brightness(75%);
+  }
+}
+
+.aboutCompany {
+  margin: 50px 0;
+  img {
+    width: 100%;
+    border-top-right-radius: 40%;
+    border-top-left-radius: 40%;
   }
 }
