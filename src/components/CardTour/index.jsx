@@ -12,7 +12,7 @@ function CardTour() {
           src="https://cdn2.ivivu.com/2023/07/13/16/ivivu-wiang-kum-kam-chiang-mai-360x225.jpg"
           alt="notfound"
         />
-        <div className={cx("content", "p-2")}>
+        <div className={cx("content", "p-2", "bg-white")}>
           <p className={cx("color-text", "title")}>
             <b>
               Tour Malaysia - Singapore 5N4Đ: TP.HCM - Kualar Lumpur - Singapore

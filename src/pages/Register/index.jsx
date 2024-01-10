@@ -6,6 +6,9 @@ import { Button, Checkbox, Divider, Form, Input } from "antd";
 import { GoogleLogin } from "@react-oauth/google";
 
 function RegisterPage() {
+  const onFinish = async () => {
+    console.log("register");
+  };
   return (
     <div className={cx("wrapper pt-4")}>
       <div

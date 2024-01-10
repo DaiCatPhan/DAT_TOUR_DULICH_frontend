@@ -22,11 +22,16 @@ function LoginPage() {
     const { email, password } = values;
     const res = await AuthService.loginApi({ email, password });
     if (res && res.data.EC == 0) {
-      localStorage.setItem("accsessToken", res.data.DT.accsessToken);
+      localStorage.setItem("accessToken", res.data.DT.accessToken);
       dispatch(doLoginAction(res.data.DT.tokentData));
       toast.success("Đăng nhập thành công");
 
-      navigate("/");
+      console.log("resLogin >>", res);
+      if (res.data.DT.tokentData.role === "khách hàng") {
+        navigate("/");
+      } else if (res.data.DT.tokentData.role === "admin") {
+        navigate("/admin");
+      }
     } else {
       toast.error(res.data.EM);
     }

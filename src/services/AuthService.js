@@ -23,7 +23,7 @@ const fetchProfile = () => {
 };
 
 const LogoutApi = () => {
-  return axios.get("/api/v1/auth/logout");
+  return axios.post("/api/v1/auth/logout");
 };
 
 const refetshTokenApi = () => {
