@@ -1,3 +1,7 @@
+import className from "classnames/bind";
+import styles from "./LayoutAdmin.module.scss";
+const cx = className.bind(styles);
+
 import {
   DesktopOutlined,
   FileOutlined,
@@ -9,6 +13,8 @@ import { Outlet } from "react-router-dom";
 
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { useState } from "react";
+import { DownOutlined } from "@ant-design/icons";
+import { Dropdown, Space } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -28,20 +34,44 @@ const items = [
   ]),
   getItem("Nhân viên", "sub2", <TeamOutlined />, [
     getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
+    getItem("Team 2", "7"),
   ]),
   getItem("TOUR", "sub3", <TeamOutlined />, [
-    getItem("Team 1", "6"),
-    getItem("Team 2", "8"),
+    getItem("Team 1", "8"),
+    getItem("Team 2", "9"),
   ]),
-  
-  getItem("Cài đặt", "110", <FileOutlined />),
+
+  getItem("Cài đặt", "10", <FileOutlined />),
 ];
 function LayoutAdmin() {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  const handleLogout = async () => {
+    alert("Đăng xuất");
+  };
+
+  const itemsDropdown = [
+    {
+      label: <a href="https://www.antgroup.com">1st menu item</a>,
+      key: "0",
+    },
+    {
+      label: <a href="https://www.aliyun.com">2nd menu item</a>,
+      key: "1",
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: "Đăng xuất",
+      key: "3",
+      onClick: handleLogout,
+    },
+  ];
+
   return (
     <div>
       <Layout
@@ -68,27 +98,36 @@ function LayoutAdmin() {
             style={{
               padding: 0,
               background: colorBgContainer,
+              border: "1px solid black",
             }}
           >
-            <div>
-              <p>HEADER</p>
+            <div className={cx("border mx-5")}>
+              <div className={cx("d-flex justify-content-between")}>
+                <div>HEADER</div>
+                <div className={cx("border")}>
+                  <Dropdown
+                    menu={{
+                      items: itemsDropdown,
+                    }}
+                    trigger={["click"]}
+                  >
+                    <a onClick={(e) => e.preventDefault()}>
+                      <Space>
+                        Welcome Phan Dai Cat
+                        <DownOutlined />
+                      </Space>
+                    </a>
+                  </Dropdown>
+                </div>
+              </div>
             </div>
           </Header>
 
-          <Content
-            style={{
-              margin: "-10px 10px",
-            }}
-          >
-            <Breadcrumb
-              style={{
-                margin: "16px 0",
-              }}
-            ></Breadcrumb>
+          <Content>
             <div
               style={{
                 padding: 24,
-                minHeight: 360,
+                minHeight: 500,
                 background: colorBgContainer,
                 borderRadius: borderRadiusLG,
               }}

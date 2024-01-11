@@ -122,7 +122,7 @@ function App() {
   ]);
   return (
     <>
-      {isLoading === false ||
+      {/* {isLoading === false ||
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
       window.location.pathname.startsWith("/tours") ||
@@ -130,9 +130,9 @@ function App() {
         <RouterProvider router={router} />
       ) : (
         <Loading />
-      )}
+      )} */}
 
-      {/* <RouterProvider router={router} /> */}
+      <RouterProvider router={router} />
 
       <ToastContainer
         position="top-right"
