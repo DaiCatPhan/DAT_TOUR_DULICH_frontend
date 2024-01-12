@@ -9,7 +9,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { useState } from "react";
@@ -36,9 +36,9 @@ const items = [
     getItem("Team 1", "6"),
     getItem("Team 2", "7"),
   ]),
-  getItem("TOUR", "sub3", <TeamOutlined />, [
-    getItem("Team 1", "8"),
-    getItem("Team 2", "9"),
+  getItem('TOUR', "sub3", <TeamOutlined />, [
+    getItem( <Link to="/admin/managerCus/list">Danh sách tour</Link>, "8"),
+    getItem(<Link to="/admin/managerCus/create">Tạo tour mới</Link>, "9"),
   ]),
 
   getItem("Cài đặt", "10", <FileOutlined />),

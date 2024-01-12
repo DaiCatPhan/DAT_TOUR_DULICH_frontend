@@ -4,13 +4,13 @@
   box-sizing: border-box;
 }
 
-a {
-  text-decoration: none;
-}
-
 .textResidual {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+a {
+  text-decoration: none !important;
 }

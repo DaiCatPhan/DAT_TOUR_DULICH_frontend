@@ -18,12 +18,24 @@ import HomePage from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
-import LayoutAdmin from "./layouts/LayoutAdmin";
-
-import AdminHomePage from "./pages/ADMIN/AdminPage";
-
 import TourDetail from "./pages/TourDetail";
 import Tours from "./pages/Tours";
+
+// ==================================================== ADMIN ===================================================
+import LayoutAdmin from "./layouts/LayoutAdmin";
+import AdminHomePage from "./pages/ADMIN/AdminPage";
+
+//== CUSTOMER ==
+import ListCustomerPage from "./pages/ADMIN/Manager_Customer/ListCustomer";
+import CreateCustomerPage from "./pages/ADMIN/Manager_Customer/CreateCustomer";
+import EditCustomerPage from "./pages/ADMIN/Manager_Customer/EditCustomer";
+//== STAFF ==
+//== TOUR ==
+import ListTourPage from "./pages/ADMIN/Manager_Tour/listTour";
+import CreateTourPage from "./pages/ADMIN/Manager_Tour/createTour";
+//== CUSTOMER ==
+//== CUSTOMER ==
+//== CUSTOMER ==
 
 const Layout = () => {
   return (
@@ -34,20 +46,6 @@ const Layout = () => {
     </div>
   );
 };
-
-// const LayoutAdmin = () => {
-//   const isAdminRoute = window.location.pathname.startsWith("/admin");
-//   const user = useSelector((state) => state.account.user);
-//   const userRole = user.role;
-
-//   return (
-//     <div>
-//       {isAdminRoute && userRole === "admin" && <h1>Header Admin</h1>}
-//       <Outlet />
-//       {isAdminRoute && userRole === "admin" && <h1>Footer Admin</h1>}
-//     </div>
-//   );
-// };
 
 function App() {
   const dispatch = useDispatch();
@@ -63,7 +61,7 @@ function App() {
     }
 
     const res = await AuthService.fetchProfile();
-    console.log("res fetchProfile", res);
+
     if (res && res.data.EC === 0) {
       dispatch(doLoginAction(res.data.DT));
     }
@@ -106,8 +104,26 @@ function App() {
           ),
         },
         {
-          path: "contact",
-          element: <div>CONTACT PAGE</div>,
+          path: "managerCus/list",
+          element: <ListCustomerPage />,
+        },
+        {
+          path: "managerCus/create",
+          element: <CreateCustomerPage />,
+        },
+        {
+          path: "managerCus/edit",
+          element: <EditCustomerPage />,
+        },
+
+        // TOUR
+        {
+          path: "managerTour/list",
+          element: <ListTourPage />,
+        },
+        {
+          path: "managerTour/create",
+          element: <CreateTourPage />,
         },
       ],
     },
