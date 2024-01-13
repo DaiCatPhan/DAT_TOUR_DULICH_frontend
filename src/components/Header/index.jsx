@@ -12,6 +12,9 @@ import { doLogoutAction } from "../../redux/account/accountSlide";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
+import { Dropdown, Space } from "antd";
+import { DownOutlined } from "@ant-design/icons";
+
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -26,6 +29,50 @@ function Header() {
       navigate("/");
     }
   };
+
+  const itemsDropdown = [
+    {
+      label: (
+        <div>
+          <Link to="https://www.antgroup.com">1st menu item</Link>
+        </div>
+      ),
+      key: "0",
+    },
+    {
+      label: <a href="https://www.aliyun.com">2nd menu item</a>,
+      key: "1",
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: "Đăng xuất",
+      key: "3",
+      onClick: handleLogout,
+    },
+  ];
+
+  const itemsDropdownNotLogin = [
+    {
+      label: (
+        <div className={cx(" bg-primary mt-1 px-5 py-1 text-center  ")}>
+          <Link className={cx("text-white ", "textLogin")} to="/login">
+            Đăng nhập
+          </Link>
+        </div>
+      ),
+      key: "0",
+    },
+    {
+      label: (
+        <p className={cx("mb-0 ")}>
+          Chưa có tài khoản ? <Link to="/register">Đăng ký </Link> ngay
+        </p>
+      ),
+      key: "1",
+    },
+  ];
 
   return (
     <div>
@@ -46,39 +93,35 @@ function Header() {
               </div>
               <div>
                 {isAuthenticated ? (
-                  <NavDropdown title={user?.username} id="basic-nav-dropdown">
-                    <NavDropdown.Item href="#action/3.1">
-                      Action
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.2">
-                      Another action
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action/3.3">
-                      Something
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item
-                      onClick={() => {
-                        handleLogout();
-                      }}
-                    >
-                      Đăng xuất
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                  <Dropdown
+                    menu={{
+                      items: itemsDropdown,
+                    }}
+                    trigger={["click"]}
+                    className={cx("poiter")}
+                  >
+                    <a onClick={(e) => e.preventDefault()}>
+                      <Space>
+                        Welcome to {user?.username || ""}
+                        <DownOutlined />
+                      </Space>
+                    </a>
+                  </Dropdown>
                 ) : (
-                  <NavDropdown title="Tài khoản" id="basic-nav-dropdown">
-                    <NavDropdown.Item>
-                      <Link to={"/register"} className={cx("custoTaga")}>
-                        Đăng ký
-                      </Link>
-                    </NavDropdown.Item>
-
-                    <NavDropdown.Item>
-                      <Link to={"/login"} className={cx("custoTaga")}>
-                        Đăng nhập
-                      </Link>
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                  <Dropdown
+                    menu={{
+                      items: itemsDropdownNotLogin,
+                    }}
+                    trigger={["click"]}
+                    className={cx("poiter")}
+                  >
+                    <a onClick={(e) => e.preventDefault()}>
+                      <Space>
+                        Tài khoản
+                        <DownOutlined />
+                      </Space>
+                    </a>
+                  </Dropdown>
                 )}
               </div>
             </Nav>
