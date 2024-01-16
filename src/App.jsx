@@ -32,7 +32,7 @@ import EditCustomerPage from "./pages/ADMIN/Manager_Customer/EditCustomer";
 //== STAFF ==
 //== TOUR ==
 import ListTourPage from "./pages/ADMIN/Manager_Tour/listTour";
-import CreateTourPage from "./pages/ADMIN/Manager_Tour/createTour";
+import CreateTourPage from "./pages/ADMIN/Manager_Tour/CreateTour";
 //== CUSTOMER ==
 //== CUSTOMER ==
 //== CUSTOMER ==
