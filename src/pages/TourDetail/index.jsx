@@ -1,6 +1,7 @@
 import className from "classnames/bind";
 import styles from "./TourDetail.module.scss";
 const cx = className.bind(styles);
+import { Link } from "react-router-dom";
 
 import { IconCheck } from "@tabler/icons-react";
 import { InputNumber } from "antd";

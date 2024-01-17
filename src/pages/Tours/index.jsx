@@ -1,6 +1,7 @@
 import className from "classnames/bind";
 import styles from "./Tours.module.scss";
 const cx = className.bind(styles);
+import { Link } from "react-router-dom";
 
 import TourViewed from "./components/TourViewed";
 import CardTour from "../../components/CardTour";
@@ -14,6 +15,16 @@ function Tours() {
       image:
         "https://cdn2.ivivu.com/2023/07/13/16/ivivu-wiang-kum-kam-chiang-mai-120x120.jpg",
       price: "5000000",
+    },
+  ];
+
+  const listTour = [
+    {
+      name: "",
+      image: "",
+      duration: "",
+      vehicle: "",
+      priceAdult: "",
     },
   ];
   return (
@@ -83,7 +94,6 @@ function Tours() {
             <div className={cx("col-lg-4")}>
               <CardTour />
             </div>
-             
           </div>
         </section>
       </div>

@@ -37,8 +37,8 @@ const items = [
     getItem("Team 2", "7"),
   ]),
   getItem('TOUR', "sub3", <TeamOutlined />, [
-    getItem( <Link to="/admin/managerCus/list">Danh sách tour</Link>, "8"),
-    getItem(<Link to="/admin/managerCus/create">Tạo tour mới</Link>, "9"),
+    getItem( <Link to="/admin/managerTour/list">Danh sách tour</Link>, "8"),
+    getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "9"),
   ]),
 
   getItem("Cài đặt", "10", <FileOutlined />),
