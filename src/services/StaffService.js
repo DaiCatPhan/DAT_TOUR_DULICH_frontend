@@ -10,5 +10,3 @@ const uploadImageTour = (data) => {
 };
 
 export default { createTour, uploadImageTour };
-
- 

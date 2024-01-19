@@ -9,6 +9,4 @@ const uploadImageTour = (data) => {
   return axios.patch("/api/v1/tour/uploadImageTour", data);
 };
 
-export default { createTour, uploadImageTour };
-
- 
+export default {   };
