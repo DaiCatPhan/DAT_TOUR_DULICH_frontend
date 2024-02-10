@@ -5,7 +5,6 @@ const cx = className.bind(styles);
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import AuthService from "../../services/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { doLogoutAction } from "../../redux/account/accountSlide";
@@ -25,7 +24,7 @@ function Header() {
     const res = await AuthService.LogoutApi();
     if (res && res.data.EC === 0) {
       dispatch(doLogoutAction());
-      toast.success("Đăng xuất thành công");
+      toast.success("Đăng xuất thành công");  
       navigate("/");
     }
   };
