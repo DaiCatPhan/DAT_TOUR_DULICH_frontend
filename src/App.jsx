@@ -21,14 +21,19 @@ import Footer from "./components/Footer";
 import TourDetail from "./pages/TourDetail";
 import Tours from "./pages/Tours";
 
-// ==================================================== ADMIN ===================================================
+// == ADMIN ==
 import LayoutAdmin from "./layouts/LayoutAdmin";
 import AdminHomePage from "./pages/ADMIN/AdminPage";
+import DashboardPage from "./pages/ADMIN/DardboradPage";
+// == USER ==
+import Profile from "./pages/USER/Profile";
+import OrderBuy from "./pages/USER/OrderBuy";
+import ChangePassword from "./pages/USER/ChangePassword";
 
 //== CUSTOMER ==
 import ListCustomerPage from "./pages/ADMIN/Manager_Customer/ListCustomer";
-import CreateCustomerPage from "./pages/ADMIN/Manager_Customer/CreateCustomer";
-import EditCustomerPage from "./pages/ADMIN/Manager_Customer/EditCustomer";
+import ListStaffPage from "./pages/ADMIN/Manager_Staff/ListStaff";
+
 //== STAFF ==
 //== TOUR ==
 import ListTourPage from "./pages/ADMIN/Manager_Tour/listTour";
@@ -56,7 +61,7 @@ function App() {
     if (
       window.location.pathname === "/login" ||
       window.location.pathname === "/register"
-    ) {
+    ) { 
       return;
     }
 
@@ -88,6 +93,18 @@ function App() {
           path: "tours/:id",
           element: <TourDetail />,
         },
+        {
+          path: "info/profile",
+          element: <Profile />,
+        },
+        {
+          path: "info/order-buy",
+          element: <OrderBuy />,
+        },
+        {
+          path: "info/change-password",
+          element: <ChangePassword />,
+        },
       ],
     },
     {
@@ -103,17 +120,22 @@ function App() {
             // </ProtectedRoute>
           ),
         },
+        
+        {
+          path: "dashboard",
+          element: <DashboardPage />,
+        },
+
+        // CUSTOMER
         {
           path: "managerCus/list",
           element: <ListCustomerPage />,
         },
+
+        // STAFF
         {
-          path: "managerCus/create",
-          element: <CreateCustomerPage />,
-        },
-        {
-          path: "managerCus/edit",
-          element: <EditCustomerPage />,
+          path: "managerStaff/list",
+          element: <ListStaffPage />,
         },
 
         // TOUR

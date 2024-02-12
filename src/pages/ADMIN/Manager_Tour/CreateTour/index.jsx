@@ -37,8 +37,6 @@ function CreateTour() {
   const [spin, setSpin] = useState(false);
 
   const [imageTour, setImageTour] = useState("");
-  const [ID_TOUR, setID_TOUR] = useState();
-  const [NAME_TOUR, setNAME_TOUR] = useState();
   const [price_Include_TEXT, setPrice_Include_TEXT] = useState("");
   const [price_Include_HTML, setPrice_Include_HTML] = useState("");
   const [price_NotInclude_TEXT, setPrice_NotInclude_TEXT] = useState("");
@@ -93,10 +91,7 @@ function CreateTour() {
 
     if (res && res.data.EC === 0) {
       toast.success("Tạo tour thành công ");
-      localStorage.setItem("ID_TOUR", res.data.DT?.id);
-      localStorage.setItem("NAME_TOUR", res.data.DT?.name);
-      setID_TOUR(res.data.DT?.id);
-      setNAME_TOUR(res.data.DT?.name);
+      localStorage.setItem("TOUR", JSON.stringify(res.data.DT));
     } else {
       toast.error(res.data.EM);
     }
@@ -104,14 +99,17 @@ function CreateTour() {
 
   // TAO IMAGE
   const upLoadImageTour = async () => {
-    let id_tour = ID_TOUR || localStorage.getItem("ID_TOUR");
+    const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
+    const id_tour = TOUR_localStorage.id;
+
+    if (!id_tour) {
+      return toast.warning("Vui lòng tạo tour trước !!!");
+    }
 
     if (!imageTour) {
       return toast.error("Vui lòng chọn ảnh !!!");
     }
-    if (!id_tour) {
-      return toast.warning("Vui lòng tạo tour trước !!!");
-    }
+
     const formData = new FormData();
     formData.append("image", imageTour);
     formData.append("ID_Tour", id_tour);
@@ -129,7 +127,8 @@ function CreateTour() {
 
   // TAO PROCESSTOUR
   const createProcess = async () => {
-    const idTour = ID_TOUR || localStorage.getItem("ID_TOUR");
+    const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
+    const idTour = TOUR_localStorage.id;
 
     if (!processTour_TEXT || !processTour_HTML) {
       return toast.error("Vui lòng nhập nội dung chương trình tour !!!");
@@ -178,7 +177,7 @@ function CreateTour() {
 
   // TAO CALENDAR
   const onFinishCalendar = async (values) => {
-    let id_tour = ID_TOUR || localStorage.getItem("ID_TOUR");
+    let id_tour = localStorage.getItem("ID_TOUR");
 
     if (!id_tour) {
       return toast.warning("Vui lòng tạo tour trước !!!");
@@ -240,6 +239,7 @@ function CreateTour() {
       {/* TOUR */}
       <div>
         <div className={cx("row border")}>
+          <h5>1. Tạo Tour</h5>
           <div className={cx("col-lg    ")}>
             <Form
               name="basic"
@@ -495,43 +495,45 @@ function CreateTour() {
             </Form>
           </div>
         </div>
+      </div>
 
-        <div className={cx("row  my-5")}>
-          <div
-            className={cx("col-lg-6 m-auto border border-primary rounded p-0")}
-          >
-            <div className={cx("  p-3")}>
-              <p>Chọn ảnh tour</p>
-              <div className={cx("text-center")}>
-                <Upload
-                  name="avatar"
-                  listType="picture-card"
-                  className="avatar-uploader"
-                  onChange={handleChangeUpload}
-                  maxCount={1}
-                >
-                  {imageUrl ? (
-                    <img
-                      src={imageUrl}
-                      alt="avatar"
-                      style={{
-                        width: "100%",
-                      }}
-                    />
-                  ) : (
-                    uploadButton
-                  )}
-                </Upload>
-              </div>
-              {spin && <Spin />}
-              <div>
-                <button
-                  onClick={upLoadImageTour}
-                  className={cx("btn btn-primary w-100 my-2")}
-                >
-                  Upload
-                </button>
-              </div>
+      {/* UpLoad Image */}
+      <div className={cx("row  my-5 border p-3 rounded border")}>
+        <h5>2. Upload Hình Ảnh</h5>
+        <div
+          className={cx("col-lg-6 m-auto border border-primary rounded p-0")}
+        >
+          <div className={cx("  p-3")}>
+            <p>Chọn ảnh tour</p>
+            <div className={cx("text-center")}>
+              <Upload
+                name="avatar"
+                listType="picture-card"
+                className="avatar-uploader"
+                onChange={handleChangeUpload}
+                maxCount={1}
+              >
+                {imageUrl ? (
+                  <img
+                    src={imageUrl}
+                    alt="avatar"
+                    style={{
+                      width: "100%",
+                    }}
+                  />
+                ) : (
+                  uploadButton
+                )}
+              </Upload>
+            </div>
+            {spin && <Spin />}
+            <div>
+              <button
+                onClick={upLoadImageTour}
+                className={cx("btn btn-primary w-100 my-2")}
+              >
+                Upload
+              </button>
             </div>
           </div>
         </div>
@@ -539,22 +541,25 @@ function CreateTour() {
 
       {/* PROCESS */}
       <div className={cx("createProcess my-5  ")}>
-        {NAME_TOUR || localStorage.getItem("NAME_TOUR") ? (
+        <div className={cx("row  my-5 w-100")}>
           <div>
-            Tạo chương trình {NAME_TOUR || localStorage.getItem("NAME_TOUR")}
-          </div>
-        ) : (
-          <div>Tạo chương trình TOUR </div>
-        )}
-
-        <div className={cx("row border my-5")}>
-          <div className={cx("p-0")}>
+            {JSON.parse(localStorage.getItem("TOUR")) ? (
+              <div className={cx("mb-4 fs-5")}>
+                <b> 3 .Tạo chương trình : </b>
+                {JSON.parse(localStorage.getItem("TOUR"))?.name}
+              </div>
+            ) : (
+              <div className={cx("mb-4")}>
+                <h4>3 .Tạo chương trình TOUR </h4>
+              </div>
+            )}
             <MdEditor
               style={{ minHeight: "500px" }}
               renderHTML={(text) => mdParser.render(text)}
               onChange={handleEditorChange_ProcessTour}
             />
           </div>
+
           <div className={cx("text-center my-3")}>
             <button
               onClick={createProcess}
@@ -564,8 +569,11 @@ function CreateTour() {
             </button>
           </div>
         </div>
+      </div>
 
-        {/* TẠO ĐỊA ĐIỂM */}
+      {/* TẠO ĐỊA ĐIỂM */}
+      <div className={cx("my-5")}>
+        <h4>Tạo địa điểm</h4>
         <div className={cx("row border")}>
           <div className={cx("col-lg-5 border p-0 vh-50")}>
             <div className={cx("p-2")}>

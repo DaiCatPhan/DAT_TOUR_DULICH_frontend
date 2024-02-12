@@ -2,90 +2,141 @@ import className from "classnames/bind";
 import styles from "./Register.module.scss";
 const cx = className.bind(styles);
 
+import { useNavigate } from "react-router-dom";
+
 import { Button, Checkbox, Divider, Form, Input } from "antd";
-import { GoogleLogin } from "@react-oauth/google";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
+
+import AuthService from "../../services/AuthService";
+
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
+import { IconChevronsLeft } from "@tabler/icons-react";
 
 function RegisterPage() {
   const onFinish = async () => {
     console.log("register");
   };
   return (
-    <div className={cx("wrapper pt-4")}>
+    <div className={cx("wrapper  ", "bg-light ")}>
       <div
-        className={cx("rounded p-5")}
-        style={{ border: "1px solid ", maxWidth: 600, margin: "0 auto" }}
+        className={cx(
+          "d-flex justify-content-center align-items-center vh-100  "
+        )}
       >
-        <h2 className={cx("text-center ")}>Đăng Ký Tài Khoản</h2>
+        <div className={cx("row border bg-white", "frameLogin")}>
+          <div className={cx("col-lg-4   p-0 ")}>
+            <div className={cx("bgLogin")}></div>
+          </div>
 
-        <Form onFinish={onFinish} autoComplete="off">
-          <Form.Item
-            labelCol={{ span: 24 }}
-            label="Họ tên"
-            name="username"
-            rules={[
-              {
-                required: true,
-                message: "Họ và tên không được để trống",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+          <div className={cx("col-lg-8 position-relative  p-0")}>
+            <div className={cx("position-absolute", "iconBack")}>
+              <Link to={"/"}>
+                <IconChevronsLeft />
+              </Link>
+            </div>
+            <div
+              className={cx(
+                "d-flex justify-content-center align-items-center h-100  "
+              )}
+            >
+              <div className={cx(" ")}>
+                {/* <div>
+                <h4>Đăng nhập</h4>
+                <div>
+                  <button>Sing in with google</button>
+                </div>
+              </div> */}
 
-          <Form.Item
-            labelCol={{ span: 24 }}
-            label="Email"
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Email không được để trống",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+                <Form
+                  name="normal_login"
+                  className={cx("login-form")}
+                  onFinish={onFinish}
+                  labelCol={{
+                    span: 8,
+                  }}
+                  wrapperCol={{
+                    span: 24,
+                  }}
+                  style={{
+                    maxWidth: 1000,
+                  }}
+                >
+                  <Divider>
+                    <p>Đăng ký tài khoản</p>
+                  </Divider>
 
-          <Form.Item
-            labelCol={{ span: 24 }}
-            label="Số điện thoại"
-            name="phone"
-            rules={[
-              {
-                required: true,
-                message: "Số điện thoại không được để trống",
-              },
-            ]}
-          >
-            <Input />
-          </Form.Item>
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập Email!",
+                      },
+                    ]}
+                  >
+                    <Input
+                      prefix={
+                        <UserOutlined className={cx("site-form-item-icon")} />
+                      }
+                      placeholder="Email"
+                    />
+                  </Form.Item>
 
-          <Form.Item
-            labelCol={{ span: 24 }}
-            label="Mật khẩu"
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Mật khẩu không được để trống",
-              },
-            ]}
-          >
-            <Input.Password />
-          </Form.Item>
+                  <Form.Item
+                    name="email"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập Họ và tên!",
+                      },
+                    ]}
+                  >
+                    <Input
+                      prefix={
+                        <UserOutlined className={cx("site-form-item-icon")} />
+                      }
+                      placeholder="Họ và tên"
+                    />
+                  </Form.Item>
 
-          <Form.Item
-          // wrapperCol={{
-          //   offset: 0,
-          //   span: 16,
-          // }}
-          >
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-            <Divider>Or</Divider>
-          </Form.Item>
-        </Form>
+                  <Form.Item
+                    name="password"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập mật khẩu !",
+                      },
+                    ]}
+                  >
+                    <Input
+                      prefix={
+                        <LockOutlined className={cx("site-form-item-icon")} />
+                      }
+                      type="password"
+                      placeholder="Mật khẩu"
+                    />
+                  </Form.Item>
+
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className={cx("login-form-button")}
+                    >
+                      Đăng ký
+                    </Button>
+                    <div className={cx("text-center mt-3")}>
+                      Bạn đã có tài khoản ?{" "}
+                      <Link to={"/login"}>Đăng nhập</Link>
+                    </div>
+                  </Form.Item>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

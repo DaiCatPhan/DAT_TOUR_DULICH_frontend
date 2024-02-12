@@ -1,7 +1,6 @@
 import axios from "../utils/customize-axios";
 
 const createTour = (data) => {
-  console.log("data>>>", data);
   return axios.post("/api/v1/tour/create", data);
 };
 

@@ -25,19 +25,24 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem("Trang chủ", "1", <PieChartOutlined />),
-  getItem("Dashboard ", "2", <DesktopOutlined />),
+  getItem(<Link to="/admin">Trang chủ</Link>, "1", <PieChartOutlined />),
+  getItem(
+    <Link to="/admin/dashboard">Dashboard</Link>,
+    "2",
+    <DesktopOutlined />
+  ),
   getItem("Khách hàng", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
+    getItem(<Link to="/admin/managerCus/list">Danh sách</Link>, "3"),
     getItem("Bill", "4"),
     getItem("Alex", "5"),
   ]),
   getItem("Nhân viên", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
+    getItem(<Link to="/admin/managerStaff/list">Danh sách</Link>, "6"),
+
     getItem("Team 2", "7"),
   ]),
-  getItem('TOUR', "sub3", <TeamOutlined />, [
-    getItem( <Link to="/admin/managerTour/list">Danh sách tour</Link>, "8"),
+  getItem("TOUR", "sub3", <TeamOutlined />, [
+    getItem(<Link to="/admin/managerTour/list">Danh sách tour</Link>, "8"),
     getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "9"),
   ]),
 
