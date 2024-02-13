@@ -4,4 +4,10 @@ const createCalendar = (data) => {
   return axios.post("/api/v1/calendar/create", data);
 };
 
-export default { createCalendar }; 
+const deleteCalendar = (data) => {
+  return axios.delete("/api/v1/calendar/delete", {
+    data: data,
+  });
+};
+
+export default { createCalendar , deleteCalendar }; 

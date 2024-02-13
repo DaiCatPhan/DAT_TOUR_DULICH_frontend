@@ -13,8 +13,9 @@ import {
   Radio,
   Upload,
 } from "antd";
-import { InputNumber, Space } from "antd";
+import { InputNumber, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
+import { IconTrashX, IconBackspace } from "@tabler/icons-react";
 const { RangePicker } = DatePicker;
 import moment from "moment";
 
@@ -22,7 +23,7 @@ import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 import Spin from "../../../../components/Spin";
@@ -36,6 +37,10 @@ function CreateTour() {
   const [imageUrl, setImageUrl] = useState();
   const [spin, setSpin] = useState(false);
 
+  const [formCreate] = Form.useForm();
+  const [formCalendar] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
+
   const [imageTour, setImageTour] = useState("");
   const [price_Include_TEXT, setPrice_Include_TEXT] = useState("");
   const [price_Include_HTML, setPrice_Include_HTML] = useState("");
@@ -43,6 +48,47 @@ function CreateTour() {
   const [price_NotInclude_HTML, setPrice_NotInclude_HTML] = useState("");
   const [processTour_TEXT, setProcessTour_TEXT] = useState("");
   const [processTour_HTML, setProcessTour_HTML] = useState("");
+
+  const [infoDetailTour, setImfoDetailTour] = useState({});
+  const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
+
+  const getTourInformation = async () => {
+    try {
+      // Kiểm tra xem có id trong localStorage hay không
+      const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
+
+      if (TOUR_localStorage && TOUR_localStorage.id) {
+        const res = await TourService.getTour(TOUR_localStorage.id);
+
+        if (res && res.data.EC === 0 && res.data.DT.id) {
+          let resCopy = res.data.DT;
+          resCopy.key = resCopy.id;
+
+          setImfoDetailTour(resCopy);
+          setInfoDetailCalendar(res.data.DT.Calendars);
+        }
+      } else {
+        // Nếu không có id, không thực hiện gọi API
+        console.log("Không có id trong localStorage, không gọi API.");
+      }
+    } catch (error) {
+      console.error("Lỗi khi gọi API để lấy thông tin tour:", error);
+    }
+  };
+
+  useEffect(() => {
+    getTourInformation();
+  }, [localStorage.getItem("TOUR")]);
+
+  const checkTour = () => {
+    const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
+    if (TOUR_localStorage && TOUR_localStorage.id) {
+      toast.error(
+        `  Tour ${TOUR_localStorage.name} chưa hoàn thành , vui lòng hoàn thành tạo Tour !!!`
+      );
+      return 1;
+    }
+  };
 
   const uploadButton = (
     <button
@@ -80,6 +126,11 @@ function CreateTour() {
 
   // TẠO TOUR
   const onFinish = async (values) => {
+    const checkTourEixt = checkTour();
+    if (checkTourEixt) {
+      return;
+    }
+
     const data = values;
     data.price_Include_TEXT = price_Include_TEXT;
     data.price_Include_HTML = price_Include_HTML;
@@ -92,6 +143,12 @@ function CreateTour() {
     if (res && res.data.EC === 0) {
       toast.success("Tạo tour thành công ");
       localStorage.setItem("TOUR", JSON.stringify(res.data.DT));
+
+      formCreate.resetFields();
+      setPrice_Include_TEXT("");
+      setPrice_Include_HTML("");
+      setPrice_NotInclude_TEXT("");
+      setPrice_NotInclude_HTML("");
     } else {
       toast.error(res.data.EM);
     }
@@ -118,11 +175,11 @@ function CreateTour() {
     const res = await TourService.uploadImageTour(formData);
     if (res && res.data.EC === 0) {
       toast.success("Cập nhật hình ảnh thành công");
-      setSpin(false);
+      getTourInformation();
     } else {
       toast.error(res.data.EM);
-      setSpin(false);
     }
+    setSpin(false);
   };
 
   // TAO PROCESSTOUR
@@ -130,11 +187,12 @@ function CreateTour() {
     const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
     const idTour = TOUR_localStorage.id;
 
-    if (!processTour_TEXT || !processTour_HTML) {
-      return toast.error("Vui lòng nhập nội dung chương trình tour !!!");
-    }
     if (!idTour) {
       return toast.warning("Vui lòng tạo tour trước !!!");
+    }
+
+    if (!processTour_TEXT || !processTour_HTML) {
+      return toast.error("Vui lòng nhập nội dung chương trình tour !!!");
     }
 
     const rawData = {
@@ -148,6 +206,7 @@ function CreateTour() {
     if (res && res.data.EC === 0) {
       toast.success("Tạo chương trương trình tour thành công");
       localStorage.setItem("ID_PROCESS", res.data.DT.id);
+      getTourInformation();
     } else {
       toast.error(res.data.EM);
     }
@@ -170,6 +229,7 @@ function CreateTour() {
 
     if (res && res.data.EC === 0) {
       toast.success("Tạo địa điểm tour thành công");
+      getTourInformation();
     } else {
       toast.error(res.data.EM);
     }
@@ -177,7 +237,8 @@ function CreateTour() {
 
   // TAO CALENDAR
   const onFinishCalendar = async (values) => {
-    let id_tour = localStorage.getItem("ID_TOUR");
+    const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
+    const id_tour = TOUR_localStorage.id;
 
     if (!id_tour) {
       return toast.warning("Vui lòng tạo tour trước !!!");
@@ -196,8 +257,34 @@ function CreateTour() {
 
     if (res && res.data.EC === 0) {
       toast.success("Tạo lịch tour thành công");
+      getTourInformation();
     } else {
       toast.error(res.data.EM);
+    }
+  };
+
+  const handleDeleteCalendar = async (data) => {
+    const ID_Calendar = data.id;
+    if (ID_Calendar) {
+      const res = await CalendarService.deleteCalendar({
+        id: ID_Calendar,
+        table: "Calendar",
+      });
+
+      console.log("res >>>>>>>", res);
+
+      if (res && res.data.EC == 0) {
+        messageApi.open({
+          type: "success",
+          content: "Xóa lịch thành công",
+        });
+        getTourInformation();
+      } else {
+        messageApi.open({
+          type: "error",
+          content: "Lỗi không xóa được !!!",
+        });
+      }
     }
   };
 
@@ -234,14 +321,82 @@ function CreateTour() {
     },
   ];
 
+  // COLUMN CALENDAR
+  const columnsTableCalendar = [
+    {
+      title: "Mã tour",
+      dataIndex: "ID_Tour",
+      key: "ID_Tour",
+    },
+
+    {
+      title: "Số chỗ ",
+      dataIndex: "numberSeat",
+      key: "numberSeat",
+    },
+    {
+      title: "Giá",
+      dataIndex: "",
+      key: "priceColumn",
+      render: (Calendar) => {
+        return (
+          <div>
+            <div>Giá người lớn : {Calendar?.priceAdult}</div>
+            <div>Giá trẻ em : {Calendar?.priceChild}</div>
+          </div>
+        );
+      },
+    },
+
+    {
+      title: "Lịch",
+      dataIndex: "",
+      key: "CalendarColumn",
+
+      render: (Calendar) => (
+        <div>
+          <div>
+            Ngày khởi hành : {moment(Calendar?.startDay).format("DD-MM-YYYY")}
+          </div>
+
+          <div>
+            Ngày kết thúc : {moment(Calendar?.endDay).format("DD-MM-YYYY")}
+          </div>
+        </div>
+      ),
+    },
+
+    {
+      title: "Action",
+
+      key: "Action",
+      render: (record) => {
+        return (
+          <div>
+            <IconBackspace
+              color="red"
+              width={20}
+              className={cx("poiter")}
+              onClick={() => handleDeleteCalendar(record)}
+            />
+          </div>
+        );
+      },
+    },
+  ];
+
+  // COLUMN ADDRESS
+
   return (
     <div className={cx("wrapper  ")}>
+      {contextHolder}
       {/* TOUR */}
       <div>
         <div className={cx("row border")}>
           <h5>1. Tạo Tour</h5>
           <div className={cx("col-lg    ")}>
             <Form
+              form={formCreate}
               name="basic"
               labelCol={{
                 span: 24,
@@ -470,6 +625,7 @@ function CreateTour() {
                   style={{ minHeight: "200px", maxHeight: "500px" }}
                   renderHTML={(text) => mdParser.render(text)}
                   onChange={handleEditorChange_price_Include_Text}
+                  value={price_Include_TEXT}
                 />
               </div>
 
@@ -480,6 +636,7 @@ function CreateTour() {
                   style={{ minHeight: "200px", maxHeight: "500px" }}
                   renderHTML={(text) => mdParser.render(text)}
                   onChange={handleEditorChange_price_NotInclude_Text}
+                  value={price_NotInclude_TEXT}
                 />
               </div>
 
@@ -635,6 +792,7 @@ function CreateTour() {
           <div className={cx("col-lg-5 border p-0 vh-50")}>
             <div className={cx("p-2")}>
               <Form
+                form={formCalendar}
                 name="form_calendar"
                 labelCol={{
                   span: 24,
@@ -644,6 +802,7 @@ function CreateTour() {
                 }}
                 onFinish={onFinishCalendar}
                 autoComplete="off"
+                initialValues={infoDetailTour}
               >
                 <Form.Item
                   label="Số chỗ ngồi"
@@ -733,9 +892,9 @@ function CreateTour() {
           <div className={cx("col-lg-7 p-0")}>
             <div className={cx("p-2")}>
               <Table
-                dataSource={dataSourceTable}
+                dataSource={infoDetailCalendar}
                 bordered
-                columns={columnsTable}
+                columns={columnsTableCalendar}
               />
               ;
             </div>

@@ -8,4 +8,10 @@ const createDestination = (data) => {
   return axios.post("/api/v1/process/createDestination", data);
 };
 
-export default { createProcessTour , createDestination};
+const deleteDestination = (data) => {
+  return axios.delete("/api/v1/process/deleteDestination", {
+    data: data,
+  });
+};
+
+export default { createProcessTour, createDestination, deleteDestination };
