@@ -535,24 +535,6 @@ function CreateTour() {
                 </Form.Item>
 
                 <div className={cx("mx-2")}></div>
-
-                <Form.Item
-                  className={cx("w-100")}
-                  label="Chọn tỉnh"
-                  name="province"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn tỉnh!",
-                    },
-                  ]}
-                >
-                  <Select placeholder="Chọn địa điểm ">
-                    <Select.Option value="Ang giang">Ang giang</Select.Option>
-                    <Select.Option value="Cần Thơ">Cần Thơ</Select.Option>
-                    <Select.Option value="Hậu Giang">Hậu Giang</Select.Option>
-                  </Select>
-                </Form.Item>
               </div>
 
               {/* 3 */}
