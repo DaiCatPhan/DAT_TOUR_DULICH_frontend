@@ -9,7 +9,7 @@ const getTour = (data) => {
 };
 
 const getTours = (data) => {
-  return axios.post("/api/v1/tour/readAll", data);
+  return axios.get(`/api/v1/tour/readAll?${data}`);
 };
 
 const uploadImageTour = (data) => {

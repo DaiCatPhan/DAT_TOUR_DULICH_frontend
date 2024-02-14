@@ -38,8 +38,11 @@ import ListStaffPage from "./pages/ADMIN/Manager_Staff/ListStaff";
 //== TOUR ==
 import ListTourPage from "./pages/ADMIN/Manager_Tour/listTour";
 import CreateTourPage from "./pages/ADMIN/Manager_Tour/CreateTour";
-//== CUSTOMER ==
-//== CUSTOMER ==
+//== PROCESSTOUR ==
+import UpdateProcessTourPage from "./pages/ADMIN/Manager_ProcessTour/UpdateProcessTourPage";
+//== CALENDAR ==
+import ListCalendarPage from "./pages/ADMIN/Manager_Calendar/CalendarPage";
+
 //== CUSTOMER ==
 
 const Layout = () => {
@@ -61,7 +64,7 @@ function App() {
     if (
       window.location.pathname === "/login" ||
       window.location.pathname === "/register"
-    ) { 
+    ) {
       return;
     }
 
@@ -120,7 +123,7 @@ function App() {
             // </ProtectedRoute>
           ),
         },
-        
+
         {
           path: "dashboard",
           element: <DashboardPage />,
@@ -136,6 +139,18 @@ function App() {
         {
           path: "managerStaff/list",
           element: <ListStaffPage />,
+        },
+
+        // PROCESSTOUR
+        {
+          path: "managerProcessTour/list",
+          element: <UpdateProcessTourPage />,
+        },
+
+        // CALENDAR
+        {
+          path: "managerCalendar/list",
+          element: <ListCalendarPage />,
         },
 
         // TOUR

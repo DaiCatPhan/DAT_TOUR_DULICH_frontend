@@ -31,6 +31,7 @@ import Spin from "../../../../components/Spin";
 import TourService from "../../../../services/TourService";
 import ProcessService from "../../../../services/ProcessService";
 import CalendarService from "../../../../services/CalendarService";
+import DestinationService from "../../../../services/DestinationService";
 
 function CreateTour() {
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,7 @@ function CreateTour() {
 
   const [infoDetailTour, setImfoDetailTour] = useState({});
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
+  const [infoDetailDestination, setInfoDetailDestination] = useState([]);
 
   const getTourInformation = async () => {
     try {
@@ -66,6 +68,7 @@ function CreateTour() {
 
           setImfoDetailTour(resCopy);
           setInfoDetailCalendar(res.data.DT.Calendars);
+          setInfoDetailDestination(res.data.DT.Destinations);
         }
       } else {
         // Nếu không có id, không thực hiện gọi API
@@ -225,7 +228,7 @@ function CreateTour() {
       name: values.name,
     };
 
-    const res = await ProcessService.createDestination(dataDestination);
+    const res = await DestinationService.createDestination(dataDestination);
 
     if (res && res.data.EC === 0) {
       toast.success("Tạo địa điểm tour thành công");
@@ -271,12 +274,36 @@ function CreateTour() {
         table: "Calendar",
       });
 
+      if (res && res.data.EC == 0) {
+        messageApi.open({
+          type: "success",
+          content: "Xóa lịch thành công",
+        });
+        getTourInformation();
+      } else {
+        messageApi.open({
+          type: "error",
+          content: "Lỗi không xóa được !!!",
+        });
+      }
+    }
+  };
+
+  const handleDeleteDestination = async (data) => {
+    const ID_Destination = data.id;
+
+    if (ID_Destination) {
+      const res = await DestinationService.deleteDestination({
+        id: ID_Destination,
+        table: "Destination",
+      });
+
       console.log("res >>>>>>>", res);
 
       if (res && res.data.EC == 0) {
         messageApi.open({
           type: "success",
-          content: "Xóa lịch thành công",
+          content: "Xóa địa điểm thành công",
         });
         getTourInformation();
       } else {
@@ -385,7 +412,39 @@ function CreateTour() {
     },
   ];
 
-  // COLUMN ADDRESS
+  // COLUMN Detination
+
+  const columnsTableDestination = [
+    {
+      title: "Mã chương trình tour ",
+      dataIndex: "ID_ProcessTour",
+      key: "ID_ProcessTour",
+    },
+
+    {
+      title: "Tên địa điểm",
+      dataIndex: "name",
+      key: "name",
+    },
+
+    {
+      title: "Action",
+
+      key: "Action",
+      render: (record) => {
+        return (
+          <div>
+            <IconBackspace
+              color="red"
+              width={20}
+              className={cx("poiter")}
+              onClick={() => handleDeleteDestination(record)}
+            />
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
     <div className={cx("wrapper  ")}>
@@ -774,9 +833,9 @@ function CreateTour() {
           <div className={cx("col-lg-7 p-0")}>
             <div className={cx("p-2")}>
               <Table
-                dataSource={dataSourceTable}
+                dataSource={infoDetailDestination}
                 bordered
-                columns={columnsTable}
+                columns={columnsTableDestination}
               />
             </div>
           </div>
