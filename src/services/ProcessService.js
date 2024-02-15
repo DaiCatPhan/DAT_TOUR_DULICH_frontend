@@ -4,4 +4,8 @@ const createProcessTour = (data) => {
   return axios.post("/api/v1/process/create", data);
 };
 
-export default { createProcessTour };
+const updateProcessTour = (data) => {
+  return axios.put("/api/v1/process/update", data);
+};
+
+export default { createProcessTour, updateProcessTour };

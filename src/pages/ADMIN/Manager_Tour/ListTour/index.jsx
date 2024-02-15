@@ -7,6 +7,7 @@ import { IconEdit, IconPencilMinus, IconTrash } from "@tabler/icons-react";
 
 import ModalUpdateTour from "../components/ModalUpdateTour";
 import ModalDeleteTour from "../components/ModalDeleteTour";
+import ModalUPdateProcessTour from "../../Manager_ProcessTour/ModalUPdateProcessTour";
 
 import TourService from "../../../../services/TourService";
 import { Link } from "react-router-dom";
@@ -17,11 +18,16 @@ function ListTour() {
   const [total, setTotal] = useState(20);
   const [listTour, setListTour] = useState([]);
 
-  // modal update , delete tour
+  // modal update tour , delete tour , update processTour
   const [isShowModalUpdateTour, setIsShowModalUpdateTour] = useState(false);
   const [dataModalUpdateTour, setDataModalUpdateTour] = useState({});
   const [isShowModalDeleteTour, setIsShowModalDeleteTour] = useState(false);
   const [dataModalDeleteTour, setDataModalDeleteTour] = useState({});
+  const [isShowModalUpdateProcessTour, setIsShowModalUpdateProcessTour] =
+    useState(false);
+  const [dataModalUpdateProcessTour, setDataModalUpdateProcessTour] = useState(
+    {}
+  );
 
   const handleModalUpdateTour = (data) => {
     setIsShowModalUpdateTour(true);
@@ -30,6 +36,10 @@ function ListTour() {
   const handleModalDeleteTour = (data) => {
     setIsShowModalDeleteTour(true);
     setDataModalDeleteTour(data);
+  };
+  const handleModalUpdateProcessTour = (data) => {
+    setIsShowModalUpdateProcessTour(true);
+    setDataModalUpdateProcessTour(data);
   };
 
   // GOI API LAY LIST TOUR
@@ -93,6 +103,12 @@ function ListTour() {
     },
 
     {
+      title: "Miền",
+      dataIndex: "domain",
+      key: "domain",
+    },
+
+    {
       title: "Address",
       dataIndex: "address",
       key: "address",
@@ -102,11 +118,16 @@ function ListTour() {
       title: "Chương trình tour",
       dataIndex: "",
       key: "managerProcessTour",
-      render: (name) => {
+      render: (managerProcessTour) => {
         return (
-          <Link to={"/admin/managerProcessTour/list"}>
-            <Tag color="geekblue">chương trình tour</Tag>
-          </Link>
+          <div className={cx("poiter")}>
+            <Tag
+              onClick={() => handleModalUpdateProcessTour(managerProcessTour)}
+              color="geekblue"
+            >
+              chương trình tour
+            </Tag>
+          </div>
         );
       },
     },
@@ -115,9 +136,9 @@ function ListTour() {
       title: "Lịch",
       dataIndex: "",
       key: "managerCalendar",
-      render: (name) => {
+      render: (managerCalendar) => {
         return (
-          <Link to={"/admin/managerCalendar/list"}>
+          <Link to={`/admin/managerCalendar/${managerCalendar?.id}`}>
             <Tag color="purple">cập nhật lịch</Tag>
           </Link>
         );
@@ -185,6 +206,12 @@ function ListTour() {
         isShowModalDeleteTour={isShowModalDeleteTour}
         setIsShowModalDeleteTour={setIsShowModalDeleteTour}
         dataModalDeleteTour={dataModalDeleteTour}
+        getListTours={getListTours}
+      />
+      <ModalUPdateProcessTour
+        isShowModalUpdateProcessTour={isShowModalUpdateProcessTour}
+        setDataModalUpdateProcessTour={setIsShowModalUpdateProcessTour}
+        dataModalUpdateProcessTour={dataModalUpdateProcessTour}
         getListTours={getListTours}
       />
     </div>

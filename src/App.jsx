@@ -38,11 +38,9 @@ import ListStaffPage from "./pages/ADMIN/Manager_Staff/ListStaff";
 //== TOUR ==
 import ListTourPage from "./pages/ADMIN/Manager_Tour/listTour";
 import CreateTourPage from "./pages/ADMIN/Manager_Tour/CreateTour";
-//== PROCESSTOUR ==
-import UpdateProcessTourPage from "./pages/ADMIN/Manager_ProcessTour/UpdateProcessTourPage";
 //== CALENDAR ==
-import ListCalendarPage from "./pages/ADMIN/Manager_Calendar/CalendarPage";
-
+import CalendarPage from "./pages/ADMIN/Manager_Calendar/CalendarPage";
+//== PROCESSTOUR ==
 //== CUSTOMER ==
 
 const Layout = () => {
@@ -142,15 +140,12 @@ function App() {
         },
 
         // PROCESSTOUR
-        {
-          path: "managerProcessTour/list",
-          element: <UpdateProcessTourPage />,
-        },
+         
 
         // CALENDAR
         {
-          path: "managerCalendar/list",
-          element: <ListCalendarPage />,
+          path: "managerCalendar/:id",
+          element: <CalendarPage />,
         },
 
         // TOUR

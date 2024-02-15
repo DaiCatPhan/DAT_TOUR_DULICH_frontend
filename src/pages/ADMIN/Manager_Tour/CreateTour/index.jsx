@@ -21,10 +21,10 @@ import moment from "moment";
 
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
+const mdParser = new MarkdownIt(/* Markdown-it options */);
 // import style manually
 import "react-markdown-editor-lite/lib/index.css";
 import { useEffect, useState } from "react";
-const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 import Spin from "../../../../components/Spin";
 
@@ -315,39 +315,6 @@ function CreateTour() {
     }
   };
 
-  const dataSourceTable = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-
-  const columnsTable = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-    },
-  ];
-
   // COLUMN CALENDAR
   const columnsTableCalendar = [
     {
@@ -413,7 +380,6 @@ function CreateTour() {
   ];
 
   // COLUMN Detination
-
   const columnsTableDestination = [
     {
       title: "Mã chương trình tour ",
@@ -943,7 +909,7 @@ function CreateTour() {
         </div>
       </div>
     </div>
-  );
+  ); 
 }
 
 export default CreateTour;
