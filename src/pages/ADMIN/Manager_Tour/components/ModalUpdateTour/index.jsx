@@ -212,8 +212,8 @@ function ModalUpdateTour(props) {
                 <div className={cx("d-flex justify-content-between")}>
                   <Form.Item
                     className={cx("w-100")}
-                    label="Địa danh nổi tiếng"
-                    name="address"
+                    label="Thể loại tour"
+                    name="type"
                     rules={[
                       {
                         required: true,
@@ -222,40 +222,34 @@ function ModalUpdateTour(props) {
                     ]}
                   >
                     <Select placeholder="Chọn địa điểm ">
-                      <Select.Option value="Sapa">Sapa</Select.Option>
-                      <Select.Option value="Đà Nẵng">Đà Nẵng</Select.Option>
-                      <Select.Option value="Hạ Long">Hạ Long</Select.Option>
-                      <Select.Option value="Hà Nội">Hà Nội</Select.Option>
-                      <Select.Option value="Phú Yên">Phú Yên</Select.Option>
-                      <Select.Option value="Nha Trang">Nha Trang</Select.Option>
-                      <Select.Option value="Quy Nhơn">Quy Nhơn</Select.Option>
-                      <Select.Option value="Buôn Ma Thuột">
-                        Buôn Ma Thuột
+                      <Select.Option value="Tour Du Lịch Miền Bắc">
+                        Tour Du Lịch Miền Bắc
                       </Select.Option>
-                      <Select.Option value="Phú Quốc">Phú Quốc</Select.Option>
-                      <Select.Option value="Miền Tây">Miền Tây</Select.Option>
-                    </Select>
-                  </Form.Item>
-
-                  <div className={cx("mx-2")}></div>
-
-                  <Form.Item
-                    className={cx("w-100")}
-                    label="Chọn miền"
-                    name="domain"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng chọn miền!",
-                      },
-                    ]}
-                  >
-                    <Select placeholder="Chọn miền ">
-                      <Select.Option value="Miền Bắc">Miền Bắc</Select.Option>
-                      <Select.Option value="Miền Trung">
-                        Miền Trung
+                      <Select.Option value="Tour Du Lịch Miền Trung">
+                        Tour Du Lịch Miền Trung
                       </Select.Option>
-                      <Select.Option value="Miền Nam">Miền Nam</Select.Option>
+                      <Select.Option value="Tour Du Lịch Miền Nam">
+                        Tour Du Lịch Miền Nam
+                      </Select.Option>
+                      <Select.Option value="Tour Nội Địa Cao Cấp">
+                        Tour Nội Địa Cao Cấp
+                      </Select.Option>
+                      <Select.Option value="Tour Trải Nghiệm Địa Phương">
+                        Tour Trải Nghiệm Địa Phương
+                      </Select.Option>
+                      <Select.Option value="Tour Du Lịch Tây Nguyên">
+                        Tour Du Lịch Tây Nguyên
+                      </Select.Option>
+                      <Select.Option value="Tour Du Lịch Miền Tây">
+                        Tour Du Lịch Miền Tây
+                      </Select.Option>
+
+                      <Select.Option value="Tour Vi Vu Cuối Tuần">
+                        Tour Vi Vu Cuối Tuần
+                      </Select.Option>
+                      <Select.Option value="Tour Thám Hiểm">
+                        Tour Thám Hiểm
+                      </Select.Option>
                     </Select>
                   </Form.Item>
 

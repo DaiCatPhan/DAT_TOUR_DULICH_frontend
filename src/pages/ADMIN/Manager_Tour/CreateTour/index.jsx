@@ -50,7 +50,7 @@ function CreateTour() {
   const [processTour_TEXT, setProcessTour_TEXT] = useState("");
   const [processTour_HTML, setProcessTour_HTML] = useState("");
 
-  const [infoDetailTour, setImfoDetailTour] = useState({});
+  const [infoDetailTour, setInfoDetailTour] = useState({});
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
   const [infoDetailDestination, setInfoDetailDestination] = useState([]);
 
@@ -66,7 +66,7 @@ function CreateTour() {
           let resCopy = res.data.DT;
           resCopy.key = resCopy.id;
 
-          setImfoDetailTour(resCopy);
+          setInfoDetailTour(resCopy);
           setInfoDetailCalendar(res.data.DT.Calendars);
           setInfoDetailDestination(res.data.DT.Destinations);
         }
@@ -266,6 +266,18 @@ function CreateTour() {
     }
   };
 
+  // FINISH
+  const handleFinishCreateTour = () => {
+    // Xóa toàn bộ dữ liệu với key là 'tours'
+    if (!localStorage.removeItem("TOUR")) {
+      toast.warning("Bạn chưa tạo Tour !!!");
+      return;
+    }
+    localStorage.removeItem("TOUR");
+    localStorage.removeItem("ID_PROCESS");
+    toast.success("Hoàn thành việc tạo tour ");
+  };
+
   const handleDeleteCalendar = async (data) => {
     const ID_Calendar = data.id;
     if (ID_Calendar) {
@@ -414,6 +426,14 @@ function CreateTour() {
 
   return (
     <div className={cx("wrapper  ")}>
+      {localStorage.getItem("TOUR") ? (
+        <div className={cx("topTitle")}>
+          Đang tạo tour : {JSON.parse(localStorage.getItem("TOUR"))?.name}
+        </div>
+      ) : (
+        <></>
+      )}
+
       {contextHolder}
       {/* TOUR */}
       <div>
@@ -455,8 +475,8 @@ function CreateTour() {
               <div className={cx("d-flex justify-content-between")}>
                 <Form.Item
                   className={cx("w-100")}
-                  label="Địa danh nổi tiếng"
-                  name="address"
+                  label="Thể loại tour"
+                  name="type"
                   rules={[
                     {
                       required: true,
@@ -465,38 +485,34 @@ function CreateTour() {
                   ]}
                 >
                   <Select placeholder="Chọn địa điểm ">
-                    <Select.Option value="Sapa">Sapa</Select.Option>
-                    <Select.Option value="Đà Nẵng">Đà Nẵng</Select.Option>
-                    <Select.Option value="Hạ Long">Hạ Long</Select.Option>
-                    <Select.Option value="Hà Nội">Hà Nội</Select.Option>
-                    <Select.Option value="Phú Yên">Phú Yên</Select.Option>
-                    <Select.Option value="Nha Trang">Nha Trang</Select.Option>
-                    <Select.Option value="Quy Nhơn">Quy Nhơn</Select.Option>
-                    <Select.Option value="Buôn Ma Thuột">
-                      Buôn Ma Thuột
+                    <Select.Option value="Tour Du Lịch Miền Bắc">
+                      Tour Du Lịch Miền Bắc
                     </Select.Option>
-                    <Select.Option value="Phú Quốc">Phú Quốc</Select.Option>
-                    <Select.Option value="Miền Tây">Miền Tây</Select.Option>
-                  </Select>
-                </Form.Item>
+                    <Select.Option value="Tour Du Lịch Miền Trung">
+                      Tour Du Lịch Miền Trung
+                    </Select.Option>
+                    <Select.Option value="Tour Du Lịch Miền Nam">
+                      Tour Du Lịch Miền Nam
+                    </Select.Option>
+                    <Select.Option value="Tour Nội Địa Cao Cấp">
+                      Tour Nội Địa Cao Cấp
+                    </Select.Option>
+                    <Select.Option value="Tour Trải Nghiệm Địa Phương">
+                      Tour Trải Nghiệm Địa Phương
+                    </Select.Option>
+                    <Select.Option value="Tour Du Lịch Tây Nguyên">
+                      Tour Du Lịch Tây Nguyên
+                    </Select.Option>
+                    <Select.Option value="Tour Du Lịch Miền Tây">
+                      Tour Du Lịch Miền Tây
+                    </Select.Option>
 
-                <div className={cx("mx-2")}></div>
-
-                <Form.Item
-                  className={cx("w-100")}
-                  label="Chọn miền"
-                  name="domain"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng chọn miền!",
-                    },
-                  ]}
-                >
-                  <Select placeholder="Chọn miền ">
-                    <Select.Option value="Miền Bắc">Miền Bắc</Select.Option>
-                    <Select.Option value="Miền Trung">Miền Trung</Select.Option>
-                    <Select.Option value="Miền Nam">Miền Nam</Select.Option>
+                    <Select.Option value="Tour Vi Vu Cuối Tuần">
+                      Tour Vi Vu Cuối Tuần
+                    </Select.Option>
+                    <Select.Option value="Tour Thám Hiểm">
+                      Tour Thám Hiểm
+                    </Select.Option>
                   </Select>
                 </Form.Item>
 
@@ -663,7 +679,7 @@ function CreateTour() {
 
       {/* UpLoad Image */}
       <div className={cx("row  my-5 border p-3 rounded border")}>
-        <h5>2. Upload Hình Ảnh</h5>
+        <h5>2. Upload Hình Ảnh :</h5>
         <div
           className={cx("col-lg-6 m-auto border border-primary rounded p-0")}
         >
@@ -707,16 +723,8 @@ function CreateTour() {
       <div className={cx("createProcess my-5  ")}>
         <div className={cx("row  my-5 w-100")}>
           <div>
-            {JSON.parse(localStorage.getItem("TOUR")) ? (
-              <div className={cx("mb-4 fs-5")}>
-                <b> 3 .Tạo chương trình : </b>
-                {JSON.parse(localStorage.getItem("TOUR"))?.name}
-              </div>
-            ) : (
-              <div className={cx("mb-4")}>
-                <h4>3 .Tạo chương trình TOUR </h4>
-              </div>
-            )}
+            <b> 3 .Tạo chương trình : </b>
+
             <MdEditor
               style={{ minHeight: "500px" }}
               renderHTML={(text) => mdParser.render(text)}
@@ -809,7 +817,6 @@ function CreateTour() {
                 }}
                 onFinish={onFinishCalendar}
                 autoComplete="off"
-                initialValues={infoDetailTour}
               >
                 <Form.Item
                   label="Số chỗ ngồi"
@@ -908,8 +915,18 @@ function CreateTour() {
           </div>
         </div>
       </div>
+
+      {/* FINISH */}
+      <div className={cx("btn border w-100 my-3")}>
+        <button
+          onClick={handleFinishCreateTour}
+          className={cx("btn btn-success")}
+        >
+          Hoàn thành tạo tour
+        </button>
+      </div>
     </div>
-  ); 
+  );
 }
 
 export default CreateTour;

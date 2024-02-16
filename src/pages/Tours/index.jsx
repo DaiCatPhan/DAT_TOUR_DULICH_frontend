@@ -6,7 +6,35 @@ import { Link } from "react-router-dom";
 import TourViewed from "./components/TourViewed";
 import CardTour from "../../components/CardTour";
 
+import TourService from "../../services/TourService";
+import { useEffect, useState } from "react";
+
 function Tours() {
+  const [toursMienBac, setToursMienBac] = useState([]);
+  const [toursMienTrung, setToursMienTrung] = useState([]);
+  const [toursMienNam, setToursMienNam] = useState([]);
+  // Gọi API lấy dữ liệu
+  const getTours = async () => {
+    try {
+      const tourMienBac = await TourService.getTours("region=Miền Bắc");
+      const tourMienTrung = await TourService.getTours("region=Miền Trung");
+      const tourMienNam = await TourService.getTours("region=Miền Nam");
+      const res = await TourService.getTours();
+
+      if (res && res.data.EC === 0) {
+        setToursMienBac(tourMienBac?.data?.DT);
+        setToursMienTrung(tourMienTrung?.data?.DT);
+        setToursMienNam(tourMienNam?.data?.DT);
+      }
+    } catch (error) {
+      console.log("error >>", error);
+    }
+  };
+
+  useEffect(() => {
+    getTours();
+  }, []);
+
   const listTourSeened = [
     {
       id: 1,
@@ -18,15 +46,6 @@ function Tours() {
     },
   ];
 
-  const listTour = [
-    {
-      name: "",
-      image: "",
-      duration: "",
-      vehicle: "",
-      priceAdult: "",
-    },
-  ];
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
@@ -90,9 +109,16 @@ function Tours() {
         </section> */}
 
         <section className={cx("listTour")}>
-          <div className={cx("row g-4")}>
-            <div className={cx("col-lg-4")}>
-              <CardTour />
+          <div>
+            <h3 className={cx("  ")}>TOUR MIỀN TRUNG</h3>
+            <div className={cx("row  g-4 m-auto ")}>
+              {toursMienTrung?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div className={cx("col-lg-4 d-flex justify-content-center")}>
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>

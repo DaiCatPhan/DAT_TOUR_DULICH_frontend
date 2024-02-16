@@ -3,6 +3,7 @@ import styles from "./CalendarPage.module.scss";
 const cx = className.bind(styles);
 import { toast } from "react-toastify";
 import moment from "moment";
+import Function from "../../../../components/Functions/function";
 
 import {
   Button,
@@ -31,7 +32,6 @@ function CalendarPage() {
   const [messageApi, contextHolder] = message.useMessage();
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
   const [infoDetailTour, setInfoDetailTour] = useState({});
-  console.log("id", id);
 
   const getTourInformation = async () => {
     if (id) {
@@ -113,6 +113,12 @@ function CalendarPage() {
     },
 
     {
+      title: "Mã lịch",
+      dataIndex: "id",
+      key: "id",
+    },
+
+    {
       title: "Số chỗ ",
       dataIndex: "numberSeat",
       key: "numberSeat",
@@ -124,8 +130,15 @@ function CalendarPage() {
       render: (Calendar) => {
         return (
           <div>
-            <div>Giá người lớn : {Calendar?.priceAdult}</div>
-            <div>Giá trẻ em : {Calendar?.priceChild}</div>
+            <div>
+              Giá người lớn :
+              {Function.formatNumberWithCommas(Calendar?.priceAdult)} vnd
+            </div>
+
+            <div>
+              Giá trẻ em :
+              {Function.formatNumberWithCommas(Calendar?.priceChild)}
+            </div>
           </div>
         );
       },
@@ -172,8 +185,11 @@ function CalendarPage() {
     <div className={cx("wrapper")}>
       {contextHolder}
       <div className={cx("createCalendar  ")}>
-        <div className={cx("fs-5")}>
-          <b>Tạo lịch</b>
+        <div className={cx("fs-5  ")}>
+          <h5>
+            <b>Tạo lịch</b> : {infoDetailTour?.name || ""}
+            <div className={cx("my-4")}></div>
+          </h5>
         </div>
         <div className={cx("row border")}>
           <div className={cx("col-lg-5 border p-0 vh-50")}>

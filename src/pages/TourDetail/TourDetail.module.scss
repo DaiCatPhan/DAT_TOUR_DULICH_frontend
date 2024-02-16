@@ -21,6 +21,10 @@
   object-fit: cover;
 }
 
+.w-80 {
+  width: 95%;
+}
+
  
 
 .poiter {
@@ -40,10 +44,30 @@
   color: greenyellow;
 }
 
+// PROCESSTOUR 
+.desProcessTour {
+  padding: 20px 20px;
+
+  img {
+    width: 100%;
+    border-radius: 5px;
+  }
+
+  h5 {
+    text-align: center;
+  }
+}
+
 // CALENDAR
+.calendar {
+  width: 380px ;
+  margin-left: 40px;
+}
+
 .calendar .infoCalendar {
   position: sticky;
   top: 0;
+   
 
   .calendarCard {
     padding: 13px 20px;

@@ -1,8 +1,11 @@
 .wrapper {
+  a {
+    color: black;
+  }
 }
 
 .cardTour {
-  width: 350px;
+  width: 355px;
   border: 1px solid rgb(207, 200, 200);
   position: relative;
 }
@@ -13,11 +16,14 @@
 }
 
 .content {
+  width: 100%;
   .title {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    min-height: 72px;
+    width: 100%;
   }
 }
 
@@ -36,15 +42,13 @@
 }
 
 .textHandle {
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 170px;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 170px;
+  text-overflow: ellipsis;
 }
 
 .price {
-    font-weight: 700;
-    color: #f79321;
+  font-weight: 700;
+  color: #f79321;
 }
-
-

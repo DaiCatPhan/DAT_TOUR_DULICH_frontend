@@ -10,4 +10,4 @@ const deleteCalendar = (data) => {
   });
 };
 
-export default { createCalendar , deleteCalendar }; 
+export default { createCalendar, deleteCalendar };
