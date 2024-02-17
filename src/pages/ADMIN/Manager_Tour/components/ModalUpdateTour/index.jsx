@@ -40,11 +40,6 @@ function ModalUpdateTour(props) {
   const [imageUrl, setImageUrl] = useState();
   const [imageCurrent, setImageCurrent] = useState(null);
 
-  const [price_Include_TEXT, setPrice_Include_TEXT] = useState("");
-  const [price_Include_HTML, setPrice_Include_HTML] = useState("");
-  const [price_NotInclude_TEXT, setPrice_NotInclude_TEXT] = useState("");
-  const [price_NotInclude_HTML, setPrice_NotInclude_HTML] = useState("");
-
   const [formUpdate] = Form.useForm();
   const [spin, setSpin] = useState(false);
 
@@ -70,21 +65,13 @@ function ModalUpdateTour(props) {
     setImageCurrent(URL.createObjectURL(info.file?.originFileObj));
   };
 
-  function handleEditorChange_price_Include_Text({ html, text }) {
-    setPrice_Include_HTML(html);
-    setPrice_Include_TEXT(text);
-  }
-  function handleEditorChange_price_NotInclude_Text({ html, text }) {
-    setPrice_NotInclude_HTML(html);
-    setPrice_NotInclude_TEXT(text);
-  }
-
   // MODAL
 
   const {
     isShowModalUpdateTour,
     setIsShowModalUpdateTour,
     dataModalUpdateTour,
+    setDataModalUpdateTour,
     getListTours,
   } = props;
 
@@ -103,13 +90,10 @@ function ModalUpdateTour(props) {
   const handleCancel = () => {
     setIsShowModalUpdateTour(false);
     formUpdate.resetFields();
+    setDataModalUpdateTour({});
   };
 
   useEffect(() => {
-    setPrice_Include_TEXT(dataModalUpdateTour?.price_Include_TEXT);
-    setPrice_Include_HTML(dataModalUpdateTour?.price_Include_HTML);
-    setPrice_NotInclude_TEXT(dataModalUpdateTour?.price_NotInclude_TEXT);
-    setPrice_NotInclude_HTML(dataModalUpdateTour?.price_NotInclude_HTML);
     formUpdate.setFieldsValue(dataModalUpdateTour);
   }, [dataModalUpdateTour]);
 
@@ -117,10 +101,6 @@ function ModalUpdateTour(props) {
   const onFinish = async (values) => {
     const data = values;
     data.id = dataModalUpdateTour?.id;
-    data.price_Include_TEXT = price_Include_TEXT;
-    data.price_Include_HTML = price_Include_HTML;
-    data.price_NotInclude_TEXT = price_NotInclude_TEXT;
-    data.price_NotInclude_HTML = price_NotInclude_HTML;
     data.duration = `${values.duration_am} ngày ${values.duration_pm} đêm`;
 
     const res = await TourService.updateTour(data);
@@ -376,28 +356,6 @@ function ModalUpdateTour(props) {
                       <Radio value="0">Không hoạt động</Radio>
                     </Radio.Group>
                   </Form.Item>
-                </div>
-
-                {/* Tour bao gồm */}
-                <div>
-                  <b>Giá tour bao gồm</b>
-                  <MdEditor
-                    style={{ minHeight: "200px", maxHeight: "500px" }}
-                    renderHTML={(text) => mdParser.render(text)}
-                    onChange={handleEditorChange_price_Include_Text}
-                    value={price_Include_TEXT}
-                  />
-                </div>
-
-                {/* Tour không bao gồm */}
-                <div className={cx("my-2")}>
-                  <b>Giá tour không bao gồm</b>
-                  <MdEditor
-                    style={{ minHeight: "200px", maxHeight: "500px" }}
-                    renderHTML={(text) => mdParser.render(text)}
-                    onChange={handleEditorChange_price_NotInclude_Text}
-                    value={price_NotInclude_TEXT}
-                  />
                 </div>
 
                 <Form.Item>

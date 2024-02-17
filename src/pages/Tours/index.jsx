@@ -2,6 +2,7 @@ import className from "classnames/bind";
 import styles from "./Tours.module.scss";
 const cx = className.bind(styles);
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import TourViewed from "./components/TourViewed";
 import CardTour from "../../components/CardTour";
@@ -13,18 +14,61 @@ function Tours() {
   const [toursMienBac, setToursMienBac] = useState([]);
   const [toursMienTrung, setToursMienTrung] = useState([]);
   const [toursMienNam, setToursMienNam] = useState([]);
+  const [toursNoiDiaCaoCap, setToursNoiDiaCaoCap] = useState([]);
+  const [toursTraiNghiemDiaPhuong, setToursTraiNghiemDiaPhuong] = useState([]);
+  const [toursDuLichTayNguyen, setToursDuLichTayNguyen] = useState([]);
+  const [toursDuLichMienTay, setToursDuLichMienTay] = useState([]);
+  const [toursViVuCuoiTuan, setToursViVuCuoiTuan] = useState([]);
+  const [toursThamHiem, setToursThamHiem] = useState([]);
+  const navigate = useNavigate();
+  const type = [
+    {
+      name: "Tour Du Lịch Miền Bắc",
+    },
+    {
+      name: "Tour Du Lịch Miền Trung",
+    },
+    {
+      name: "Tour Du Lịch Miền Nam",
+    },
+    {
+      name: "Tour Nội Địa Cao Cấp",
+    },
+    {
+      name: "Tour Trải Nghiệm Địa Phương",
+    },
+    {
+      name: "Tour Du Lịch Tây Nguyên",
+    },
+    {
+      name: "Tour Du Lịch Miền Tây",
+    },
+    {
+      name: "Tour Vi Vu Cuối Tuần",
+    },
+    {
+      name: "Tour Thám Hiểm",
+    },
+  ];
   // Gọi API lấy dữ liệu
   const getTours = async () => {
     try {
-      const tourMienBac = await TourService.getTours("region=Miền Bắc");
-      const tourMienTrung = await TourService.getTours("region=Miền Trung");
-      const tourMienNam = await TourService.getTours("region=Miền Nam");
+      const toursMienBac = await TourService.getTours(
+        "type=Tour Du Lịch Miền Bắc"
+      );
+      const toursMienTrung = await TourService.getTours(
+        "type=Tour Du Lịch Miền Trung"
+      );
+      const toursMienNam = await TourService.getTours(
+        "type=Tour Du Lịch Miền Nam"
+      );
+
       const res = await TourService.getTours();
 
       if (res && res.data.EC === 0) {
-        setToursMienBac(tourMienBac?.data?.DT);
-        setToursMienTrung(tourMienTrung?.data?.DT);
-        setToursMienNam(tourMienNam?.data?.DT);
+        setToursMienBac(toursMienBac?.data?.DT);
+        setToursMienTrung(toursMienTrung?.data?.DT);
+        setToursMienNam(toursMienNam?.data?.DT);
       }
     } catch (error) {
       console.log("error >>", error);
@@ -46,10 +90,22 @@ function Tours() {
     },
   ];
 
+  const handleClickTour = async (data) => {
+    // Goi API them vào bảng tour đã xem
+
+    navigate(`/tours/${data?.id}`);
+  };
+
   return (
     <div className={cx("wrapper")}>
+      <div className={cx("bg")}>
+        <img
+          src="https://cdn2.ivivu.com/2023/12/28/14/tour-20231227-1.png"
+          alt="notFound"
+        />
+      </div>
       <div className={cx("container")}>
-        {/* <section className={cx("listTourSeened")}>
+        <section className={cx("listTourSeened")}>
           <div className={cx("py-4")}>
             <div className={cx("d-flex justify-content-between ")}>
               <div className={cx("d-flex align-items-center  ")}>
@@ -106,15 +162,24 @@ function Tours() {
               );
             })}
           </div>
-        </section> */}
+        </section>
+      </div>
 
-        <section className={cx("listTour")}>
+      <div className={cx("bg-white")}>
+        <section className={cx("listTour", "bg-white")}>
           <div>
-            <h3 className={cx("  ")}>TOUR MIỀN TRUNG</h3>
+            <h5 className={cx("  ")}>TOUR MIỀN BẮC</h5>
             <div className={cx("row  g-4 m-auto ")}>
-              {toursMienTrung?.tours?.slice(0, 6).map((item) => {
+              {toursMienBac?.tours?.slice(0, 6).map((item) => {
                 return (
-                  <div className={cx("col-lg-4 d-flex justify-content-center")}>
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center",
+                      "poiter"
+                    )}
+                  >
                     <CardTour item={item} />
                   </div>
                 );

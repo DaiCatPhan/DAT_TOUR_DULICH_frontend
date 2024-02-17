@@ -60,21 +60,6 @@ function ListTour() {
     getListTours();
   }, [current, pageSize]);
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-
   const columnsTour = [
     {
       title: "Mã Tour",
@@ -103,15 +88,9 @@ function ListTour() {
     },
 
     {
-      title: "Miền",
-      dataIndex: "domain",
-      key: "domain",
-    },
-
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      title: "Thể loại",
+      dataIndex: "type",
+      key: "type",
     },
 
     {
@@ -200,12 +179,14 @@ function ListTour() {
         isShowModalUpdateTour={isShowModalUpdateTour}
         setIsShowModalUpdateTour={setIsShowModalUpdateTour}
         dataModalUpdateTour={dataModalUpdateTour}
+        setDataModalUpdateTour={setDataModalUpdateTour}
         getListTours={getListTours}
       />
       <ModalDeleteTour
         isShowModalDeleteTour={isShowModalDeleteTour}
         setIsShowModalDeleteTour={setIsShowModalDeleteTour}
         dataModalDeleteTour={dataModalDeleteTour}
+        setDataModalDeleteTour={setDataModalDeleteTour}
         getListTours={getListTours}
       />
       <ModalUPdateProcessTour

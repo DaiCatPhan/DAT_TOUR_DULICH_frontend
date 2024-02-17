@@ -98,6 +98,7 @@ function CalendarPage() {
 
     if (res && res.data.EC === 0) {
       toast.success("Tạo lịch tour thành công");
+      formCalendar.resetFields();
       getTourInformation();
     } else {
       toast.error(res.data.EM);

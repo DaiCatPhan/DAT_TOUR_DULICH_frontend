@@ -12,6 +12,7 @@ import {
   DatePicker,
   Radio,
   Upload,
+  Result,
 } from "antd";
 import { InputNumber, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -31,28 +32,24 @@ import Spin from "../../../../components/Spin";
 import TourService from "../../../../services/TourService";
 import ProcessService from "../../../../services/ProcessService";
 import CalendarService from "../../../../services/CalendarService";
-import DestinationService from "../../../../services/DestinationService";
 
 function CreateTour() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
   const [spin, setSpin] = useState(false);
+  const [isShowNoticationCreateTour, setIsShowNoticationCreateTour] =
+    useState(false);
 
   const [formCreate] = Form.useForm();
   const [formCalendar] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
 
   const [imageTour, setImageTour] = useState("");
-  const [price_Include_TEXT, setPrice_Include_TEXT] = useState("");
-  const [price_Include_HTML, setPrice_Include_HTML] = useState("");
-  const [price_NotInclude_TEXT, setPrice_NotInclude_TEXT] = useState("");
-  const [price_NotInclude_HTML, setPrice_NotInclude_HTML] = useState("");
   const [processTour_TEXT, setProcessTour_TEXT] = useState("");
   const [processTour_HTML, setProcessTour_HTML] = useState("");
 
   const [infoDetailTour, setInfoDetailTour] = useState({});
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
-  const [infoDetailDestination, setInfoDetailDestination] = useState([]);
 
   const getTourInformation = async () => {
     try {
@@ -68,7 +65,7 @@ function CreateTour() {
 
           setInfoDetailTour(resCopy);
           setInfoDetailCalendar(res.data.DT.Calendars);
-          setInfoDetailDestination(res.data.DT.Destinations);
+          formCalendar.setFieldsValue(res.data.DT);
         }
       } else {
         // Nếu không có id, không thực hiện gọi API
@@ -87,7 +84,7 @@ function CreateTour() {
     const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
     if (TOUR_localStorage && TOUR_localStorage.id) {
       toast.error(
-        `  Tour ${TOUR_localStorage.name} chưa hoàn thành , vui lòng hoàn thành tạo Tour !!!`
+        `  Tour ${TOUR_localStorage?.name} chưa hoàn thành , vui lòng hoàn thành tạo Tour !!!`
       );
       return 1;
     }
@@ -114,14 +111,6 @@ function CreateTour() {
     setImageTour(info.file.originFileObj);
   };
 
-  function handleEditorChange_price_Include_Text({ html, text }) {
-    setPrice_Include_HTML(html);
-    setPrice_Include_TEXT(text);
-  }
-  function handleEditorChange_price_NotInclude_Text({ html, text }) {
-    setPrice_NotInclude_HTML(html);
-    setPrice_NotInclude_TEXT(text);
-  }
   function handleEditorChange_ProcessTour({ html, text }) {
     setProcessTour_HTML(html);
     setProcessTour_TEXT(text);
@@ -135,10 +124,6 @@ function CreateTour() {
     }
 
     const data = values;
-    data.price_Include_TEXT = price_Include_TEXT;
-    data.price_Include_HTML = price_Include_HTML;
-    data.price_NotInclude_TEXT = price_NotInclude_TEXT;
-    data.price_NotInclude_HTML = price_NotInclude_HTML;
     data.duration = `${values.duration_am} ngày ${values.duration_pm} đêm`;
 
     const res = await TourService.createTour(data);
@@ -146,12 +131,7 @@ function CreateTour() {
     if (res && res.data.EC === 0) {
       toast.success("Tạo tour thành công ");
       localStorage.setItem("TOUR", JSON.stringify(res.data.DT));
-
-      formCreate.resetFields();
-      setPrice_Include_TEXT("");
-      setPrice_Include_HTML("");
-      setPrice_NotInclude_TEXT("");
-      setPrice_NotInclude_HTML("");
+      setIsShowNoticationCreateTour(true);
     } else {
       toast.error(res.data.EM);
     }
@@ -188,7 +168,7 @@ function CreateTour() {
   // TAO PROCESSTOUR
   const createProcess = async () => {
     const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
-    const idTour = TOUR_localStorage.id;
+    const idTour = TOUR_localStorage?.id;
 
     if (!idTour) {
       return toast.warning("Vui lòng tạo tour trước !!!");
@@ -209,29 +189,6 @@ function CreateTour() {
     if (res && res.data.EC === 0) {
       toast.success("Tạo chương trương trình tour thành công");
       localStorage.setItem("ID_PROCESS", res.data.DT.id);
-      getTourInformation();
-    } else {
-      toast.error(res.data.EM);
-    }
-  };
-
-  // TAO DESTINATION
-  const handleCreateDestination = async (values) => {
-    let id_process = localStorage.getItem("ID_PROCESS");
-
-    if (!id_process) {
-      return toast.warning("Vui lòng tạo chương trình tour trước !!!");
-    }
-
-    const dataDestination = {
-      ID_ProcessTour: +id_process,
-      name: values.name,
-    };
-
-    const res = await DestinationService.createDestination(dataDestination);
-
-    if (res && res.data.EC === 0) {
-      toast.success("Tạo địa điểm tour thành công");
       getTourInformation();
     } else {
       toast.error(res.data.EM);
@@ -266,18 +223,6 @@ function CreateTour() {
     }
   };
 
-  // FINISH
-  const handleFinishCreateTour = () => {
-    // Xóa toàn bộ dữ liệu với key là 'tours'
-    if (!localStorage.removeItem("TOUR")) {
-      toast.warning("Bạn chưa tạo Tour !!!");
-      return;
-    }
-    localStorage.removeItem("TOUR");
-    localStorage.removeItem("ID_PROCESS");
-    toast.success("Hoàn thành việc tạo tour ");
-  };
-
   const handleDeleteCalendar = async (data) => {
     const ID_Calendar = data.id;
     if (ID_Calendar) {
@@ -290,32 +235,6 @@ function CreateTour() {
         messageApi.open({
           type: "success",
           content: "Xóa lịch thành công",
-        });
-        getTourInformation();
-      } else {
-        messageApi.open({
-          type: "error",
-          content: "Lỗi không xóa được !!!",
-        });
-      }
-    }
-  };
-
-  const handleDeleteDestination = async (data) => {
-    const ID_Destination = data.id;
-
-    if (ID_Destination) {
-      const res = await DestinationService.deleteDestination({
-        id: ID_Destination,
-        table: "Destination",
-      });
-
-      console.log("res >>>>>>>", res);
-
-      if (res && res.data.EC == 0) {
-        messageApi.open({
-          type: "success",
-          content: "Xóa địa điểm thành công",
         });
         getTourInformation();
       } else {
@@ -391,42 +310,32 @@ function CreateTour() {
     },
   ];
 
-  // COLUMN Detination
-  const columnsTableDestination = [
-    {
-      title: "Mã chương trình tour ",
-      dataIndex: "ID_ProcessTour",
-      key: "ID_ProcessTour",
-    },
-
-    {
-      title: "Tên địa điểm",
-      dataIndex: "name",
-      key: "name",
-    },
-
-    {
-      title: "Action",
-
-      key: "Action",
-      render: (record) => {
-        return (
-          <div>
-            <IconBackspace
-              color="red"
-              width={20}
-              className={cx("poiter")}
-              onClick={() => handleDeleteDestination(record)}
-            />
-          </div>
-        );
-      },
-    },
-  ];
+  // FINISH
+  const handleFinishCreateTour = () => {
+    const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
+    const PROCESSTOUR_localStorage = localStorage.getItem("ID_PROCESS");
+    if (!TOUR_localStorage) {
+      toast.warning("Bạn chưa tạo tour !!!");
+      return;
+    }
+    if (!PROCESSTOUR_localStorage) {
+      toast.warning("Bạn chưa tạo chương trình tour !!!");
+      return;
+    }
+    localStorage.removeItem("TOUR");
+    localStorage.removeItem("ID_PROCESS");
+    setIsShowNoticationCreateTour(false);
+    formCreate.resetFields();
+    formCalendar.resetFields();
+    setProcessTour_TEXT("");
+    setProcessTour_HTML("");
+    setInfoDetailCalendar([]);
+    toast.success("Hoàn thành việc tạo tour ");
+  };
 
   return (
     <div className={cx("wrapper  ")}>
-      {localStorage.getItem("TOUR") ? (
+      {isShowNoticationCreateTour ? (
         <div className={cx("topTitle")}>
           Đang tạo tour : {JSON.parse(localStorage.getItem("TOUR"))?.name}
         </div>
@@ -641,28 +550,6 @@ function CreateTour() {
                 </Form.Item>
               </div>
 
-              {/* Tour bao gồm */}
-              <div>
-                <b>Giá tour bao gồm</b>
-                <MdEditor
-                  style={{ minHeight: "200px", maxHeight: "500px" }}
-                  renderHTML={(text) => mdParser.render(text)}
-                  onChange={handleEditorChange_price_Include_Text}
-                  value={price_Include_TEXT}
-                />
-              </div>
-
-              {/* Tour không bao gồm */}
-              <div className={cx("my-2")}>
-                <b>Giá tour không bao gồm</b>
-                <MdEditor
-                  style={{ minHeight: "200px", maxHeight: "500px" }}
-                  renderHTML={(text) => mdParser.render(text)}
-                  onChange={handleEditorChange_price_NotInclude_Text}
-                  value={price_NotInclude_TEXT}
-                />
-              </div>
-
               <Form.Item>
                 <Button
                   type="primary"
@@ -729,6 +616,7 @@ function CreateTour() {
               style={{ minHeight: "500px" }}
               renderHTML={(text) => mdParser.render(text)}
               onChange={handleEditorChange_ProcessTour}
+              value={processTour_TEXT}
             />
           </div>
 
@@ -739,61 +627,6 @@ function CreateTour() {
             >
               Tạo chương trình tour
             </button>
-          </div>
-        </div>
-      </div>
-
-      {/* TẠO ĐỊA ĐIỂM */}
-      <div className={cx("my-5")}>
-        <h4>Tạo địa điểm</h4>
-        <div className={cx("row border")}>
-          <div className={cx("col-lg-5 border p-0 vh-50")}>
-            <div className={cx("p-2")}>
-              <Form
-                name="form_destination"
-                labelCol={{
-                  span: 24,
-                }}
-                wrapperCol={{
-                  span: 24,
-                }}
-                onFinish={handleCreateDestination}
-                autoComplete="off"
-              >
-                <Form.Item
-                  label="Tạo địa điểm du lịch"
-                  name="name"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập địa điểm du lịch !",
-                    },
-                  ]}
-                >
-                  <Input className={cx("w-100")} />
-                </Form.Item>
-
-                <Form.Item
-                  wrapperCol={{
-                    offset: 20,
-                    span: 16,
-                  }}
-                >
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                </Form.Item>
-              </Form>
-            </div>
-          </div>
-          <div className={cx("col-lg-7 p-0")}>
-            <div className={cx("p-2")}>
-              <Table
-                dataSource={infoDetailDestination}
-                bordered
-                columns={columnsTableDestination}
-              />
-            </div>
           </div>
         </div>
       </div>
@@ -910,21 +743,24 @@ function CreateTour() {
                 bordered
                 columns={columnsTableCalendar}
               />
-              ;
             </div>
           </div>
         </div>
       </div>
 
       {/* FINISH */}
-      <div className={cx("btn border w-100 my-3")}>
-        <button
-          onClick={handleFinishCreateTour}
-          className={cx("btn btn-success")}
-        >
-          Hoàn thành tạo tour
-        </button>
-      </div>
+      <Result
+        status="success"
+        title="Hoàn thành việc tạo tour"
+        extra={[
+          <button
+            onClick={handleFinishCreateTour}
+            className={cx("btn btn-success")}
+          >
+            Hoàn thành tạo tour
+          </button>,
+        ]}
+      />
     </div>
   );
 }
