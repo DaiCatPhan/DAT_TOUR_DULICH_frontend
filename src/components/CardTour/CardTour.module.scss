@@ -5,9 +5,15 @@
 }
 
 .cardTour {
-  width: 355px;
+  width: 345px;
   border: 1px solid rgb(207, 200, 200);
   position: relative;
+
+  &:hover {
+    .content {
+      background-color: #e9fafc !important;
+    }
+  }
 }
 
 .cardTour img {

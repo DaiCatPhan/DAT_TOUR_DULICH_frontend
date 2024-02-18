@@ -27,8 +27,36 @@
 }
 
 .listTour {
-  width: 90%;
+  width: 80%;
   margin: 0 auto;
-}
 
- 
+  .text {
+    margin-left: 30px;
+  }
+
+  .topicTour {
+    font-size: 32px;
+    font-weight: bold;
+    color: #3f3b3b;
+  }
+
+  .spanTopic {
+    font-size: 16px;
+    font-weight: normal;
+    color: #717484;
+  }
+
+  .btnSeenTour {
+    border: 2px solid #26bed6;
+    color: #26bed6;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 8px 20px;
+    background-color: white;
+
+    &:hover {
+      background-color: #26bed6;
+      color: white;
+    }
+  }
+}

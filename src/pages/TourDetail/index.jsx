@@ -3,6 +3,14 @@ import styles from "./TourDetail.module.scss";
 const cx = className.bind(styles);
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import { IconCheck } from "@tabler/icons-react";
+import { InputNumber } from "antd";
+import { useEffect, useState } from "react";
+
+import TourService from "../../services/TourService";
+import functions from "../../components/Functions/function.js";
+
 import {
   IconClockHour10,
   IconBus,
@@ -10,22 +18,16 @@ import {
   IconShip,
 } from "@tabler/icons-react";
 
-import { IconCheck } from "@tabler/icons-react";
-import { InputNumber } from "antd";
-import { useEffect, useState } from "react";
-
-import TourService from "../../services/TourService";
-
 function TourDetail() {
   const [tourDetail, setTourDetail] = useState({});
   const [calendarTour, setCalendarTour] = useState([]);
   const [processTour, setProcessTour] = useState({});
-  const id = 13;
+  let { id } = useParams();
 
   const handleIconVehicle = (vehicle) => {
-    if (vehicle === "xed") {
+    if (vehicle == "xe") {
       return <IconBus />;
-    } else if (vehicle === "bay") {
+    } else if (vehicle == "bay") {
       return <IconZeppelin />;
     } else {
       return <IconShip />;
@@ -61,18 +63,16 @@ function TourDetail() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container border")}>
-        <h2 className={cx("w-80", "my-3")}>
-          Tour Châu Đốc 1N1Đ: Viếng Bà - Miếu Bà Chúa Xứ Bàu Mướp - Núi Cấm
-        </h2>
+        <h2 className={cx("w-80", "my-3")}>{tourDetail?.name}</h2>
         <div className={cx("row  ")}>
           <div className={cx("col-lg-8  p-0")}>
             <div>
               <div className={cx("bgTour")}>
                 <div>
                   <img
-                    src="https://cdn2.ivivu.com/2023/11/22/11/ivivu-miracle-garden-dubai-dubai-750x390.jpg"
+                    src={tourDetail?.image}
                     alt="notFound"
-                    className={cx("w-100")}
+                    className={cx("w-100", "imageTour")}
                   />
 
                   <div

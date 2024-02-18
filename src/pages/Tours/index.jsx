@@ -17,9 +17,10 @@ function Tours() {
   const [toursNoiDiaCaoCap, setToursNoiDiaCaoCap] = useState([]);
   const [toursTraiNghiemDiaPhuong, setToursTraiNghiemDiaPhuong] = useState([]);
   const [toursDuLichTayNguyen, setToursDuLichTayNguyen] = useState([]);
-  const [toursDuLichMienTay, setToursDuLichMienTay] = useState([]);
+  const [toursDuLichHanhHuong, setToursDuLichHanhHuong] = useState([]);
   const [toursViVuCuoiTuan, setToursViVuCuoiTuan] = useState([]);
   const [toursThamHiem, setToursThamHiem] = useState([]);
+
   const navigate = useNavigate();
   const type = [
     {
@@ -30,6 +31,9 @@ function Tours() {
     },
     {
       name: "Tour Du Lịch Miền Nam",
+    },
+    {
+      name: "Tour Du Lịch Hành Hương",
     },
     {
       name: "Tour Nội Địa Cao Cấp",
@@ -63,12 +67,17 @@ function Tours() {
         "type=Tour Du Lịch Miền Nam"
       );
 
+      const toursDuLichHanhHuong = await TourService.getTours(
+        "type=Tour Du Lịch Hành Hương"
+      );
+
       const res = await TourService.getTours();
 
       if (res && res.data.EC === 0) {
         setToursMienBac(toursMienBac?.data?.DT);
         setToursMienTrung(toursMienTrung?.data?.DT);
         setToursMienNam(toursMienNam?.data?.DT);
+        setToursDuLichHanhHuong(toursDuLichHanhHuong?.data?.DT);
       }
     } catch (error) {
       console.log("error >>", error);
@@ -102,6 +111,8 @@ function Tours() {
         <img
           src="https://cdn2.ivivu.com/2023/12/28/14/tour-20231227-1.png"
           alt="notFound"
+          className={cx("w-100")}
+          height={480}
         />
       </div>
       <div className={cx("container")}>
@@ -166,27 +177,35 @@ function Tours() {
       </div>
 
       <div className={cx("bg-white")}>
-        <section className={cx("listTour", "bg-white")}>
-          <div>
-            <h5 className={cx("  ")}>TOUR MIỀN BẮC</h5>
-            <div className={cx("row  g-4 m-auto ")}>
-              {toursMienBac?.tours?.slice(0, 6).map((item) => {
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => handleClickTour(item)}
-                    className={cx(
-                      "col-lg-4 d-flex justify-content-center",
-                      "poiter"
-                    )}
-                  >
-                    <CardTour item={item} />
-                  </div>
-                );
-              })}
-            </div>
+        <div className={cx("listTour")}>
+          <div className={cx("text")}>
+            <h5 className={cx("topicTour")}>Tour Du Lịch Hành Hương</h5>
+            <p className={cx("spanTopic")}>
+              Hành Trình Tâm Linh , Cầu Nguyện An Lành
+            </p>
           </div>
-        </section>
+          <div className={cx("row m-auto  ")}>
+            {toursDuLichHanhHuong?.tours?.slice(0, 6).map((item) => {
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => handleClickTour(item)}
+                  className={cx(
+                    "col-lg-4 d-flex justify-content-center mb-3",
+                    "poiter"
+                  )}
+                >
+                  <CardTour item={item} />
+                </div>
+              );
+            })}
+          </div>
+          <div className={cx("text-center   pb-3")}>
+            <Link to={`/tours/topic/Tour Du Lịch Hành Hương`}>
+              <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

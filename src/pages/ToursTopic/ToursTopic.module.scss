@@ -1,0 +1,36 @@
+.wrapper {
+  background-color: #ecf0f5;
+}
+
+.vh-80 {
+  min-height: 80vh;
+}
+
+.w-90 {
+  width: 85%;
+}
+
+.formSearch {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ffc107;
+  padding: 10px;
+
+  .inputSearch {
+    padding: 20px 110px;
+  }
+
+  .btnSearch {
+    font-weight: 700;
+    color: white;
+    background-color: #f79321;
+    width: 140px;
+    height: 60px;
+
+    &:hover {
+      background-color: #dba05c !important;
+      color: white !important;
+    }
+  }
+}

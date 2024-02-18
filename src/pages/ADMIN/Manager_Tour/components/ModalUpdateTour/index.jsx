@@ -19,6 +19,8 @@ import "react-markdown-editor-lite/lib/index.css";
 
 import TourService from "../../../../../services/TourService";
 
+import data from "../../../../../components/Data/data";
+
 import {
   Button,
   Checkbox,
@@ -42,6 +44,8 @@ function ModalUpdateTour(props) {
 
   const [formUpdate] = Form.useForm();
   const [spin, setSpin] = useState(false);
+
+  const typeTour = data?.typeTour;
 
   const uploadButton = (
     <button
@@ -201,35 +205,14 @@ function ModalUpdateTour(props) {
                       },
                     ]}
                   >
-                    <Select placeholder="Chọn địa điểm ">
-                      <Select.Option value="Tour Du Lịch Miền Bắc">
-                        Tour Du Lịch Miền Bắc
-                      </Select.Option>
-                      <Select.Option value="Tour Du Lịch Miền Trung">
-                        Tour Du Lịch Miền Trung
-                      </Select.Option>
-                      <Select.Option value="Tour Du Lịch Miền Nam">
-                        Tour Du Lịch Miền Nam
-                      </Select.Option>
-                      <Select.Option value="Tour Nội Địa Cao Cấp">
-                        Tour Nội Địa Cao Cấp
-                      </Select.Option>
-                      <Select.Option value="Tour Trải Nghiệm Địa Phương">
-                        Tour Trải Nghiệm Địa Phương
-                      </Select.Option>
-                      <Select.Option value="Tour Du Lịch Tây Nguyên">
-                        Tour Du Lịch Tây Nguyên
-                      </Select.Option>
-                      <Select.Option value="Tour Du Lịch Miền Tây">
-                        Tour Du Lịch Miền Tây
-                      </Select.Option>
-
-                      <Select.Option value="Tour Vi Vu Cuối Tuần">
-                        Tour Vi Vu Cuối Tuần
-                      </Select.Option>
-                      <Select.Option value="Tour Thám Hiểm">
-                        Tour Thám Hiểm
-                      </Select.Option>
+                    <Select placeholder="Chọn chủ đề ">
+                      {typeTour?.map((item) => {
+                        return (
+                          <Select.Option value={item?.type} key={item?.id}>
+                            {item?.type}
+                          </Select.Option>
+                        );
+                      })}
                     </Select>
                   </Form.Item>
 

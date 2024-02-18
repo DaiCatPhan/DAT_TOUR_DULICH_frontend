@@ -20,6 +20,7 @@ import Footer from "./components/Footer";
 
 import TourDetail from "./pages/TourDetail";
 import Tours from "./pages/Tours";
+import ToursTopic from "./pages/ToursTopic";
 
 // == ADMIN ==
 import LayoutAdmin from "./layouts/LayoutAdmin";
@@ -95,6 +96,10 @@ function App() {
           element: <TourDetail />,
         },
         {
+          path: "tours/topic",
+          element: <ToursTopic />,
+        },
+        {
           path: "info/profile",
           element: <Profile />,
         },
@@ -140,7 +145,6 @@ function App() {
         },
 
         // PROCESSTOUR
-         
 
         // CALENDAR
         {

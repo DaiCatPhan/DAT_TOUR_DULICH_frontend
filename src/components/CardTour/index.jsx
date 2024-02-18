@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 
 function CardTour(props) {
   const { item } = props;
+  const { image, name, duration, priceAdult } = item;
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
       return <IconBus />;
@@ -25,10 +26,7 @@ function CardTour(props) {
     <div className={cx("wrapper")}>
       {/* <Link to={`/tours/:${item?.id}`}> */}
       <div className={cx("cardTour", "rounded")}>
-        <img
-          src="https://cdn2.ivivu.com/2023/07/13/16/ivivu-wiang-kum-kam-chiang-mai-360x225.jpg"
-          alt="notfound"
-        />
+        <img src={image} alt="notfound" />
         <div className={cx("content", "p-2", "bg-white")}>
           <p className={cx("color-text", "title")}>
             <b>{item?.name}</b>
@@ -42,24 +40,7 @@ function CardTour(props) {
             </div>
             <div>{handleIconVehicle(item?.vehicle)}</div>
           </div>
-          <div>
-            <div className={cx("listAddress")}>
-              <div>
-                <li className={cx("fse-sm", "textHandle")}>
-                  Quảng trường hà lan
-                </li>
-              </div>
-              <div>
-                <li className={cx("fse-sm")}>Quảng trường hà lan</li>
-              </div>
-              <div>
-                <li className={cx("fse-sm")}>Quảng trường hà lan</li>
-              </div>
-              <div>
-                <li className={cx("fse-sm")}>Quảng trường hà lan</li>
-              </div>
-            </div>
-          </div>
+
           <div className={cx("d-flex justify-content-between py-2")}>
             <div></div>
             <h5 className={cx("price")}>

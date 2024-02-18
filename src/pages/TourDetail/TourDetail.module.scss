@@ -16,7 +16,7 @@
 
 .imageTour {
   width: 100%;
-  height: 450px;
+  height: 400px;
   text-align: center;
   object-fit: cover;
 }
@@ -25,26 +25,23 @@
   width: 95%;
 }
 
- 
-
 .poiter {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .fw_600 {
-    font-weight: 900px;
+  font-weight: 900px;
 }
 
 .IconPrice {
-    
-    font-size: 30px;
+  font-size: 30px;
 }
 
-.color_green{
+.color_green {
   color: greenyellow;
 }
 
-// PROCESSTOUR 
+// PROCESSTOUR
 .desProcessTour {
   padding: 20px 20px;
 
@@ -60,14 +57,13 @@
 
 // CALENDAR
 .calendar {
-  width: 380px ;
+  width: 380px;
   margin-left: 40px;
 }
 
 .calendar .infoCalendar {
   position: sticky;
   top: 0;
-   
 
   .calendarCard {
     padding: 13px 20px;

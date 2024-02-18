@@ -33,6 +33,8 @@ import TourService from "../../../../services/TourService";
 import ProcessService from "../../../../services/ProcessService";
 import CalendarService from "../../../../services/CalendarService";
 
+import data from "../../../../components/Data/data";
+
 function CreateTour() {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
@@ -50,6 +52,8 @@ function CreateTour() {
 
   const [infoDetailTour, setInfoDetailTour] = useState({});
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
+
+  const typeTour = data?.typeTour;
 
   const getTourInformation = async () => {
     try {
@@ -393,35 +397,14 @@ function CreateTour() {
                     },
                   ]}
                 >
-                  <Select placeholder="Chọn địa điểm ">
-                    <Select.Option value="Tour Du Lịch Miền Bắc">
-                      Tour Du Lịch Miền Bắc
-                    </Select.Option>
-                    <Select.Option value="Tour Du Lịch Miền Trung">
-                      Tour Du Lịch Miền Trung
-                    </Select.Option>
-                    <Select.Option value="Tour Du Lịch Miền Nam">
-                      Tour Du Lịch Miền Nam
-                    </Select.Option>
-                    <Select.Option value="Tour Nội Địa Cao Cấp">
-                      Tour Nội Địa Cao Cấp
-                    </Select.Option>
-                    <Select.Option value="Tour Trải Nghiệm Địa Phương">
-                      Tour Trải Nghiệm Địa Phương
-                    </Select.Option>
-                    <Select.Option value="Tour Du Lịch Tây Nguyên">
-                      Tour Du Lịch Tây Nguyên
-                    </Select.Option>
-                    <Select.Option value="Tour Du Lịch Miền Tây">
-                      Tour Du Lịch Miền Tây
-                    </Select.Option>
-
-                    <Select.Option value="Tour Vi Vu Cuối Tuần">
-                      Tour Vi Vu Cuối Tuần
-                    </Select.Option>
-                    <Select.Option value="Tour Thám Hiểm">
-                      Tour Thám Hiểm
-                    </Select.Option>
+                  <Select placeholder="Chọn chủ đề ">
+                    {typeTour?.map((item) => {
+                      return (
+                        <Select.Option value={item?.type} key={item?.id}>
+                          {item?.type}
+                        </Select.Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
 
@@ -510,7 +493,7 @@ function CreateTour() {
                 >
                   <InputNumber
                     className={cx("w-100")}
-                    min={1}
+                    min={0}
                     placeholder="Nhập tổng thời gian đêm"
                   />
                 </Form.Item>
