@@ -2,6 +2,10 @@
   font-size: 14px;
 }
 
+.color_616161 {
+  color: #616161;
+}
+
 .listAddress {
   display: grid;
   grid-template-columns: auto auto;
@@ -18,4 +22,10 @@
 .price {
   color: #00abc5;
   margin-top: 5px;
+}
+
+.nameTour {
+  color: #003c71;
+  font-size: 19px;
+  font-weight: 430;
 }

@@ -596,7 +596,7 @@ function CreateTour() {
             <b> 3 .Tạo chương trình : </b>
 
             <MdEditor
-              style={{ minHeight: "500px" }}
+              style={{ minHeight: "500px", maxHeight: "800px" }}
               renderHTML={(text) => mdParser.render(text)}
               onChange={handleEditorChange_ProcessTour}
               value={processTour_TEXT}

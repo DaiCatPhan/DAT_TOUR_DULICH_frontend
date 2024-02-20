@@ -18,7 +18,9 @@
   padding: 10px;
 
   .inputSearch {
-    padding: 20px 110px;
+    padding: 20px 100px;
+    font-size: 15px;
+    font-weight: 700;
   }
 
   .btnSearch {
@@ -33,4 +35,10 @@
       color: white !important;
     }
   }
+}
+
+.nameTypeTour {
+  color: #003c71;
+  font-weight: 640;
+  font-size: 35px;
 }

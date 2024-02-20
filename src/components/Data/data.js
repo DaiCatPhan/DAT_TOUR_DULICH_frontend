@@ -37,4 +37,21 @@ const typeTour = [
   },
 ];
 
+// import {
+//   IconClockHour10,
+//   IconBus,
+//   IconZeppelin,
+//   IconShip,
+// } from "@tabler/icons-react";
+
+// const handleIconVehicle = (vehicle) => {
+//   if (vehicle == "xe") {
+//     return <IconBus />;
+//   } else if (vehicle == "bay") {
+//     return <IconZeppelin />;
+//   } else {
+//     return <IconShip />;
+//   }
+// };
+
 export default { typeTour };

@@ -4,11 +4,20 @@ const cx = className.bind(styles);
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
+import moment from "moment";
+
 import CardSearch from "../../components/CardSearch";
 import data from "../../components/Data/data";
 
 import TourService from "../../services/TourService";
 import { useLocation } from "react-router-dom";
+
+import {
+  IconClockHour10,
+  IconBus,
+  IconZeppelin,
+  IconShip,
+} from "@tabler/icons-react";
 
 import {
   AppstoreOutlined,
@@ -20,18 +29,27 @@ import { Button, Checkbox, Form, Input, DatePicker } from "antd";
 import { useEffect, useState } from "react";
 
 function ToursTopic() {
-  const [condition, setCondition] = useState("");
   const [tours, setTours] = useState([]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const nameParam = searchParams.get("name");
-  const typeParam = searchParams.get("type");
+  const [nameParam, setNameParam] = useState("");
+  const [typeParam, setTypeParam] = useState("");
 
   // Gọi API lấy dữ liệu
   const getTours = async () => {
     try {
+      let condition = "";
+      if (nameParam) {
+        condition = `name=${nameParam}`;
+      }
+
+      if (typeParam) {
+        condition = `type=${typeParam}`;
+      }
+
       const res = await TourService.getTours(condition);
-      console.log("res >>>>>>>", res);
+      console.log("res >>>>>>", res);
+
       if (res && res.data.EC === 0) {
         setTours(res?.data?.DT);
       }
@@ -42,6 +60,8 @@ function ToursTopic() {
 
   useEffect(() => {
     getTours();
+    setNameParam(searchParams.get("name"));
+    setTypeParam(searchParams.get("type"));
   }, [nameParam, typeParam]);
 
   function getItem(label, key, icon, children, type) {
@@ -54,17 +74,6 @@ function ToursTopic() {
     };
   }
   const itemsAddress = [
-    // getItem("Sapa", "name=Sapa"),
-    // getItem("Nha Trang", "name=Nha Trang"),
-    // getItem("Đà Nẵng", "name=Đà Nẵng"),
-    // getItem("Hạ Long", "name=Hạ Long"),
-    // getItem("Hà Nội", "name=Hà Nội"),
-    // getItem("Buôn Mê Thuột", "name=Buôn Mê Thuột"),
-    // getItem("Quy Nhơn", "name=Quy Nhơn"),
-    // getItem("Phan Thiết", "name=Phan Thiết"),
-    // getItem("Phú Quốc", "name=Phú Quốc"),
-    // getItem("Phú Yên", "name=Phú Yên"),
-
     getItem(<a href="/tours/topic?name=Sapa">Sapa</a>, "name=Sapa"),
     getItem(
       <a href="/tours/topic?name=Nha Trang">Nha Trang</a>,
@@ -96,28 +105,34 @@ function ToursTopic() {
   const onClick = (e) => {
     console.log("click ", e);
   };
+
+  const onFinish = async (values) => {
+    const { name, startDay } = values;
+    const startDate = startDay?.$d;
+    let condition = `name=${name || ""}&startDay=${startDay}`;
+    const res = await TourService.getTours(condition);
+    if (res && res.data.EC === 0) {
+      console.log("res onFinish >>>>>>>>..", res);
+      setTours(res.data.DT);
+    }
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
         <div>
-          <Form
-            name="basic"
-            style={{}}
-            // onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
+          <Form name="basic" style={{}} onFinish={onFinish} autoComplete="off">
             <div className={cx("formSearch")}>
               <div className={cx("mx-2 ")}>
                 <div>
                   <Form.Item
-                    name="username"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Please input your username!",
-                      },
-                    ]}
+                    name="name"
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: "Please input your username!",
+                    //   },
+                    // ]}
                   >
                     <Input
                       className={cx("inputSearch")}
@@ -128,17 +143,21 @@ function ToursTopic() {
               </div>
 
               <div className={cx("mx-2")}>
-                <Form.Item>
-                  <DatePicker className={cx("inputSearch")} />
+                <Form.Item className={cx("w-100")} name="startDay">
+                  <DatePicker
+                    format="DD/MM/YYYY  "
+                    className={cx("inputSearch")}
+                    placeholder="Chọn ngày  "
+                  />
                 </Form.Item>
               </div>
 
               <div className={cx("mx-2")}>
                 <Form.Item>
                   <Input
-                    name="address"
+                    name="startDay"
                     className={cx("inputSearch")}
-                    placeholder="Khởi hành từ Cần Thơ"
+                    value={"Khởi hành từ Cần Thơ"}
                   />
                 </Form.Item>
               </div>
@@ -197,12 +216,19 @@ function ToursTopic() {
               </div>
             </div>
           </div>
-          <div className={cx("col-lg-9 border border-primary")}>
-            <div className={cx("px-3 my-3 border")}>
-              <div>Tour Du Lịch Tết Nguyên Đán từ Hồ Chí Minh</div>
-              <div>
-                <CardSearch />
-              </div>
+          <div className={cx("col-lg-9  border border-primary")}>
+            <div className={cx("nameTypeTour")}>
+              Du Lịch : {nameParam || typeParam}
+            </div>
+
+            <div className={cx("px-3")}>
+              {tours?.tours?.map((item) => {
+                return (
+                  <Link to={`/tours/${item?.id}`}>
+                    <CardSearch key={item.id} item={item} />
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>
