@@ -5,7 +5,7 @@ const createCalendar = (data) => {
 };
 
 const deleteCalendar = (data) => {
-  return axios.delete("/api/v1/calendar/delete", {
+  return axios.delete("/api/v1/calendar/delete", { 
     data: data,
   });
 };

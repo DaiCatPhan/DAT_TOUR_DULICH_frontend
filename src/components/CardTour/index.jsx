@@ -24,7 +24,6 @@ function CardTour(props) {
   };
   return (
     <div className={cx("wrapper")}>
-      {/* <Link to={`/tours/:${item?.id}`}> */}
       <div className={cx("cardTour", "rounded")}>
         <img src={image} alt="notfound" />
         <div className={cx("content", "p-2", "bg-white")}>
@@ -49,7 +48,6 @@ function CardTour(props) {
           </div>
         </div>
       </div>
-      {/* </Link> */}
     </div>
   );
 }

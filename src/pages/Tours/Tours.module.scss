@@ -2,6 +2,20 @@
   background-color: #ecf0f5;
 }
 
+.bgTourPage {
+  position: relative;
+
+  .imageTourPage {
+    object-fit: cover;
+  }
+
+  .formSearch {
+    position: absolute;
+    top: 7%;
+    left: 13%;
+  }
+}
+
 .bg-f6f8fa {
   background-color: #f6f8fa;
 }
@@ -24,6 +38,19 @@
 // SECTION
 
 .listTourSeened {
+  width: 80%;
+  margin: 0 auto;
+
+  .listMap {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+
+    .item {
+      width: 32%;
+      margin: 10px 7px;
+    }
+  }
 }
 
 .listTour {

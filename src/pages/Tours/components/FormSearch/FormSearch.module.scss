@@ -1,0 +1,36 @@
+.formSearch {
+  width: 755px;
+  height: 165px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  padding: 15px;
+}
+
+.input {
+  height: 60px;
+  width: 100%;
+
+  & input::placeholder {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+.btnSearch {
+  font-weight: 700;
+  color: white;
+  background-color: #f79321;
+  width: 140px;
+  height: 60px;
+  border: none;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #dba05c !important;
+    color: white !important;
+  }
+}
+
+.DatePicker {
+  min-width: 280px;
+}

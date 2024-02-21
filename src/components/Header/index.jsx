@@ -24,7 +24,7 @@ function Header() {
     const res = await AuthService.LogoutApi();
     if (res && res.data.EC === 0) {
       dispatch(doLogoutAction());
-      toast.success("Đăng xuất thành công");  
+      toast.success("Đăng xuất thành công");
       navigate("/");
     }
   };
@@ -88,7 +88,7 @@ function Header() {
             >
               <div className={cx("d-flex ")}>
                 <Nav.Link href="/tours">TOURS</Nav.Link>
-                <Nav.Link href="#link">Link</Nav.Link>
+                <Nav.Link href="/tours/topic">CHỦ ĐỀ</Nav.Link>
               </div>
               <div>
                 {isAuthenticated ? (
