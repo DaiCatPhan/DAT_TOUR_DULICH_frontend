@@ -8,14 +8,8 @@ const logoutApi = () => {
   return axios.get("/api/v1/auth/logout");
 };
 
-const registerApi = ({ email, name, phone, gender, password }) => {
-  return axios.post("/api/v1/auth/register ", {
-    email,
-    name,
-    phone,
-    gender,
-    password,
-  });
+const registerApi = (data) => {
+  return axios.post("/api/v1/auth/register ", data);
 };
 
 const fetchProfile = () => {
