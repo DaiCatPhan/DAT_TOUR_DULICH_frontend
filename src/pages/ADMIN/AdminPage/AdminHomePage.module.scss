@@ -1,14 +1,69 @@
-.customIcon {
+.bodyWrapper {
+  min-height: 60vh;
+}
+.col_left {
+  height: 100%;
+  .item1 {
+    font-family: "Sofia", sans-serif;
+    margin-top: 30px;
+  }
+  .item2 {
+    font-size: 40px;
+    font-weight: 650;
+    margin: 20px;
+  }
+
+  .item3 {
+    font-size: 17px;
+    color: grey;
+    margin: 40px;
+  }
+}
+
+.col_right {
+  border: 1px saddlebrown;
+  display: flex;
+
+  img {
+    width: 160px;
+    height: 330px;
+    border-radius: 20px;
+    border: 1px solid yellow;
+    margin: 0 15px;
+  }
+
+  .item1 {
+  }
+
+  .item2 {
+    margin-top: 50px;
+  }
+
+  .item3 {
+    margin-top: 100px;
+  }
+}
+
+.card {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 60px;
-  height: 60px;
-  background: #029e9d;
+  margin-bottom: 20px;
+
+  .item {
+    border: 1px solid orange;
+    padding: 7px 45px;
+    display: flex;
+    align-items: center;
+  }
+
+  .item1 {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+
+  .item3 {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
 }
-
-.imageHome {
-    height: 90%;
-}
-
-

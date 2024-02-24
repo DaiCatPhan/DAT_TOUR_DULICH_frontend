@@ -33,9 +33,9 @@ import ChangePassword from "./pages/USER/ChangePassword";
 
 //== CUSTOMER ==
 import ListCustomerPage from "./pages/ADMIN/Manager_Customer/ListCustomer";
-import ListStaffPage from "./pages/ADMIN/Manager_Staff/ListStaff";
 
 //== STAFF ==
+import ListStaffPage from "./pages/ADMIN/Manager_Staff/ListStaff";
 //== TOUR ==
 import ListTourPage from "./pages/ADMIN/Manager_Tour/listTour";
 import CreateTourPage from "./pages/ADMIN/Manager_Tour/CreateTour";

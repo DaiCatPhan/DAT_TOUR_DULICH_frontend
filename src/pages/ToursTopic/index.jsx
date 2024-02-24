@@ -155,7 +155,6 @@ function ToursTopic() {
               <div className={cx("mx-2")}>
                 <Form.Item>
                   <Input
-                    name="startDay"
                     className={cx("inputSearch")}
                     value={"Khởi hành từ Cần Thơ"}
                   />

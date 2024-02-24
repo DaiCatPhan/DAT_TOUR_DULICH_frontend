@@ -180,7 +180,10 @@ function Tours() {
             {toursViewed?.map((tourSeened) => {
               return (
                 <div className={cx("item")}>
-                  <TourViewed item={tourSeened} getToursViewded={getToursViewded} />
+                  <TourViewed
+                    item={tourSeened}
+                    getToursViewded={getToursViewded}
+                  />
                 </div>
               );
             })}

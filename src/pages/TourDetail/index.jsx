@@ -3,10 +3,11 @@ import styles from "./TourDetail.module.scss";
 const cx = className.bind(styles);
 import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import moment from "moment";
 
 import { IconCheck } from "@tabler/icons-react";
 import { InputNumber } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import TourService from "../../services/TourService";
 import functions from "../../components/Functions/function.js";
@@ -23,6 +24,10 @@ function TourDetail() {
   const [calendarTour, setCalendarTour] = useState([]);
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
+  const [activeCalendar, setActiveCalendar] = useState({});
+
+  const [numberTicketAdult, setNumberTicketAdult] = useState(1);
+  const [numberTicketChild, setNumberTicketChild] = useState(0);
 
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
@@ -38,7 +43,6 @@ function TourDetail() {
   const getTourById = async () => {
     try {
       const res = await TourService.getTour(id);
-      console.log("res >>>>>>", res);
       if (res && res.data.EC === 0 && res.data.DT.id) {
         setTourDetail(res?.data?.DT);
         setProcessTour(res?.data?.DT?.ProcessTour);
@@ -50,6 +54,7 @@ function TourDetail() {
             };
           })
         );
+        setActiveCalendar(res?.data?.DT?.Calendars[0]);
       }
     } catch (error) {
       console.log("error", error);
@@ -60,11 +65,44 @@ function TourDetail() {
     getTourById();
   }, [id]);
 
+  const handlActiveBorderCalendar = (item) => {
+    setActiveCalendar(item);
+    calendarTour?.map((calendar) => {
+      calendar.isSelected = false;
+      if (calendar.id === item.id) {
+        calendar.isSelected = !calendar.isSelected;
+      }
+    });
+  };
+
+  //
+  const handleNumberTicketAdult = (value) => {
+    setNumberTicketAdult(value);
+  };
+  //
+  const handleNumberTicketChild = (value) => {
+    setNumberTicketChild(value);
+  };
+
+  // Tổng tiền
+  const totalAmount = useMemo(() => {
+    return (
+      numberTicketAdult * activeCalendar?.priceAdult +
+      numberTicketChild * activeCalendar?.priceChild
+    );
+  }, [numberTicketAdult, numberTicketChild, activeCalendar]); // Thêm adultTickets và childTickets vào dependency array
+
+  // Dat Tour
+  const handleBookingTour = async () => {
+    alert("Dat Tour");
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container border")}>
-        <h2 className={cx("w-80", "my-3")}>{tourDetail?.name}</h2>
-        <div className={cx("row  ")}>
+        <div className={cx("nameTour")}>{tourDetail?.name}</div>
+        <div className={cx("row ")}>
+          {/* PROCESSTOUR */}
           <div className={cx("col-lg-8  p-0")}>
             <div>
               <div className={cx("bgTour")}>
@@ -108,6 +146,7 @@ function TourDetail() {
               <div className={cx("replaceTours")}></div>
             </div>
           </div>
+
           {/* CALENDAR */}
           <div className={cx("col-lg-4 ")}>
             <div className={cx("calendar", "bg-white")}>
@@ -115,18 +154,23 @@ function TourDetail() {
                 <h5 className={cx("title")}>Lịch Trình và Giá Tour</h5>
                 <div className={cx("mb-3")}>Chọn Lịch Trình và Xem Giá:</div>
 
-                <div
-                  className={cx("d-flex justify-content-between border my-4")}
-                >
-                  <div
-                    className={cx(
-                      "d-flex justify-content-center align-items-center   "
-                    )}
-                  >
-                    <div className={cx("calendarCard", "date", "active")}>
-                      18/01
-                    </div>
-                  </div>
+                <div className={cx("row")}>
+                  {calendarTour?.map((item) => {
+                    return (
+                      <div className={cx("col-lg-4")} key={item?.id}>
+                        <div
+                          onClick={() => handlActiveBorderCalendar(item)}
+                          className={
+                            item.id === activeCalendar.id
+                              ? cx("calendarCard", "date", "active")
+                              : cx("calendarCard", "date")
+                          }
+                        >
+                          {moment(item?.startDay).format("DD/MM")}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
 
                 <div
@@ -135,32 +179,42 @@ function TourDetail() {
                   )}
                 >
                   <div>Người lớn</div>
-                  <div>x 30.000.000</div>
+                  <div className={cx("text-warning ", "fse_20")}>
+                    <span className={cx("mx-2")}>x</span>
+                    {functions.formatNumberWithCommas(
+                      activeCalendar?.priceAdult || 0
+                    )}
+                  </div>
 
                   <div>
                     <InputNumber
                       min={1}
-                      max={10}
+                      max={100}
                       defaultValue={1}
-                      // onChange={onChange}
+                      onChange={handleNumberTicketAdult}
                     />
                   </div>
                 </div>
+
                 <div
                   className={cx(
                     "border d-flex  justify-content-between align-items-center rounded py-3 my-3 flex-wrap px-2"
                   )}
                 >
-                  <div>Trẻ em</div>
-                  <div className={cx("text-warning ", "fw_600")}>
-                    x 30.000.000
+                  <div className={cx("mr_20")}>Trẻ em </div>
+                  <div className={cx("text-warning ", "fse_20")}>
+                    <span className={cx("mx-2")}>x</span>
+                    {functions.formatNumberWithCommas(
+                      activeCalendar?.priceChild || 0
+                    )}
                   </div>
+
                   <div>
                     <InputNumber
                       min={0}
-                      max={10}
+                      max={100}
                       defaultValue={0}
-                      // onChange={onChange}
+                      onChange={handleNumberTicketChild}
                     />
                   </div>
                 </div>
@@ -179,7 +233,8 @@ function TourDetail() {
                 >
                   <div>Tổng Giá Tour</div>
                   <div className={cx("fs-4", "text-warning", "fw_600")}>
-                    61.000.000 <span>VND</span>
+                    {functions.formatNumberWithCommas(totalAmount || 0)}
+                    <span className={cx("mx-2")}>VND</span>
                   </div>
                 </div>
 
@@ -188,7 +243,12 @@ function TourDetail() {
                     <button className={cx("btnLienHe")}>Liên hệ tư vấn</button>
                   </div>
                   <div>
-                    <button className={cx("btnYeuCau")}>Đặt tour ngay</button>
+                    <button
+                      onClick={handleBookingTour}
+                      className={cx("btnYeuCau")}
+                    >
+                      Đặt tour ngay
+                    </button>
                   </div>
                 </div>
 

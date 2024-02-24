@@ -4,6 +4,7 @@ const cx = className.bind(styles);
 import { Space, Button, Table, Tag, Modal, Input, Form } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { IconEdit, IconPencilMinus, IconTrash } from "@tabler/icons-react";
+import { IconList } from "@tabler/icons-react";
 
 import ModalUpdateTour from "../components/ModalUpdateTour";
 import ModalDeleteTour from "../components/ModalDeleteTour";
@@ -297,62 +298,72 @@ function ListTour() {
   ];
 
   return (
-    <div>
-      <div className={cx("d-flex")}>
-        <Form
-          name="basic"
-          onFinish={onFinishSearchTour}
-          autoComplete="off"
-          className={cx("m-auto")}
-        >
-          <div className={cx("row ", "width_1000")}>
-            <div className={cx("col-lg-3")}>
-              <Form.Item label="Mã tour" name="id">
-                <Input />
-              </Form.Item>
-            </div>
-            <div className={cx("col-lg-3")}>
-              <Form.Item label="Tên tour" name="name">
-                <Input />
-              </Form.Item>
-            </div>
-            <div className={cx("col-lg-3")}>
-              <Form.Item label="Thể loại" name="type">
-                <Input />
-              </Form.Item>
-            </div>
-            <div className={cx("col-lg-3 ")}>
-              <div className={cx("text-center")}>
-                <Form.Item>
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    className={cx("w-75")}
-                  >
-                    Tìm
-                  </Button>
-                </Form.Item>
-              </div>
-            </div>
-          </div>
-        </Form>
+    <div className={cx("border")}>
+      <div className={cx("title", "border d-flex align-items-center")}>
+        <div>
+          <IconList />
+        </div>
+        <div className={cx("mx-2")}>Danh sách tour du lịch</div>
       </div>
 
-      <div>
-        <Table
-          dataSource={listTour}
-          columns={columnsTour}
-          onChange={handleTableChange}
-          pagination={{
-            current: current,
-            pageSize: pageSize,
-            total: total,
-            showSizeChanger: true,
-            pageSizeOptions: ["5", "10", "15", "20"],
-          }}
-          bordered
-        />
+      <div className={cx("p-4")}>
+        <div className={cx("d-flex")}>
+          <Form
+            name="basic"
+            onFinish={onFinishSearchTour}
+            autoComplete="off"
+            className={cx("m-auto")}
+          >
+            <div className={cx("row ", "width_1000")}>
+              <div className={cx("col-lg-3")}>
+                <Form.Item label="Mã tour" name="id">
+                  <Input />
+                </Form.Item>
+              </div>
+              <div className={cx("col-lg-3")}>
+                <Form.Item label="Tên tour" name="name">
+                  <Input />
+                </Form.Item>
+              </div>
+              <div className={cx("col-lg-3")}>
+                <Form.Item label="Thể loại" name="type">
+                  <Input />
+                </Form.Item>
+              </div>
+              <div className={cx("col-lg-3 ")}>
+                <div className={cx("text-center")}>
+                  <Form.Item>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      className={cx("w-75")}
+                    >
+                      Tìm
+                    </Button>
+                  </Form.Item>
+                </div>
+              </div>
+            </div>
+          </Form>
+        </div>
+
+        <div>
+          <Table
+            dataSource={listTour}
+            columns={columnsTour}
+            onChange={handleTableChange}
+            pagination={{
+              current: current,
+              pageSize: pageSize,
+              total: total,
+              showSizeChanger: true,
+              pageSizeOptions: ["5", "10", "15", "20"],
+            }}
+            bordered
+          />
+        </div>
       </div>
+
       <ModalUpdateTour
         isShowModalUpdateTour={isShowModalUpdateTour}
         setIsShowModalUpdateTour={setIsShowModalUpdateTour}
