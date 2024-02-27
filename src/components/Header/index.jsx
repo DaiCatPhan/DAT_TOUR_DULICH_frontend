@@ -66,7 +66,7 @@ function Header() {
     {
       label: (
         <p className={cx("mb-0 ")}>
-          Chưa có tài khoản ? <Link to="/register">Đăng ký </Link> ngay
+          Chưa có tài khoản ? <Link to="/register">Đăng ký </Link> ngay 
         </p>
       ),
       key: "1",
@@ -89,6 +89,7 @@ function Header() {
               <div className={cx("d-flex ")}>
                 <Nav.Link href="/tours">TOURS</Nav.Link>
                 <Nav.Link href="/tours/topic">CHỦ ĐỀ</Nav.Link>
+                <Nav.Link href="/tours/blogs">TIN TỨC</Nav.Link>
               </div>
               <div>
                 {isAuthenticated ? (

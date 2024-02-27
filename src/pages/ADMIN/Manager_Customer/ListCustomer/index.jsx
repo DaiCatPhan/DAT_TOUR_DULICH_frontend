@@ -135,13 +135,24 @@ function ListCustomer() {
     }
   };
 
+  const handleExportExcel = async () => {
+    alert("Xuat Excel");
+  };
+
   return (
     <div className={cx("wrapper", "border")}>
-      <div className={cx("title", "border d-flex align-items-center")}>
-        <div>
-          <IconList />
+      <div className={cx("title", "d-flex justify-content-between")}>
+        <div className={cx("d-flex align-items-center")}>
+          <div>
+            <IconList />
+          </div>
+          <div className={cx("mx-2")}>Danh sách người dùng</div>
         </div>
-        <div className={cx("mx-2")}>Danh sách người dùng</div>
+        <div>
+          <button onClick={handleExportExcel} className={cx("btn btn-success")}>
+            Xuất excel
+          </button>
+        </div>
       </div>
       <div className={cx("p-4")}>
         <div className={cx("d-flex")}>

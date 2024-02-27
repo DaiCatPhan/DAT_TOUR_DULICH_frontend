@@ -1,6 +1,5 @@
 import className from "classnames/bind";
-import styles from "./ModalDeleteCustomer.module.scss";
-import { useEffect, useState } from "react";
+import styles from "./ModalEditCustomer.module.scss";
 const cx = className.bind(styles);
 
 import { toast } from "react-toastify";
@@ -14,19 +13,21 @@ import {
   Radio,
   Modal,
 } from "antd";
+import { useEffect, useState } from "react";
 
-function ModalDeleteCustomer(props) {
+function ModalEditCustomer(props) {
   const {
-    isShowModalDeleteCustomer,
-    setIsShowModalDeleteCustomer,
-    dataModalDeleteCustomer,
-    setDataModalDeleteCustomer,
+    isShowModalUpdateCustomer,
+    setIsShowModalUpdateCustomer,
+    dataModalUpdateCustomer,
+    setDataModalUpdateCustomer,
     getListCustomers,
   } = props;
 
+  console.log("isShowModalUpdateCustomer", isShowModalUpdateCustomer);
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const [formDelete] = Form.useForm();
+  const [formUpdate] = Form.useForm();
   const { Option } = Select;
 
   useEffect(() => {}, []);
@@ -55,27 +56,28 @@ function ModalDeleteCustomer(props) {
   };
 
   const handleCancel = () => {
-    setIsShowModalDeleteCustomer(false);
+    setIsShowModalUpdateCustomer(false);
     formUpdate.resetFields();
-    setDataModalDeleteCustomer({});
+    setDataModalUpdateCustomer({});
   };
 
   return (
     <div className={cx("wrapper")}>
       <Modal
         style={{ top: 10 }}
-        title="Xóa tài khoản khách hàng "
-        open={isShowModalDeleteCustomer}
+        title="Cập nhật thông tin khách hàng "
+        open={isShowModalUpdateCustomer}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         className={cx("modalUpdateTour")}
+        width={1000}
         okButtonProps={{ style: { display: "none" } }}
       >
-        <div>Modal delete Customer</div>
+        <div>Modal update Customer</div>
       </Modal>
     </div>
   );
 }
 
-export default ModalDeleteCustomer;
+export default ModalEditCustomer;

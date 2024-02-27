@@ -41,7 +41,8 @@ import ListTourPage from "./pages/ADMIN/Manager_Tour/listTour";
 import CreateTourPage from "./pages/ADMIN/Manager_Tour/CreateTour";
 //== CALENDAR ==
 import CalendarPage from "./pages/ADMIN/Manager_Calendar/CalendarPage";
-//== PROCESSTOUR ==
+//== CATEGORY ==
+import List_Caterory from "./pages/ADMIN/Manager_Category/List_Category";
 //== CUSTOMER ==
 
 const Layout = () => {
@@ -144,7 +145,11 @@ function App() {
           element: <ListStaffPage />,
         },
 
-        // PROCESSTOUR
+        // CATEGORY
+        {
+          path: "managerCatogory/list",
+          element: <List_Caterory />,
+        },
 
         // CALENDAR
         {

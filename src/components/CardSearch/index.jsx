@@ -65,7 +65,7 @@ function CardSearch(props) {
                   {moment(Calendars[0]?.startDay).format("DD-MM-YYYY")}
                 </div>
                 <h4 className={cx("price")}>
-                  {funtions?.formatNumberWithCommas(priceAdult)}
+                  {funtions?.formatNumberWithCommas(priceAdult || 0)}
                   <span>VND</span>
                 </h4>
               </div>

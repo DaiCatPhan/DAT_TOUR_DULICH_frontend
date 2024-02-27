@@ -31,26 +31,43 @@ const items = [
     "2",
     <DesktopOutlined />
   ),
+  getItem("Doanh mục", "sub11", <UserOutlined />, [
+    getItem(<Link to="/admin/managerCatogory/list">Danh sách</Link>, "3"),
+  ]),
   getItem("Khách hàng", "sub1", <UserOutlined />, [
     getItem(<Link to="/admin/managerCus/list">Danh sách</Link>, "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
   ]),
   getItem("Nhân viên", "sub2", <TeamOutlined />, [
     getItem(<Link to="/admin/managerStaff/list">Danh sách</Link>, "6"),
-
-    getItem("Team 2", "7"),
   ]),
-  getItem("Tour", "sub3", <TeamOutlined />, [
-    getItem(<Link to="/admin/managerTour/list">Danh sách tour</Link>, "8"),
-    getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "9"),
+  getItem("Quản lí Tour", "sub3", <TeamOutlined />, [
+    getItem(<Link to="#">Danh sách tour</Link>, "8"),
+    getItem(<Link to="#">Tạo tour mới</Link>, "9"),
   ]),
 
-  getItem(
-    <Link to="/admin/managerBookingTour/list">Quản Lí Đặc Tour</Link>,
-    "10",
-    <FileOutlined />
-  ),
+  getItem("Quản lí bài đăng", "sub4", <TeamOutlined />, [
+    getItem(<Link to="#">Danh sách bài đăng</Link>, "8"),
+  ]),
+
+  getItem("Quản lí voucher", "sub5", <TeamOutlined />, [
+    getItem(
+      <Link to="/admin/managerVoucher/listTypeVoucher">
+        DS loại khuyến mãi
+      </Link>,
+      "8"
+    ),
+    getItem(
+      <Link to="/admin/managerVoucher/listCodeVoucher">DS mã khuyến mãi</Link>,
+      "9"
+    ),
+  ]),
+
+  getItem("Quản lí tin nhắn", "sub6", <TeamOutlined />, [
+    getItem(<Link to="#">Messager</Link>, "8"),
+  ]),
+  getItem("Thống kê", "sub7", <TeamOutlined />, [
+    getItem(<Link to="#">Thông kê doanh thu</Link>, "8"),
+  ]),
 ];
 function LayoutAdmin() {
   const [collapsed, setCollapsed] = useState(false);

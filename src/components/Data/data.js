@@ -37,6 +37,32 @@ const typeTour = [
   },
 ];
 
+const statusActivity = [
+  {
+    id: 1,
+    label: "Hoạt động",
+    value: "1",
+  },
+  {
+    id: 2,
+    label: "Không hoạt động",
+    value: "0",
+  },
+];
+
+const role = [
+  {
+    id: 1,
+    label: "khách hàng",
+    value: "khách hàng",
+  },
+  {
+    id: 2,
+    label: "admin",
+    value: "admin",
+  },
+];
+
 // import {
 //   IconClockHour10,
 //   IconBus,
@@ -54,4 +80,4 @@ const typeTour = [
 //   }
 // };
 
-export default { typeTour };
+export default { typeTour, statusActivity, role };
