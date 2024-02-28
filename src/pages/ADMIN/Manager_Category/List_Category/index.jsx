@@ -66,7 +66,7 @@ function List_Category() {
     const res = await CategoryService.readAllCategory();
 
     if (res && res.data.EC === 0) {
-      setListCategory(res.data.DT?.categoris);
+      setListCategory(res.data.DT?.categories);
     }
   };
 
@@ -112,8 +112,9 @@ function List_Category() {
   return (
     <div className={cx("wrapper")}>
       {contextHolder}
-      <div className={cx("row")}>
-        <div className={cx("col-lg-5")}>
+
+      <div className={cx("row px-5")}>
+        <div className={cx("col-lg-12")}>
           <div className={cx("border ")}>
             <div className={cx("title", "border d-flex align-items-center ")}>
               <div>
@@ -123,52 +124,64 @@ function List_Category() {
             </div>
             <div className={cx("p-3")}>
               <Form name="basic" onFinish={onFinish} form={formCategory}>
-                <Form.Item
-                  labelCol={{
-                    span: 24,
-                  }}
-                  name="type"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập tên doanh mục",
-                    },
-                  ]}
-                >
-                  <Select placeholder="Tạo doanh mục" allowClear>
-                    <Option value="TYPE_TOUR">TYPE_TOUR</Option>
-                    <Option value="ADDRESS_TOUR">ADDRESS_TOUR</Option>
-                    <Option value="ROLE">ROLE</Option>
-                    <Option value="STATUS_ACTIVITY">STATUS_ACTIVITY</Option>
-                  </Select>
-                </Form.Item>
-
-                <Form.Item
-                  labelCol={{
-                    span: 24,
-                  }}
-                  label="Nội dung doanh mục"
-                  name="value"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập nội dung doanh mục",
-                    },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-
-                <Form.Item>
-                  <Button type="primary" htmlType="submit">
-                    Tạo doanh mục
-                  </Button>
-                </Form.Item>
+                <div className={cx("row")}>
+                  <div className={cx("col-5")}>
+                    <Form.Item
+                      labelCol={{
+                        span: 24,
+                      }}
+                      name="type"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập tên doanh mục",
+                        },
+                      ]}
+                    >
+                      <Select placeholder="Tạo doanh mục" allowClear>
+                        <Option value="TYPE_TOUR">TYPE_TOUR</Option>
+                        <Option value="ADDRESS_TOUR">ADDRESS_TOUR</Option>
+                        <Option value="ROLE">ROLE</Option>
+                        <Option value="STATUS_ACTIVITY">STATUS_ACTIVITY</Option>
+                      </Select>
+                    </Form.Item>
+                  </div>
+                  <div className={cx("col-lg-5")}>
+                    <Form.Item
+                      label="Nội dung"
+                      name="value"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập nội dung doanh mục",
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                  </div>
+                  <div className={cx("col-lg-2 ")}>
+                    <Form.Item>
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className={cx("w-100")}
+                      >
+                        Tạo doanh mục
+                      </Button>
+                    </Form.Item>
+                  </div>
+                </div>
               </Form>
             </div>
           </div>
         </div>
-        <div className={cx("col-lg-7")}>
+      </div>
+
+      <div className={cx("my-5")}></div>
+
+      <div className={cx("row px-5")}>
+        <div className={cx("col-lg-12 ")}>
           <div className={cx("border")}>
             <div className={cx("title", "border d-flex align-items-center ")}>
               <div>
@@ -205,6 +218,7 @@ function List_Category() {
                         <Input />
                       </Form.Item>
                     </div>
+
                     <div className={cx("col-lg-2 ")}>
                       <div className={cx("text-center")}>
                         <Form.Item>
