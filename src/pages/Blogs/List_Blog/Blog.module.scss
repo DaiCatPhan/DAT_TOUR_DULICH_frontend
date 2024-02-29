@@ -1,0 +1,49 @@
+.blogID {
+  .title {
+    font-weight: 650;
+    font-size: 22px;
+    margin: 10px 0;
+  }
+  .content {
+    color: rgb(74, 73, 73);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .desCom {
+    color: grey;
+    font-size: 14px;
+    margin-left: 20px;
+    margin: 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+  img {
+    object-fit: cover;
+    width: 100%;
+    height: 400px;
+  }
+}
+
+.cardBlog {
+  .title {
+    padding: 2px 8px;
+    background-color: rgb(243, 243, 243);
+    font-weight: 500;
+  }
+  .titleCard {
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .date {
+    color: grey;
+    font-weight: 500;
+    margin-top: 5px;
+    font-size: 14px;
+  }
+}

@@ -7,6 +7,7 @@ import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
+import Function from "../../../../components/Functions/function";
 
 import { IconList, IconTrash, IconPencilMinus } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
@@ -124,6 +125,9 @@ function List_Blog() {
       title: "Ngày tạo",
       dataIndex: "createdAt",
       key: "createdAt",
+      render: (createdAt) => (
+        <div>{Function.formatDateMoment(createdAt || 0)}</div>
+      ),
     },
     {
       title: "Action",

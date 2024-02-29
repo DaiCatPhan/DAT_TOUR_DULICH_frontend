@@ -66,7 +66,7 @@ function Header() {
     {
       label: (
         <p className={cx("mb-0 ")}>
-          Chưa có tài khoản ? <Link to="/register">Đăng ký </Link> ngay 
+          Chưa có tài khoản ? <Link to="/register">Đăng ký </Link> ngay
         </p>
       ),
       key: "1",

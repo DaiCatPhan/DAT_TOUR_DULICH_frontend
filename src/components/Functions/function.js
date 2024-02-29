@@ -4,9 +4,14 @@ import {
   IconZeppelin,
   IconShip,
 } from "@tabler/icons-react";
+import moment from "moment";
 
 function formatNumberWithCommas(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") ;
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function formatDateMoment(date) {
+  return moment(date).format("DD-MM-YYYY");
 }
 
 // const handleIconVehicle = (vehicle) => {
@@ -19,4 +24,4 @@ function formatNumberWithCommas(number) {
 //   }
 // };
 
-export default { formatNumberWithCommas };
+export default { formatNumberWithCommas, formatDateMoment };

@@ -12,8 +12,9 @@ const { TextArea } = Input;
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
+import Spin from "../../../../../components/Spin";
 
 function ModalUpdateBlog(props) {
   const {
@@ -23,16 +24,34 @@ function ModalUpdateBlog(props) {
     setDataModalUpdateBlog,
     getListBlogs,
   } = props;
+  console.log(dataModalUpdateBlog);
 
-  const [imageUrl, setImageUrl] = useState();
-  const [imageTour, setImageTour] = useState("");
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [spin, setSpin] = useState(false);
 
+  // data
+
+  const [title, setTitle] = useState("");
+  const [shortdescription, setShortdescription] = useState("");
+  const [image, setImage] = useState();
+  const [imageUrl, setImageUrl] = useState();
+  const [imageTour, setImageTour] = useState("");
+  const [contentTEXT, setContentTEXT] = useState("");
+  const [contentHTML, setContentHTML] = useState("");
+
+  useEffect(() => {
+    setTitle(dataModalUpdateBlog?.title);
+    setShortdescription(dataModalUpdateBlog?.shortdescription);
+    setImage(dataModalUpdateBlog?.image);
+    setContentTEXT(dataModalUpdateBlog?.contentTEXT);
+    setContentHTML(dataModalUpdateBlog?.contentHTML);
+  }, []);
+
   const handleOk = () => {};
   const handleCancel = () => {
     setIsShowModalUpdateBlog(false);
+    setDataModalUpdateBlog({});
   };
 
   const uploadButton = (
@@ -56,33 +75,6 @@ function ModalUpdateBlog(props) {
     setImageTour(info.file.originFileObj);
   };
 
-  // TAO IMAGE
-  const upLoadImageTour = async () => {
-    const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
-    const id_tour = TOUR_localStorage.id;
-
-    if (!id_tour) {
-      return toast.warning("Vui lòng tạo tour trước !!!");
-    }
-
-    if (!imageTour) {
-      return toast.error("Vui lòng chọn ảnh !!!");
-    }
-
-    const formData = new FormData();
-    formData.append("image", imageTour);
-    formData.append("ID_Tour", id_tour);
-
-    setSpin(true);
-    const res = await TourService.uploadImageTour(formData);
-    if (res && res.data.EC === 0) {
-      toast.success("Cập nhật hình ảnh thành công");
-      getTourInformation();
-    } else {
-      toast.error(res.data.EM);
-    }
-    setSpin(false);
-  };
   return (
     <div className={cx("wrapper")}>
       <Modal
@@ -100,31 +92,43 @@ function ModalUpdateBlog(props) {
           >
             <div className={cx("col-lg-6")}>
               <div className={cx("my-2")}>Tên bài đăng</div>
-              <Input placeholder="Tên bài đăng" />
+              <Input placeholder="Tên bài đăng" value={title} />
             </div>
             <div className={cx("col-lg-6")}>
               <div className={cx("text-center")}>
-                <p>Chọn ảnh tour</p>
+                <p>Cập nhật ảnh </p>
                 <div className={cx("text-center")}>
-                  <Upload
-                    name="avatar"
-                    listType="picture-card"
-                    className="avatar-uploader"
-                    onChange={handleChangeUpload}
-                    maxCount={1}
-                  >
-                    {imageUrl ? (
+                  <div className={cx("d-flex justify-content-center")}>
+                    <div className={cx("mx-4")}>
                       <img
-                        src={imageUrl}
-                        alt="avatar"
-                        style={{
-                          width: "100%",
-                        }}
+                        width={100}
+                        height={103}
+                        src={image}
+                        alt="notFound"
+                        className={cx("rounded")}
                       />
-                    ) : (
-                      uploadButton
-                    )}
-                  </Upload>
+                    </div>
+                    <div>
+                      <Upload
+                        name="avatar"
+                        listType="picture-card"
+                        className="avatar-uploader"
+                        onChange={handleChangeUpload}
+                        maxCount={1}
+                      >
+                        {imageUrl ? (
+                          <img
+                            src={imageUrl}
+                            alt="avatar"
+                            className={cx("w-100")}
+                            height={100}
+                          />
+                        ) : (
+                          uploadButton
+                        )}
+                      </Upload>
+                    </div>
+                  </div>
                 </div>
                 {spin && <Spin />}
               </div>
@@ -133,7 +137,7 @@ function ModalUpdateBlog(props) {
           <div>
             <div>Mô tả ngắn</div>
             <div>
-              <TextArea rows={4} />
+              <TextArea rows={4} value={shortdescription} />
             </div>
           </div>
           <div className={cx("my-4")}>
@@ -143,7 +147,7 @@ function ModalUpdateBlog(props) {
                 style={{ minHeight: "550px", maxHeight: "750px" }}
                 renderHTML={(text) => mdParser.render(text)}
                 // onChange={handleEditorChange_ProcessTour}
-                // value={processTour_TEXT}
+                value={contentTEXT}
               />
             </div>
           </div>

@@ -47,7 +47,9 @@ import List_Caterory from "./pages/ADMIN/Manager_Category/List_Category";
 import List_TypeVoucher from "./pages/ADMIN/Manager_Voucher/List_TypeVoucher";
 import List_Voucher from "./pages/ADMIN/Manager_Voucher/List_Voucher";
 //== BLOG ==
-import ListBlog from './pages/ADMIN/Manager_Blog/List_Blog'
+import ListBlogAdmin from "./pages/ADMIN/Manager_Blog/List_Blog";
+import BlogDetail from "./pages/Blogs/BlogDetail";
+import List_Blog from "./pages/Blogs/List_Blog";
 
 const Layout = () => {
   return (
@@ -103,6 +105,14 @@ function App() {
         {
           path: "tours/topic",
           element: <ToursTopic />,
+        },
+        {
+          path: "tours/blogs",
+          element: <List_Blog />,
+        },
+        {
+          path: "tours/blogs/:id",
+          element: <BlogDetail />,
         },
         {
           path: "info/profile",
@@ -184,7 +194,7 @@ function App() {
         // BLOG
         {
           path: "managerBlog/list",
-          element: <ListBlog />,
+          element: <ListBlogAdmin />,
         },
       ],
     },
