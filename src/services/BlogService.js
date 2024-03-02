@@ -13,7 +13,9 @@ const readAllBlog = (data) => {
   return axios.get(`/api/v1/blog/readAll?${data}`);
 };
 const deleteBlog = (data) => {
-  return axios.delete("/api/v1/blog/delete", data);
+  return axios.delete("/api/v1/blog/delete", {
+    data: data,
+  });
 };
 
 export default { createBlog, updateBlog, deleteBlog, readBlog, readAllBlog };

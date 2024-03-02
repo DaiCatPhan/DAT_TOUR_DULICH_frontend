@@ -1,5 +1,5 @@
 import className from "classnames/bind";
-import styles from "./ModalCreateBlog.module.scss";
+import styles from "./ModalCreateTypeVoucher.module.scss";
 const cx = className.bind(styles);
 
 import { toast } from "react-toastify";
@@ -11,12 +11,12 @@ import "react-markdown-editor-lite/lib/index.css";
 import { useState } from "react";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 
-function ModalCreateBlog(props) {
+function ModalCreateTypeVoucher(props) {
   const {
-    isShowModalCreateBlog,
-    setIsShowModalCreateBlog,
-    dataModalCreateBlog,
-    setDataModalCreateBlog,
+    isShowModalCreateTypeVoucher,
+    setIsShowModalCreateTypeVoucher,
+    dataModalCreateTypeVoucher,
+    setDataModalCreateTypeVoucher,
     getListBlogs,
   } = props;
 
@@ -24,13 +24,13 @@ function ModalCreateBlog(props) {
 
   const handleOk = () => {};
   const handleCancel = () => {
-    setIsShowModalCreateBlog(false);
+    setIsShowModalCreateTypeVoucher(false);
   };
   return (
     <div className={cx("wrapper")}>
       <Modal
         title="Title"
-        open={isShowModalCreateBlog}
+        open={isShowModalCreateTypeVoucher}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
@@ -41,4 +41,4 @@ function ModalCreateBlog(props) {
   );
 }
 
-export default ModalCreateBlog;
+export default ModalCreateTypeVoucher;

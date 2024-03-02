@@ -44,8 +44,8 @@ import CalendarPage from "./pages/ADMIN/Manager_Calendar/CalendarPage";
 //== CATEGORY ==
 import List_Caterory from "./pages/ADMIN/Manager_Category/List_Category";
 //== VOUCHER ==
-import List_TypeVoucher from "./pages/ADMIN/Manager_Voucher/List_TypeVoucher";
-import List_Voucher from "./pages/ADMIN/Manager_Voucher/List_Voucher";
+import ListVoucher from "./pages/ADMIN/Manager_Voucher/ListVoucher";
+// import List_Voucher from "./pages/ADMIN/Manager_Voucher/List_Voucher";
 //== BLOG ==
 import ListBlogAdmin from "./pages/ADMIN/Manager_Blog/List_Blog";
 import BlogDetail from "./pages/Blogs/BlogDetail";
@@ -183,12 +183,8 @@ function App() {
 
         // VOUCHER
         {
-          path: "managerVoucher/list_TypeVoucher",
-          element: <List_TypeVoucher />,
-        },
-        {
-          path: "managerVoucher/list_Voucher",
-          element: <List_Voucher />,
+          path: "managerVoucher/listVoucher",
+          element: <ListVoucher />,
         },
 
         // BLOG

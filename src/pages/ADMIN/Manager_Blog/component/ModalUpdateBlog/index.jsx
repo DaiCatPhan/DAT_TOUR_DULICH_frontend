@@ -16,6 +16,8 @@ import { useEffect, useState } from "react";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 import Spin from "../../../../../components/Spin";
 
+import BlogService from "../../../../../services/BlogService";
+
 function ModalUpdateBlog(props) {
   const {
     isShowModalUpdateBlog,
@@ -32,6 +34,7 @@ function ModalUpdateBlog(props) {
 
   // data
 
+  const [id, setId] = useState(0);
   const [title, setTitle] = useState("");
   const [shortdescription, setShortdescription] = useState("");
   const [image, setImage] = useState();
@@ -41,18 +44,42 @@ function ModalUpdateBlog(props) {
   const [contentHTML, setContentHTML] = useState("");
 
   useEffect(() => {
+    setId(dataModalUpdateBlog?.id);
     setTitle(dataModalUpdateBlog?.title);
     setShortdescription(dataModalUpdateBlog?.shortdescription);
     setImage(dataModalUpdateBlog?.image);
     setContentTEXT(dataModalUpdateBlog?.contentTEXT);
     setContentHTML(dataModalUpdateBlog?.contentHTML);
-  }, []);
+  }, [dataModalUpdateBlog]);
 
-  const handleOk = () => {};
+  const handleOk = async () => {
+    const formData = new FormData();
+    formData.append("id", id);
+    formData.append("title", title);
+    formData.append("shortdescription", shortdescription);
+    formData.append("contentTEXT", contentTEXT);
+    formData.append("contentHTML", contentHTML);
+    formData.append("image", imageTour);
+
+    setConfirmLoading(true);
+    const res = await BlogService.updateBlog(formData);
+    if (res && res.data.EC === 0) {
+      toast.success(res.data.EM);
+      getListBlogs();
+    } else {
+      toast.error(res.data.EM);
+    }
+    setConfirmLoading(false);
+  };
   const handleCancel = () => {
     setIsShowModalUpdateBlog(false);
     setDataModalUpdateBlog({});
   };
+
+  function handleEditorChange_Blog({ html, text }) {
+    setContentTEXT(html);
+    setContentHTML(text);
+  }
 
   const uploadButton = (
     <button
@@ -70,6 +97,14 @@ function ModalUpdateBlog(props) {
       ></div>
     </button>
   );
+
+  const handleTitleBlog = async (e) => {
+    setTitle(e?.target?.value);
+  };
+
+  const handleDesBlog = async (e) => {
+    setShortdescription(e?.target?.value);
+  };
 
   const handleChangeUpload = (info) => {
     setImageTour(info.file.originFileObj);
@@ -92,7 +127,11 @@ function ModalUpdateBlog(props) {
           >
             <div className={cx("col-lg-6")}>
               <div className={cx("my-2")}>Tên bài đăng</div>
-              <Input placeholder="Tên bài đăng" value={title} />
+              <Input
+                placeholder="Tên bài đăng"
+                value={title}
+                onChange={handleTitleBlog}
+              />
             </div>
             <div className={cx("col-lg-6")}>
               <div className={cx("text-center")}>
@@ -137,7 +176,11 @@ function ModalUpdateBlog(props) {
           <div>
             <div>Mô tả ngắn</div>
             <div>
-              <TextArea rows={4} value={shortdescription} />
+              <TextArea
+                rows={4}
+                value={shortdescription}
+                onChange={handleDesBlog}
+              />
             </div>
           </div>
           <div className={cx("my-4")}>
@@ -146,7 +189,7 @@ function ModalUpdateBlog(props) {
               <MdEditor
                 style={{ minHeight: "550px", maxHeight: "750px" }}
                 renderHTML={(text) => mdParser.render(text)}
-                // onChange={handleEditorChange_ProcessTour}
+                onChange={handleEditorChange_Blog}
                 value={contentTEXT}
               />
             </div>

@@ -25,7 +25,6 @@ const suffix = (
 );
 
 import BlogService from "../../../../services/BlogService";
-
 import ModalCreateBlog from "../component/ModalCreateBlog";
 import ModalUpdateBlog from "../component/ModalUpdateBlog";
 import ModalDeleteBlog from "../component/ModalDeleteBlog";
@@ -209,7 +208,7 @@ function List_Blog() {
                 </div>
                 <div className={cx("col-lg-4")}>
                   <Form.Item label="Ngày tạo" name="createdAt">
-                    <DatePicker />
+                    <DatePicker format={"DD-MM-YYYY"} />
                   </Form.Item>
                 </div>
                 <div className={cx("col-lg-2")}>

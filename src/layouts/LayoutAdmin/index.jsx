@@ -51,13 +51,7 @@ const items = [
 
   getItem("Quản lí voucher", "sub6", <TeamOutlined />, [
     getItem(
-      <Link to="/admin/managerVoucher/list_TypeVoucher">
-        DS loại khuyến mãi
-      </Link>,
-      "8"
-    ),
-    getItem(
-      <Link to="/admin/managerVoucher/list_Voucher">DS mã khuyến mãi</Link>,
+      <Link to="/admin/managerVoucher/listVoucher">DS voucher</Link>,
       "9"
     ),
   ]),
