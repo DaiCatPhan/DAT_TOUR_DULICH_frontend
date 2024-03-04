@@ -48,7 +48,7 @@ instance.interceptors.response.use(
       error.config.headers[NO_RETRY_HEADER] = "true";
 
       if (accessToken) {
-        error.config.headers["Authorization"] = `Bearer ${accsessToken}`;
+        error.config.headers["Authorization"] = `Bearer ${accessToken}`;
         localStorage.setItem("accessToken", accessToken);
         return instance.request(error.config);
       }

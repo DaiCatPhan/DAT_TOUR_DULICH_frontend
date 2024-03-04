@@ -19,9 +19,15 @@ const readAllVoucher = (data) => {
   return axios.get(`/api/v1/voucher/readAll?${data}`);
 };
 
+// VOUCHER USER
+const createVoucherUser = (data) => {
+  return axios.post("/api/v1/voucher/create_voucherUser", data);
+};
+
 export default {
   createVoucher,
   updateVoucher,
   deleteVoucher,
   readAllVoucher,
+  createVoucherUser,
 };

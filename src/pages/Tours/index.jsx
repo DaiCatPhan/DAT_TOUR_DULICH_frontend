@@ -12,7 +12,11 @@ import FormSearch from "./components/FormSearch";
 import TourService from "../../services/TourService";
 import ViewedService from "../../services/ViewedService";
 
+import { useDispatch, useSelector } from "react-redux";
+
 function Tours() {
+  const user = useSelector((state) => state.account.user);
+  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const [toursMienBac, setToursMienBac] = useState([]);
   const [toursMienTrung, setToursMienTrung] = useState([]);
   const [toursMienNam, setToursMienNam] = useState([]);
@@ -23,7 +27,6 @@ function Tours() {
   const [toursViVuCuoiTuan, setToursViVuCuoiTuan] = useState([]);
   const [toursThamHiem, setToursThamHiem] = useState([]);
   const [toursViewed, setToursViewed] = useState([]);
-
   const navigate = useNavigate();
 
   // Gọi API lấy dữ liệu
@@ -82,7 +85,7 @@ function Tours() {
   // Gọi API lấy dữ liệu
   const getToursViewded = async () => {
     try {
-      const ID_Customer = 1;
+      const ID_Customer = user?.id;
       const res = await ViewedService.readAll(`ID_Customer=${ID_Customer}`);
 
       if (res && res.data.EC === 0) {
@@ -98,7 +101,7 @@ function Tours() {
   useEffect(() => {
     getTours();
     getToursViewded();
-  }, []);
+  }, [user?.id]);
 
   const handleClickTour = async (data) => {
     // Goi API them vào bảng tour đã xem
@@ -171,22 +174,26 @@ function Tours() {
           </div>
 
           <div className={cx("my-4 ")}>
-            <p className={cx("colorTitle", "fs-2")}>
-              Tours du lịch bạn đã xem gần đây
-            </p>
-          </div>
+            {isAuthenticated ? (
+              <p className={cx("colorTitle", "fs-2")}>
+                Tours du lịch bạn đã xem gần đây
+              </p>
+            ) : (
+              <div></div>
+            )}
 
-          <div className={cx("listMap")}>
-            {toursViewed?.map((tourSeened) => {
-              return (
-                <div className={cx("item")}>
-                  <TourViewed
-                    item={tourSeened}
-                    getToursViewded={getToursViewded}
-                  />
-                </div>
-              );
-            })}
+            <div className={cx("listMap")}>
+              {toursViewed?.map((tourSeened) => {
+                return (
+                  <div className={cx("item")} key={tourSeened?.id}>
+                    <TourViewed
+                      item={tourSeened}
+                      getToursViewded={getToursViewded}
+                    />
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

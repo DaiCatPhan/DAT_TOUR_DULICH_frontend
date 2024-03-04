@@ -24,6 +24,7 @@ import ToursTopic from "./pages/ToursTopic";
 
 // == ADMIN ==
 import LayoutAdmin from "./layouts/LayoutAdmin";
+import LayoutUser from "./layouts/LayoutUser";
 import AdminHomePage from "./pages/ADMIN/AdminPage";
 import DashboardPage from "./pages/ADMIN/DardboradPage";
 // == USER ==
@@ -45,7 +46,7 @@ import CalendarPage from "./pages/ADMIN/Manager_Calendar/CalendarPage";
 import List_Caterory from "./pages/ADMIN/Manager_Category/List_Category";
 //== VOUCHER ==
 import ListVoucher from "./pages/ADMIN/Manager_Voucher/ListVoucher";
-// import List_Voucher from "./pages/ADMIN/Manager_Voucher/List_Voucher";
+import Voucher from "./pages/Voucher/Voucher";
 //== BLOG ==
 import ListBlogAdmin from "./pages/ADMIN/Manager_Blog/List_Blog";
 import BlogDetail from "./pages/Blogs/BlogDetail";
@@ -75,11 +76,13 @@ function App() {
     }
 
     const res = await AuthService.fetchProfile();
+    console.log("fetchProfile", res);
 
     if (res && res.data.EC === 0) {
       dispatch(doLoginAction(res.data.DT));
     }
   };
+
   useEffect(() => {
     getAccount();
   }, []);
@@ -115,30 +118,43 @@ function App() {
           element: <BlogDetail />,
         },
         {
-          path: "info/profile",
-          element: <Profile />,
-        },
-        {
-          path: "info/order-buy",
-          element: <OrderBuy />,
-        },
-        {
-          path: "info/change-password",
-          element: <ChangePassword />,
+          path: "tours/voucher",
+          element: <Voucher />,
         },
       ],
     },
+    // USER
     {
-      path: "/admin",
-      element: <LayoutAdmin />,
+      path: "/user",
+      element: <LayoutUser />,
       // errorElement: <NotFound />,
       children: [
         {
           index: true,
+          element: <Profile />, 
+        },
+        {
+          path: "order-buy",
+          element: <OrderBuy />,
+        },
+        {
+          path: "change-password",
+          element: <ChangePassword />,
+        },
+      ],
+    },
+    // ADMIN
+    {
+      path: "/admin",
+      element: <LayoutAdmin />,
+      errorElement: <NotFound />,
+      children: [
+        {
+          index: true,
           element: (
-            // <ProtectedRoute>
-            <AdminHomePage />
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <AdminHomePage />
+            </ProtectedRoute>
           ),
         },
 
@@ -203,6 +219,7 @@ function App() {
       element: <Register />,
     },
   ]);
+
   return (
     <>
       {/* {isLoading === false ||

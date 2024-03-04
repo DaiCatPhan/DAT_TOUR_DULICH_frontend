@@ -22,7 +22,7 @@ function ModalCreateVoucher(props) {
     setIsShowModalCreateVoucher,
     dataModalCreateVoucher,
     setDataModalCreateVoucher,
-    getListBlogs,
+    getListVouchers,
   } = props;
 
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -48,7 +48,8 @@ function ModalCreateVoucher(props) {
     setConfirmLoading(true);
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
-      formCreateVoucher.resetFields();
+      getListVouchers();
+      handleCancel();
     } else {
       toast.error(res.data.EM);
     }

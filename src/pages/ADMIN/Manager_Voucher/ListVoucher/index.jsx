@@ -17,6 +17,7 @@ import ModalDeleteVoucher from "./component/ModalDeleteVoucher";
 import ModalUpdateVoucher from "./component/ModalUpdateVoucher";
 
 import VoucherService from "../../../../services/VoucherService";
+import Function from "../../../../components/Functions/function";
 
 function ListVoucher() {
   const [pageSize, setPageSize] = useState(5);
@@ -93,14 +94,25 @@ function ListVoucher() {
       key: "amount",
     },
     {
+      title: "Số lượng còn lại",
+      dataIndex: "remainAmount",
+      key: "remainAmount",
+    },
+    {
       title: "Ngày bắt đầu",
       dataIndex: "fromDate",
       key: "fromDate",
+      render: (data) => {
+        return <div>{Function.formatDateMoment(data || 0)}</div>;
+      },
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "toDate",
       key: "toDate",
+      render: (data) => {
+        return <div>{Function.formatDateMoment(data || 0)}</div>;
+      },
     },
     {
       title: "Action",

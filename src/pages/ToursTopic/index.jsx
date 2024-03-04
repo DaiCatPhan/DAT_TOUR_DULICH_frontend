@@ -10,7 +10,9 @@ import CardSearch from "../../components/CardSearch";
 import data from "../../components/Data/data";
 
 import TourService from "../../services/TourService";
+import CategoryService from "../../services/CategoryService";
 import { useLocation } from "react-router-dom";
+
 
 import {
   IconClockHour10,
@@ -29,11 +31,16 @@ import { Button, Checkbox, Form, Input, DatePicker } from "antd";
 import { useEffect, useState } from "react";
 
 function ToursTopic() {
+  
   const [tours, setTours] = useState([]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const [nameParam, setNameParam] = useState("");
   const [typeParam, setTypeParam] = useState("");
+  const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
+  const [category_ADDRESS_TOUR, setCategory_ADDRESS_TOUR] = useState([]);
+
+ 
 
   // Gọi API lấy dữ liệu
   const getTours = async () => {
@@ -48,7 +55,6 @@ function ToursTopic() {
       }
 
       const res = await TourService.getTours(condition);
-      console.log("res >>>>>>", res);
 
       if (res && res.data.EC === 0) {
         setTours(res?.data?.DT);
@@ -57,9 +63,27 @@ function ToursTopic() {
       console.log("error >>", error);
     }
   };
+  // Gọi API lấy dữ liệu category
+  const getCategorys = async () => {
+    try {
+      const TYPE_TOUR = await CategoryService.readAllCategory("type=TYPE_TOUR");
+      const ADDRESS_TOUR = await CategoryService.readAllCategory(
+        "type=ADDRESS_TOUR"
+      );
+      if (TYPE_TOUR && TYPE_TOUR.data.EC == 0) {
+        setCategory_TYPE_TOUR(TYPE_TOUR.data.DT.categories);
+      }
+      if (ADDRESS_TOUR && ADDRESS_TOUR.data.EC == 0) {
+        setCategory_ADDRESS_TOUR(ADDRESS_TOUR.data.DT.categories);
+      }
+    } catch (error) {
+      console.log("error >>", error);
+    }
+  };
 
   useEffect(() => {
     getTours();
+    getCategorys();
     setNameParam(searchParams.get("name"));
     setTypeParam(searchParams.get("type"));
   }, [nameParam, typeParam]);
@@ -73,32 +97,18 @@ function ToursTopic() {
       type,
     };
   }
-  const itemsAddress = [
-    getItem(<a href="/tours/topic?name=Sapa">Sapa</a>, "name=Sapa"),
-    getItem(
-      <a href="/tours/topic?name=Nha Trang">Nha Trang</a>,
-      "name=Nha Trang"
-    ),
-    getItem(<a href="/tours/topic?name=Đà Nẵng">Đà Nẵng</a>, "name=Đà Nẵng"),
-    getItem(<a href="/tours/topic?name=Hạ Long">Hạ Long</a>, "name=Hạ Long"),
-    getItem(<a href="/tours/topic?name=Hà Nội">Hà Nội</a>, "name=Hà Nội"),
-    getItem(
-      <a href="/tours/topic?name=Buôn Mê Thuộc">Buôn Mê Thuột</a>,
-      "name=Buôn Mê Thuột"
-    ),
-    getItem(<a href="/tours/topic?name=Quy Nhơn">Quy Nhơn</a>, "name=Quy Nhơn"),
-    getItem(
-      <a href="/tours/topic?name=Phan Thiết">Phan Thiết</a>,
-      "name=Phan Thiết"
-    ),
-    getItem(<a href="/tours/topic?name=Phú Quốc">Phú Quốc</a>, "name=Phú Quốc"),
-    getItem(<a href="/tours/topic?name=Phú Yên">Phú Yên</a>, "name=Phú Yên"),
-  ];
 
-  const itemsTopic = data?.typeTour?.map((item) => {
+  const itemsAddress = category_ADDRESS_TOUR?.map((item) => {
     return getItem(
-      <a href={`/tours/topic?type=${item?.type}`}>{item?.type}</a>,
-      `type=${item?.type}`
+      <a href={`/tours/topic?name=${item?.value}`}>{item?.value}</a>,
+      `type=${item?.id}`
+    );
+  });
+
+  const itemsTopic = category_TYPE_TOUR?.map((item) => {
+    return getItem(
+      <a href={`/tours/topic?type=${item?.value}`}>{item?.value}</a>,
+      `type=${item?.id}`
     );
   });
 
@@ -112,7 +122,6 @@ function ToursTopic() {
     let condition = `name=${name || ""}&startDay=${startDay}`;
     const res = await TourService.getTours(condition);
     if (res && res.data.EC === 0) {
-      console.log("res onFinish >>>>>>>>..", res);
       setTours(res.data.DT);
     }
   };
