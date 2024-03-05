@@ -51,12 +51,6 @@ function ModalBookingTour(props) {
       age: 32,
       address: "10 Downing Street",
     },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
   ];
 
   const columns = [
@@ -90,7 +84,7 @@ function ModalBookingTour(props) {
         style={{ top: 15 }}
       >
         <div className={cx("p-4")}>
-          <div className={cx("border ", "session1")}>
+          <div className={cx("border p-3", "session1")}>
             <Table dataSource={dataSource} columns={columns} />
 
             <div className={cx("d-flex justify-content-between")}>
@@ -121,7 +115,7 @@ function ModalBookingTour(props) {
           </div>
 
           {isShowSession2 ? (
-            <div className={cx("border", "sesion2")}>
+            <div className={cx("border   my-5 p-5", "sesion2")}>
               <div className={cx("row")}>
                 <div className={cx("col-lg-6")}>
                   <div>
@@ -202,36 +196,47 @@ function ModalBookingTour(props) {
                       <div>
                         <div className={cx("d-flex")}>
                           <div>
-                            <button>thanh toan paypal</button>
+                            <button className={cx("btnPay")}>
+                              thanh toan paypal
+                            </button>
                           </div>
                           <div>
-                            <button>thanh toan khi nhan hang</button>
+                            <button className={cx("btnPay")}>
+                              thanh toan khi nhan hang
+                            </button>
                           </div>
                         </div>
 
                         <div className={cx("d-flex")}>
                           <div>
-                            <button>thanh toan paypal</button>
+                            <button className={cx("btnPay")}>
+                              thanh toan paypal
+                            </button>
                           </div>
                           <div>
-                            <button>thanh toan VNPAY</button>
+                            <button className={cx("btnPay")}>
+                              thanh toan VNPAY
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
                     <div>
-                      <div className={cx("d-flex")}>
-                        <div>Tong tien tour</div>
-                        <div>20.000.000</div>
+                      <div className={cx("row")}>
+                        <div className={cx("col-lg-4")}>Tổng tiền tour</div>
+                        <div className={cx("col-lg")}>20.000.000</div>
                       </div>
-                      <div className={cx("d-flex")}>
-                        <div>Tong tien tour</div>
-                        <div>20.000.000</div>
+                      <div className={cx("row")}>
+                        <div className={cx("col-lg-4")}>Tổng giảm giá</div>
+                        <div className={cx("col-lg")}>20.000.000</div>
                       </div>
-                      <div className={cx("d-flex")}>
-                        <div>Tong tien tour</div>
-                        <div>20.000.000</div>
+                      <div className={cx("row")}>
+                        <div className={cx("col-lg-4")}>Tổng thanh toán</div>
+                        <div className={cx("col-lg")}>20.000.000</div>
                       </div>
+                    </div>
+                    <div className={cx("d-flex justify-content-end")}>
+                      <button className={cx('btnBookingTour')}>Đặt Tour</button>
                     </div>
                   </div>
                 </div>

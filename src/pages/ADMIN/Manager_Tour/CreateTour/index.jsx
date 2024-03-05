@@ -32,6 +32,7 @@ import Spin from "../../../../components/Spin";
 import TourService from "../../../../services/TourService";
 import ProcessService from "../../../../services/ProcessService";
 import CalendarService from "../../../../services/CalendarService";
+import CategoryService from "../../../../services/CategoryService";
 
 import data from "../../../../components/Data/data";
 
@@ -53,7 +54,11 @@ function CreateTour() {
   const [infoDetailTour, setInfoDetailTour] = useState({});
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
 
-  const typeTour = data?.typeTour;
+  const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
+  const [category_ADDRESS_TOUR, setCategory_ADDRESS_TOUR] = useState([]);
+
+
+  const typeTour = category_TYPE_TOUR;
 
   const getTourInformation = async () => {
     try {
@@ -80,8 +85,26 @@ function CreateTour() {
     }
   };
 
+  const getCategorys = async () => {
+    try {
+      const TYPE_TOUR = await CategoryService.readAllCategory("type=TYPE_TOUR");
+      const ADDRESS_TOUR = await CategoryService.readAllCategory(
+        "type=ADDRESS_TOUR"
+      );
+      if (TYPE_TOUR && TYPE_TOUR.data.EC == 0) {
+        setCategory_TYPE_TOUR(TYPE_TOUR.data.DT.categories);
+      }
+      if (ADDRESS_TOUR && ADDRESS_TOUR.data.EC == 0) {
+        setCategory_ADDRESS_TOUR(ADDRESS_TOUR.data.DT.categories);
+      }
+    } catch (error) {
+      console.log("error >>", error);
+    }
+  };
+
   useEffect(() => {
     getTourInformation();
+    getCategorys();
   }, [localStorage.getItem("TOUR")]);
 
   const checkTour = () => {
@@ -400,8 +423,8 @@ function CreateTour() {
                   <Select placeholder="Chọn chủ đề ">
                     {typeTour?.map((item) => {
                       return (
-                        <Select.Option value={item?.type} key={item?.id}>
-                          {item?.type}
+                        <Select.Option value={item?.value} key={item?.id}>
+                          {item?.value}
                         </Select.Option>
                       );
                     })}

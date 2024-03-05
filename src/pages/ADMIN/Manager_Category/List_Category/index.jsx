@@ -100,7 +100,7 @@ function List_Category() {
       `type=${type || ""}&value=${value || ""}`
     );
     if (res && res.data.EC == 0) {
-      let cus = res.data.DT.categoris.map((item) => ({
+      let cus = res.data.DT.categories.map((item) => ({
         ...item,
         key: item.id,
       }));

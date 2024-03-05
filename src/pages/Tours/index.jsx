@@ -17,10 +17,12 @@ import { useDispatch, useSelector } from "react-redux";
 function Tours() {
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+
   const [toursMienBac, setToursMienBac] = useState([]);
   const [toursMienTrung, setToursMienTrung] = useState([]);
   const [toursMienNam, setToursMienNam] = useState([]);
   const [toursDuLichHanhHuong, setToursDuLichHanhHuong] = useState([]);
+  const [toursDuLichDongTayBac, setToursDuLichDongTayBac] = useState([]);
   const [toursNoiDiaCaoCap, setToursNoiDiaCaoCap] = useState([]);
   const [toursTraiNghiemDiaPhuong, setToursTraiNghiemDiaPhuong] = useState([]);
   const [toursDuLichTayNguyen, setToursDuLichTayNguyen] = useState([]);
@@ -32,50 +34,57 @@ function Tours() {
   // Gọi API lấy dữ liệu
   const getTours = async () => {
     try {
-      const toursMienBac = await TourService.getTours(
+      const tourMienBac = await TourService.getTours(
         "type=Tour Du Lịch Miền Bắc"
       );
-      const toursMienTrung = await TourService.getTours(
+      const tourMienTrung = await TourService.getTours(
         "type=Tour Du Lịch Miền Trung"
       );
-      const toursMienNam = await TourService.getTours(
+      const tourMienNam = await TourService.getTours(
         "type=Tour Du Lịch Miền Nam"
       );
 
-      const toursDuLichHanhHuong = await TourService.getTours(
+      const tourDuLichHanhHuong = await TourService.getTours(
         "type=Tour Du Lịch Hành Hương"
       );
 
-      const toursNoiDiaCaoCap = await TourService.getTours(
+      const tourDuLichDongTayBac = await TourService.getTours(
+        "type=Tour Du Lịch Đông Tây Bắc"
+      );
+
+      console.log("tourDuLichDongTayBac", tourDuLichDongTayBac);
+
+      const tourNoiDiaCaoCap = await TourService.getTours(
         "type=Tour Nội Địa Cao Cấp"
       );
 
-      const toursTraiNghiemDiaPhuong = await TourService.getTours(
+      const tourTraiNghiemDiaPhuong = await TourService.getTours(
         "type=Tour Trải Nghiệm Địa Phương"
       );
 
-      const toursDuLichTayNguyen = await TourService.getTours(
+      const tourDuLichTayNguyen = await TourService.getTours(
         "type=Tour Du Lịch Tây Nguyên"
       );
 
-      const toursViVuCuoiTuan = await TourService.getTours(
+      const tourViVuCuoiTuan = await TourService.getTours(
         "type=Tour Vi Vu Cuối Tuần"
       );
 
-      const toursThamHiem = await TourService.getTours("type=Tour Thám Hiểm");
+      const tourThamHiem = await TourService.getTours("type=Tour Thám Hiểm");
 
       const res = await TourService.getTours();
 
       if (res && res.data.EC === 0) {
-        setToursMienBac(toursMienBac?.data?.DT);
-        setToursMienTrung(toursMienTrung?.data?.DT);
-        setToursMienNam(toursMienNam?.data?.DT);
-        setToursDuLichHanhHuong(toursDuLichHanhHuong?.data?.DT);
-        setToursNoiDiaCaoCap(toursNoiDiaCaoCap?.data?.DT);
-        setToursTraiNghiemDiaPhuong(toursTraiNghiemDiaPhuong?.data?.DT);
-        setToursDuLichTayNguyen(toursDuLichTayNguyen?.data?.DT);
-        setToursViVuCuoiTuan(toursViVuCuoiTuan?.data?.DT);
-        setToursThamHiem(toursThamHiem?.data?.DT);
+        setToursMienBac(tourMienBac?.data?.DT);
+        setToursMienTrung(tourMienTrung?.data?.DT);
+        setToursMienNam(tourMienNam?.data?.DT);
+        setToursDuLichHanhHuong(tourDuLichHanhHuong?.data?.DT);
+        setToursDuLichDongTayBac(tourDuLichDongTayBac?.data?.DT);
+        setToursNoiDiaCaoCap(tourNoiDiaCaoCap?.data?.DT);
+        setToursTraiNghiemDiaPhuong(tourTraiNghiemDiaPhuong?.data?.DT);
+        setToursDuLichTayNguyen(tourDuLichTayNguyen?.data?.DT);
+        setToursViVuCuoiTuan(tourViVuCuoiTuan?.data?.DT);
+        setToursThamHiem(tourThamHiem?.data?.DT);
       }
     } catch (error) {
       console.log("error >>", error);
@@ -231,83 +240,17 @@ function Tours() {
         </div>
       </div>
 
-      {/* Tour Du Lịch Miền Bắc */}
+      {/* Tour Du Lịch Tây Bắc */}
       <div className={cx("bg-grey border py-4")}>
         <div className={cx("listTour")}>
           <div className={cx("text")}>
-            <h5 className={cx("topicTour")}>Tour Du Lịch Miền Bắc</h5>
+            <h5 className={cx("topicTour")}>Tour Du Lịch Tây Bắc</h5>
             <p className={cx("spanTopic")}>
               Hành Trình Tâm Linh , Cầu Nguyện An Lành
             </p>
           </div>
           <div className={cx("row m-auto  ")}>
-            {toursDuLichHanhHuong?.tours?.slice(0, 6).map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleClickTour(item)}
-                  className={cx(
-                    "col-lg-4 d-flex justify-content-center mb-3",
-                    "poiter"
-                  )}
-                >
-                  <CardTour item={item} />
-                </div>
-              );
-            })}
-          </div>
-          <div className={cx("text-center   pb-3")}>
-            <Link to={`/tours/topic?type=Tour Du Lịch Miền Bắc`}>
-              <button className={cx("btnSeenTour")}>Xem thêm tours</button>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Tour Du Lịch Miền Trung */}
-      <div className={cx("bg-white border py-4")}>
-        <div className={cx("listTour")}>
-          <div className={cx("text")}>
-            <h5 className={cx("topicTour")}>Tour Du Lịch Miền Trung</h5>
-            <p className={cx("spanTopic")}>
-              Hành Trình Tâm Linh , Cầu Nguyện An Lành
-            </p>
-          </div>
-          <div className={cx("row m-auto  ")}>
-            {toursDuLichHanhHuong?.tours?.slice(0, 6).map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleClickTour(item)}
-                  className={cx(
-                    "col-lg-4 d-flex justify-content-center mb-3",
-                    "poiter"
-                  )}
-                >
-                  <CardTour item={item} />
-                </div>
-              );
-            })}
-          </div>
-          <div className={cx("text-center   pb-3")}>
-            <Link to={`/tours/topic?type=Tour Du Lịch Miền Trung`}>
-              <button className={cx("btnSeenTour")}>Xem thêm tours</button>
-            </Link>
-          </div>
-        </div>
-      </div>
-
-      {/* Tour Du Lịch Miền Nam */}
-      <div className={cx("bg-grey border py-4")}>
-        <div className={cx("listTour")}>
-          <div className={cx("text")}>
-            <h5 className={cx("topicTour")}>Tour Du Lịch Miền Nam</h5>
-            <p className={cx("spanTopic")}>
-              Hành Trình Tâm Linh , Cầu Nguyện An Lành
-            </p>
-          </div>
-          <div className={cx("row m-auto  ")}>
-            {toursDuLichHanhHuong?.tours?.slice(0, 6).map((item) => {
+            {toursDuLichDongTayBac?.tours?.slice(0, 6).map((item) => {
               return (
                 <div
                   key={item.id}

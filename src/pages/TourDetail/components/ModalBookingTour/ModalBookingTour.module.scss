@@ -1,1 +1,19 @@
- 
+.sesion2 {
+  .btnPay {
+    border: 1px solid grey;
+    background-color: transparent;
+    padding: 5px 7px;
+    min-width: 200px;
+    margin: 10px;
+  }
+
+  .btnBookingTour {
+    border: none;
+    background-color: green;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 6px 40px;
+    border-radius: 5px;
+  }
+}

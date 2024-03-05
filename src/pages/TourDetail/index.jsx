@@ -145,10 +145,6 @@ function TourDetail() {
                   )}
                 </div>
               </div>
-
-              <div className={cx("processTour")}></div>
-              <div className={cx("calendar")}></div>
-              <div className={cx("replaceTours")}></div>
             </div>
           </div>
 

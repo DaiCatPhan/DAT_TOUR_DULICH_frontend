@@ -18,8 +18,7 @@ import MdEditor from "react-markdown-editor-lite";
 import "react-markdown-editor-lite/lib/index.css";
 
 import TourService from "../../../../../services/TourService";
-
-import data from "../../../../../components/Data/data";
+import CategoryService from "../../../../../services/CategoryService";
 
 import {
   Button,
@@ -45,7 +44,10 @@ function ModalUpdateTour(props) {
   const [formUpdate] = Form.useForm();
   const [spin, setSpin] = useState(false);
 
-  const typeTour = data?.typeTour;
+  const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
+  const [category_ADDRESS_TOUR, setCategory_ADDRESS_TOUR] = useState([]);
+  console.log("category_TYPE_TOUR", category_TYPE_TOUR);
+  const typeTour = category_TYPE_TOUR;
 
   const uploadButton = (
     <button
@@ -97,7 +99,25 @@ function ModalUpdateTour(props) {
     setDataModalUpdateTour({});
   };
 
+  const getCategorys = async () => {
+    try {
+      const TYPE_TOUR = await CategoryService.readAllCategory("type=TYPE_TOUR");
+      const ADDRESS_TOUR = await CategoryService.readAllCategory(
+        "type=ADDRESS_TOUR"
+      );
+      if (TYPE_TOUR && TYPE_TOUR.data.EC == 0) {
+        setCategory_TYPE_TOUR(TYPE_TOUR.data.DT.categories);
+      }
+      if (ADDRESS_TOUR && ADDRESS_TOUR.data.EC == 0) {
+        setCategory_ADDRESS_TOUR(ADDRESS_TOUR.data.DT.categories);
+      }
+    } catch (error) {
+      console.log("error >>", error);
+    }
+  };
+
   useEffect(() => {
+    getCategorys();
     formUpdate.setFieldsValue(dataModalUpdateTour);
   }, [dataModalUpdateTour]);
 
@@ -208,8 +228,8 @@ function ModalUpdateTour(props) {
                     <Select placeholder="Chọn chủ đề ">
                       {typeTour?.map((item) => {
                         return (
-                          <Select.Option value={item?.type} key={item?.id}>
-                            {item?.type}
+                          <Select.Option value={item?.value} key={item?.id}>
+                            {item?.value}
                           </Select.Option>
                         );
                       })}
