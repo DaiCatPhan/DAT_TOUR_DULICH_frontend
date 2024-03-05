@@ -12,6 +12,8 @@ import { useEffect, useMemo, useState } from "react";
 import TourService from "../../services/TourService";
 import functions from "../../components/Functions/function.js";
 
+import ModalBookingTour from "./components/ModalBookingTour/index.jsx";
+
 import {
   IconClockHour10,
   IconBus,
@@ -25,6 +27,14 @@ function TourDetail() {
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
   const [activeCalendar, setActiveCalendar] = useState({});
+
+  const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
+  const [dataModalBookingTour, setDataModalBookingTour] = useState({});
+
+  const handleModalBookingTour = (data) => {
+    setIsShowModalBookingTour(true);
+    setDataModalBookingTour(data);
+  };
 
   const [numberTicketAdult, setNumberTicketAdult] = useState(1);
   const [numberTicketChild, setNumberTicketChild] = useState(0);
@@ -91,11 +101,6 @@ function TourDetail() {
       numberTicketChild * activeCalendar?.priceChild
     );
   }, [numberTicketAdult, numberTicketChild, activeCalendar]); // Thêm adultTickets và childTickets vào dependency array
-
-  // Dat Tour
-  const handleBookingTour = async () => {
-    alert("Dat Tour");
-  };
 
   return (
     <div className={cx("wrapper")}>
@@ -244,7 +249,7 @@ function TourDetail() {
                   </div>
                   <div>
                     <button
-                      onClick={handleBookingTour}
+                      onClick={handleModalBookingTour}
                       className={cx("btnYeuCau")}
                     >
                       Đặt tour ngay
@@ -309,6 +314,12 @@ function TourDetail() {
           </div>
         </div>
       </div>
+      <ModalBookingTour
+        isShowModalBookingTour={isShowModalBookingTour}
+        setIsShowModalBookingTour={setIsShowModalBookingTour}
+        dataModalBookingTour={dataModalBookingTour}
+        setDataModalBookingTour={setDataModalBookingTour}
+      />
     </div>
   );
 }

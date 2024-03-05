@@ -4,6 +4,10 @@ const readAll = (data) => {
   return axios.get(`/api/v1/customer/readAll?${data}`);
 };
 
+const read = (data) => {
+  return axios.get(`/api/v1/customer/read?${data}`);
+};
+
 const update = (data) => {
   return axios.put(`/api/v1/customer/update`, data);
 };
@@ -18,4 +22,4 @@ const deleteCus = (data) => {
   });
 };
 
-export default { readAll, update, create, deleteCus };
+export default { readAll, update, create, deleteCus, read };

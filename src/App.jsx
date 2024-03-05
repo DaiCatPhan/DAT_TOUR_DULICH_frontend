@@ -47,6 +47,7 @@ import List_Caterory from "./pages/ADMIN/Manager_Category/List_Category";
 //== VOUCHER ==
 import ListVoucher from "./pages/ADMIN/Manager_Voucher/ListVoucher";
 import Voucher from "./pages/Voucher/Voucher";
+import StoreVoucherUser from "./pages/USER/StoreVoucher";
 //== BLOG ==
 import ListBlogAdmin from "./pages/ADMIN/Manager_Blog/List_Blog";
 import BlogDetail from "./pages/Blogs/BlogDetail";
@@ -131,7 +132,7 @@ function App() {
       children: [
         {
           index: true,
-          element: <Profile />, 
+          element: <Profile />,
         },
         {
           path: "order-buy",
@@ -140,6 +141,10 @@ function App() {
         {
           path: "change-password",
           element: <ChangePassword />,
+        },
+        {
+          path: "voucher",
+          element: <StoreVoucherUser />,
         },
       ],
     },

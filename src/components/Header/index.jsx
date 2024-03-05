@@ -33,7 +33,7 @@ function Header() {
     {
       label: (
         <div>
-          <Link to="https://www.antgroup.com">1st menu item</Link>
+          <Link to="/user">Tải khoản của tôi</Link>
         </div>
       ),
       key: "0",
