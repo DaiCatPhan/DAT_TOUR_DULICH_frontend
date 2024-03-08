@@ -32,13 +32,64 @@ function Blog() {
     getListTours();
   }, [current, pageSize]);
 
+  // Dữ liệu bình luận mẫu
+  const commentsData = [
+    {
+      id: 1,
+      content: "This is the main comment",
+      replies: [
+        {
+          id: 2,
+          content: "This is a reply to comment 1",
+          replies: [],
+        },
+        {
+          id: 3,
+          content: "Another reply to comment 1",
+          replies: [
+            {
+              id: 4,
+              content: "A reply to reply 3",
+              replies: [],
+            },
+          ],
+        },
+      ],
+    },
+    // More comments...
+  ];
+
+  const Comment = ({ comment }) => {
+    return (
+      <div className={cx("comment")}>
+        <p>{comment.content}</p>
+        {comment.replies && comment.replies.length > 0 && (
+          <div className={cx("replies")}>
+            {comment.replies.map((reply) => (
+              <Comment key={reply.id} comment={reply} />
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const CommentsList = ({ comments }) => {
+    return (
+      <div className={cx("comments-list")}>
+        {comments.map((comment) => (
+          <Comment key={comment.id} comment={comment} />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("container")}>
         <div className={cx("row my-5")}>
           <div className={cx("col-lg-8  ", "blogID")}>
             <div className={cx("px-5")}>
-              {/* Blog */}
               {listBlog?.map((item) => {
                 return (
                   <div className={cx("border mb-5")}>
@@ -116,6 +167,10 @@ function Blog() {
             </div>
           </div>
         </div>
+      </div>
+
+      <div>
+        <CommentsList comments={commentsData} />
       </div>
     </div>
   );

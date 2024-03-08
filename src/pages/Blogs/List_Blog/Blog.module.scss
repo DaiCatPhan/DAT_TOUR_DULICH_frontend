@@ -47,3 +47,27 @@
     font-size: 14px;
   }
 }
+
+//  ================
+
+.comment {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+.replies {
+  margin-left: 20px;
+}
+
+/* Optional: Style for better readability */
+p {
+  margin: 0;
+  font-size: 16px;
+}
+
+.comments-list {
+  max-width: 600px;
+  margin: 0 auto;
+}

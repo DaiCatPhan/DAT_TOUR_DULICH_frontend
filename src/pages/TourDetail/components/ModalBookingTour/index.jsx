@@ -28,10 +28,11 @@ function ModalBookingTour(props) {
 
   const [isShowModalVoucherUser, setIsShowModalVoucherUser] = useState(false);
   const [dataModalVoucherUser, setDataModalVoucherUser] = useState({});
+  const [voucherSelected, setVoucherSelected] = useState("");
 
   const handleModalVoucherUser = (data) => {
     setIsShowModalVoucherUser(true);
-    setDataModalVoucherUser(data);
+    setDataModalVoucherUser(data); 
   };
 
   const handleShowSession2 = () => {
@@ -41,7 +42,7 @@ function ModalBookingTour(props) {
 
   const handleOk = () => {};
   const handleCancel = () => {
-    setIsShowModalBookingTour(false);
+    setIsShowModalBookingTour(false); 
   };
 
   const dataSource = [
@@ -97,7 +98,7 @@ function ModalBookingTour(props) {
                 >
                   Chọn hoặc nhập mã
                 </div>
-                <div>Mã Voucher : MK-100k</div>
+                <div>Mã Voucher {voucherSelected}</div>
               </div>
               <div className={cx("d-flex")}>
                 <div>Tổng thanh toán : 20.000.000 VND</div>
@@ -236,7 +237,7 @@ function ModalBookingTour(props) {
                       </div>
                     </div>
                     <div className={cx("d-flex justify-content-end")}>
-                      <button className={cx('btnBookingTour')}>Đặt Tour</button>
+                      <button className={cx("btnBookingTour")}>Đặt Tour</button>
                     </div>
                   </div>
                 </div>

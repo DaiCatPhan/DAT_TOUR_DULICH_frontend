@@ -12,7 +12,7 @@ import { useEffect, useMemo, useState } from "react";
 import TourService from "../../services/TourService";
 import functions from "../../components/Functions/function.js";
 
-import ModalBookingTour from "./components/ModalBookingTour/index.jsx";
+import ModalBookingTour from "./components/ModalBookingTour/index.jsx"; 
 
 import {
   IconClockHour10,
@@ -23,7 +23,7 @@ import {
 
 function TourDetail() {
   const [tourDetail, setTourDetail] = useState({});
-  const [calendarTour, setCalendarTour] = useState([]);
+  const [calendarTour, setCalendarTour] = useState([]); 
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
   const [activeCalendar, setActiveCalendar] = useState({});
