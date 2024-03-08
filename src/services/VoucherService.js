@@ -24,10 +24,15 @@ const createVoucherUser = (data) => {
   return axios.post("/api/v1/voucher/create_voucherUser", data);
 };
 
+const readVoucherUser = (data) => {
+  return axios.get(`/api/v1/voucher/read_voucherUser?${data}`);
+};
+
 export default {
   createVoucher,
   updateVoucher,
   deleteVoucher,
   readAllVoucher,
   createVoucherUser,
+  readVoucherUser,
 };

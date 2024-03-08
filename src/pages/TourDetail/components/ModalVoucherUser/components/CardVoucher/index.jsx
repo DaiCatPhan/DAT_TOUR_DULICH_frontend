@@ -1,53 +1,19 @@
 import className from "classnames/bind";
 import styles from "./CardVoucher.module.scss";
 const cx = className.bind(styles);
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { Button, message, Space } from "antd";
 
-import VoucherService from "../../../../../../services/VoucherService";
-
 function CardVoucher(props) {
   const [messageApi, contextHolder] = message.useMessage();
-  const { item } = props;
-  const { id, nameVoucher, value, toDate, amount } = item;
-  const user = useSelector((state) => state.account.user);
-  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  const { item, handleSelectVoucher } = props;
+  const { Voucher } = item;
+  const { id, nameVoucher, value, toDate, amount } = Voucher;
+
+  console.log("item >>>>", item);
 
   const handleSaveVoucher = async () => {
-    if (!isAuthenticated) {
-      toast.error("Bạn phải đăng nhập để nhận voucher");
-      return;
-    }
-    const dataSend = {
-      ID_Customer: user?.id,
-      ID_Voucher: id,
-      status: "0",
-    };
-
-    const res = await VoucherService.createVoucherUser(dataSend);
-    console.log("res", res);
-    if (res && res.data.EC === 0) {
-      messageApi.open({
-        type: "success",
-        content: "Lưu voucher thành công",
-        style: {
-          fontSize: "16px",
-          fontWeight: "bold",
-          padding: "10px",
-        },
-      });
-    } else {
-      messageApi.open({
-        type: "error",
-        content: "Voucher đã tồn tại trong kho !!!",
-        style: {
-          fontSize: "16px",
-          fontWeight: "bold",
-          padding: "10px",
-        },
-      });
-    }
+    handleSelectVoucher(item);
   };
 
   return (
