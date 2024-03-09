@@ -68,7 +68,6 @@ function ModalCommentBlog(props) {
     dataReply.content = content;
     console.log("dataReply", dataReply);
     // API tạo comment , nhưng mà bị 2 bảng nên ch biết làm sao
-    
   };
 
   const contentMain = (

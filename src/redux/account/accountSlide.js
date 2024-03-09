@@ -24,7 +24,7 @@ export const accountSlice = createSlice({
     },
 
     doLogoutAction: (state, action) => {
-      localStorage.removeItem("accsessToken");
+      localStorage.removeItem("accessToken");
       state.isAuthenticated = false;
       state.user = {
         id: "",
@@ -39,6 +39,6 @@ export const accountSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { doLoginAction , doLogoutAction } = accountSlice.actions;
+export const { doLoginAction, doLogoutAction } = accountSlice.actions;
 
 export default accountSlice.reducer;

@@ -24,7 +24,7 @@ function Header() {
     const res = await AuthService.LogoutApi();
     if (res && res.data.EC === 0) {
       dispatch(doLogoutAction());
-      toast.success("Đăng xuất thành công");
+      toast.success("Đăng xuất thành công"); 
       navigate("/");
     }
   };
