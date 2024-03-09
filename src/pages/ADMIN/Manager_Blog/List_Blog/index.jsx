@@ -9,7 +9,15 @@ import "react-markdown-editor-lite/lib/index.css";
 const mdParser = new MarkdownIt(/* Markdown-it options */);
 import Function from "../../../../components/Functions/function";
 
-import { IconList, IconTrash, IconPencilMinus } from "@tabler/icons-react";
+import { ClockCircleOutlined } from "@ant-design/icons";
+import { Avatar, Badge, Space } from "antd";
+
+import {
+  IconList,
+  IconTrash,
+  IconPencilMinus,
+  IconMessage,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Button, Modal, Table, Input, Form, DatePicker } from "antd";
 import { AudioOutlined } from "@ant-design/icons";
@@ -28,6 +36,7 @@ import BlogService from "../../../../services/BlogService";
 import ModalCreateBlog from "../component/ModalCreateBlog";
 import ModalUpdateBlog from "../component/ModalUpdateBlog";
 import ModalDeleteBlog from "../component/ModalDeleteBlog";
+import ModalCommentBlog from "../component/ModalCommentBlog";
 
 function List_Blog() {
   const [pageSize, setPageSize] = useState(5);
@@ -62,6 +71,8 @@ function List_Blog() {
   const [dataModalDeleteBlog, setDataModalDeleteBlog] = useState({});
   const [isShowModalCreateBlog, setIsShowModalCreateBlog] = useState(false);
   const [dataModalCreateBlog, setDataModalCreateBlog] = useState({});
+  const [isShowModalCommentBlog, setIsShowModalCommentBlog] = useState(false);
+  const [dataModalCommentBlog, setDataModalCommentBlog] = useState({});
 
   const handleModalUpdateBlog = (data) => {
     setIsShowModalUpdateBlog(true);
@@ -75,28 +86,17 @@ function List_Blog() {
     setIsShowModalCreateBlog(true);
     setDataModalCreateBlog(data);
   };
-
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
+  const handleModalCommentBlog = async (data) => {
+    setIsShowModalCommentBlog(true);
+    setDataModalCommentBlog(data);
+  };
 
   const columns = [
     {
       title: "Mã bài đăng",
       dataIndex: "id",
       key: "id",
-      width: 120,
+      width: 100,
     },
     {
       title: "Hình ảnh ",
@@ -114,12 +114,15 @@ function List_Blog() {
       title: "Tên bài đăng",
       dataIndex: "title",
       key: "title",
+      width: 220,
     },
     {
       title: "Mô tả",
       dataIndex: "shortdescription",
       key: "shortdescription",
+      width: 450,
     },
+
     {
       title: "Ngày tạo",
       dataIndex: "createdAt",
@@ -128,9 +131,29 @@ function List_Blog() {
         <div>{Function.formatDateMoment(createdAt || 0)}</div>
       ),
     },
+
+    {
+      title: "Bình luận",
+      key: "comment",
+      render: (listBlog) => {
+        return (
+          <div className={cx("poiter d-flex")}>
+            <Badge count={listBlog?.dataComment?.totalRows || 0}>
+              <IconMessage
+                onClick={() => handleModalCommentBlog(listBlog)}
+                color="blue"
+                width={25}
+                height={25}
+                className={cx("poiter")}
+              />
+            </Badge>
+          </div>
+        );
+      },
+    },
+
     {
       title: "Action",
-
       key: "Action",
       render: (record) => {
         return (
@@ -160,7 +183,6 @@ function List_Blog() {
     const res = await BlogService.readAllBlog(
       `title=${title || ""}&createdAt=${date_createdAt || ""}`
     );
-    console.log("onFinishFormSearch", res);
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.blogs.map((item) => ({
         ...item,
@@ -188,7 +210,7 @@ function List_Blog() {
             <div className={cx("mx-2")}>Danh sách bài đăng</div>
           </div>
 
-          <div>
+          <div className={cx("d-flex")}>
             <button
               className={cx("btn btn-success")}
               onClick={handleModalCreateBlog}
@@ -249,7 +271,14 @@ function List_Blog() {
         setDataModalDeleteBlog={setDataModalDeleteBlog}
         getListBlogs={getListBlogs}
       />
-    </div>
+      <ModalCommentBlog
+        isShowModalCommentBlog={isShowModalCommentBlog}
+        setIsShowModalCommentBlog={setIsShowModalCommentBlog}
+        dataModalCommentBlog={dataModalCommentBlog}
+        setDataModalCommentBlog={setDataModalCommentBlog}
+        getListBlogs={getListBlogs}
+      />
+    </div> 
   );
 }
 

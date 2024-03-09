@@ -152,7 +152,7 @@ function App() {
     {
       path: "/admin",
       element: <LayoutAdmin />,
-      errorElement: <NotFound />,
+      // errorElement: <NotFound />,
       children: [
         {
           index: true,

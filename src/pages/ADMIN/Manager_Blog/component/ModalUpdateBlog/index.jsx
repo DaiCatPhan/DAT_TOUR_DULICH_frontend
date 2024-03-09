@@ -26,7 +26,6 @@ function ModalUpdateBlog(props) {
     setDataModalUpdateBlog,
     getListBlogs,
   } = props;
-  console.log(dataModalUpdateBlog);
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loading, setLoading] = useState(false);
