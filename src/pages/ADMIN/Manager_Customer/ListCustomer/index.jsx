@@ -4,7 +4,7 @@ const cx = className.bind(styles);
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { Space, Table, Tag, Input, Form, Button } from "antd";
+import { Space, Table, Tag, Input, Form, Button, Tabs } from "antd";
 
 import moment from "moment";
 import { IconEdit, IconPencilMinus, IconTrash } from "@tabler/icons-react";
@@ -15,12 +15,14 @@ import CustomerService from "../../../../services/CustomerService";
 
 import ModalEditCustomer from "../ModalEditCustomer";
 import ModalDeleteCustomer from "../ModalDeleteCustomer";
+import ModalCreateCustomer from "../ModalCreateCustomer";
 
 function ListCustomer() {
   const [pageSize, setPageSize] = useState(5);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listCustomer, setListCustomer] = useState([]);
+  const [role, setRole] = useState("khách hàng");
 
   // modal update tour , delete tour , update processTour
   const [isShowModalUpdateCustomer, setIsShowModalUpdateCustomer] =
@@ -29,6 +31,9 @@ function ListCustomer() {
   const [isShowModalDeleteCustomer, setIsShowModalDeleteCustomer] =
     useState(false);
   const [dataModalDeleteCustomer, setDataModalDeleteCustomer] = useState({});
+  const [isShowModalCreateCustomer, setIsShowModalCreateCustomer] =
+    useState(false);
+  const [dataModalCreateCustomer, setDataModalCreateCustomer] = useState({});
   const handleModalUpdateCustomer = (data) => {
     setIsShowModalUpdateCustomer(true);
     setDataModalUpdateCustomer(data);
@@ -37,11 +42,15 @@ function ListCustomer() {
     setIsShowModalDeleteCustomer(true);
     setDataModalDeleteCustomer(data);
   };
+  const handleModalCreateCustomer = () => {
+    setIsShowModalCreateCustomer(true);
+  };
 
   // Gọi API lấy dữ liệu
   const getListCustomers = async () => {
     try {
-      const res = await CustomerService.readAll();
+      const res = await CustomerService.readAll(`role=${role}`);
+      console.log("res", res);
 
       if (res && res.data.EC === 0) {
         let cus = res.data.DT.users.map((item) => ({
@@ -58,7 +67,7 @@ function ListCustomer() {
 
   useEffect(() => {
     getListCustomers();
-  }, []);
+  }, [role]);
 
   const columns = [
     {
@@ -82,16 +91,9 @@ function ListCustomer() {
       dataIndex: "phone",
       key: "phone",
     },
-    {
-      title: "Ngày tạo",
-      dataIndex: "createdAt",
-      key: "createdAt",
-      render: (record) => <div>{moment(record).format("DD-MM-YYYY")}</div>,
-    },
 
     {
       title: "Action",
-
       key: "Action",
       render: (record) => {
         return (
@@ -139,6 +141,26 @@ function ListCustomer() {
     alert("Xuat Excel");
   };
 
+  const handleModalCreate = async () => {
+    alert("handleModalCreate");
+  };
+
+  const itemsTab = [
+    {
+      key: "khách hàng",
+      label: "Khách hàng",
+    },
+    {
+      key: "!khách hàng",
+      label: "Nhân viên",
+    },
+  ];
+
+  const onChangeTab = (key) => {
+    console.log(key);
+    setRole(key);
+  };
+
   return (
     <div className={cx("wrapper", "border")}>
       <div className={cx("title", "d-flex justify-content-between")}>
@@ -148,13 +170,25 @@ function ListCustomer() {
           </div>
           <div className={cx("mx-2")}>Danh sách người dùng</div>
         </div>
+
         <div>
-          <button onClick={handleExportExcel} className={cx("btn btn-success")}>
+          <button
+            onClick={handleExportExcel}
+            className={cx("btn btn-warning text-white mx-1")}
+          >
             Xuất excel
+          </button>
+          <button
+            onClick={handleModalCreateCustomer}
+            className={cx("btn btn-success mx-1")}
+          >
+            Thêm
           </button>
         </div>
       </div>
-      <div className={cx("p-4")}>
+      <div className={cx("px-4")}>
+        <Tabs defaultActiveKey="1" items={itemsTab} onChange={onChangeTab} />
+
         <div className={cx("d-flex")}>
           <Form
             name="basic"
@@ -225,6 +259,11 @@ function ListCustomer() {
         setIsShowModalDeleteCustomer={setIsShowModalDeleteCustomer}
         dataModalDeleteCustomer={dataModalDeleteCustomer}
         setDataModalDeleteCustomer={setDataModalDeleteCustomer}
+        getListCustomers={getListCustomers}
+      />
+      <ModalCreateCustomer
+        isShowModalCreateCustomer={isShowModalCreateCustomer}
+        setIsShowModalCreateCustomer={setIsShowModalCreateCustomer}
         getListCustomers={getListCustomers}
       />
     </div>

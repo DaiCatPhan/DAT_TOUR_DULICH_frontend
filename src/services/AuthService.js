@@ -9,7 +9,7 @@ const logoutApi = () => {
 };
 
 const registerApi = (data) => {
-  return axios.post("/api/v1/auth/register ", data);
+  return axios.post("/api/v1/auth/register", data);
 };
 
 const fetchProfile = () => {
