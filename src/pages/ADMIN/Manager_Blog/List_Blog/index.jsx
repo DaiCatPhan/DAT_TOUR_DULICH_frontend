@@ -278,7 +278,7 @@ function List_Blog() {
         setDataModalCommentBlog={setDataModalCommentBlog}
         getListBlogs={getListBlogs}
       />
-    </div> 
+    </div>
   );
 }
 
