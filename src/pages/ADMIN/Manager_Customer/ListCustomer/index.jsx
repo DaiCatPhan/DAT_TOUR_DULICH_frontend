@@ -23,6 +23,9 @@ function ListCustomer() {
   const [total, setTotal] = useState(20);
   const [listCustomer, setListCustomer] = useState([]);
   const [role, setRole] = useState("khách hàng");
+  const [username, setUsername] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
 
   // modal update tour , delete tour , update processTour
   const [isShowModalUpdateCustomer, setIsShowModalUpdateCustomer] =
@@ -124,27 +127,31 @@ function ListCustomer() {
   };
 
   const onFinishSearchCustomer = async (values) => {
-    const { id, username, email } = values;
-    const res = await TourService.getTours();
-    if (res && res.data.EC == 0) {
-      let cus = res.data.DT.tours.map((item) => ({
-        ...item,
-        key: item.id,
-      }));
+    const { phone, username, email } = values;
+    try {
+      const res = await CustomerService.readAll(
+        `role=${role}&username=${username || ""}&email=${email || ""}&phone=${
+          phone || ""
+        }`
+      );
+      console.log("onFinishSearchCustomer", res);
 
-      setListTour(cus);
-      setTotal(res.data.DT.totalRows);
+      if (res && res.data.EC === 0) {
+        let cus = res.data.DT.users.map((item) => ({
+          ...item,
+          key: item.id,
+        }));
+        setListCustomer(cus);
+        setTotal(res.data.DT.totalRows);
+      }
+    } catch (error) {
+      console.log("error >>", error);
     }
   };
 
   const handleExportExcel = async () => {
     alert("Xuat Excel");
   };
-
-  const handleModalCreate = async () => {
-    alert("handleModalCreate");
-  };
-
   const itemsTab = [
     {
       key: "khách hàng",
