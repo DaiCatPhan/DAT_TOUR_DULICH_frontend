@@ -3,17 +3,10 @@ import styles from "./ModalDeleteCustomer.module.scss";
 import { useEffect, useState } from "react";
 const cx = className.bind(styles);
 
+import CustomerService from "../../../../services/CustomerService";
+
 import { toast } from "react-toastify";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Select,
-  Space,
-  Radio,
-  Modal,
-} from "antd";
+import { Modal } from "antd";
 
 function ModalDeleteCustomer(props) {
   const {
@@ -26,28 +19,20 @@ function ModalDeleteCustomer(props) {
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const [formDelete] = Form.useForm();
-  const { Option } = Select;
-
   useEffect(() => {}, []);
 
   const handleOk = async () => {
-    alert("ok");
-    return;
-    setConfirmLoading(true);
-    // Gọi API cập nhật chương trình Tour
     const data = {
-      ID_Tour: ID_Tour,
-      idProcessTour: ID_ProcessTour,
-      descriptionHTML: processTour_HTML,
-      descriptionTEXT: processTour_TEXT,
+      id: dataModalDeleteCustomer?.id,
+      table: "Customer",
     };
+    setConfirmLoading(true);
 
-    const res = await ProcessService.updateProcessTour(data);
-
+    const res = await CustomerService.deleteCus(data);
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
-      getListTours();
+      getListCustomers();
+      handleCancel();
     } else {
       toast.error(res.data.EM);
     }
@@ -56,8 +41,6 @@ function ModalDeleteCustomer(props) {
 
   const handleCancel = () => {
     setIsShowModalDeleteCustomer(false);
-    formUpdate.resetFields();
-    setDataModalDeleteCustomer({});
   };
 
   return (
@@ -69,10 +52,16 @@ function ModalDeleteCustomer(props) {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        className={cx("modalUpdateTour")}
-        okButtonProps={{ style: { display: "none" } }}
       >
-        <div>Modal delete Customer</div>
+        <div>
+          <div>
+            Bạn có chắc chắn muốn xóa tài khoản
+            <b className={cx("mx-2")}>{dataModalDeleteCustomer?.username}</b>
+          </div>
+          <div className={cx("my-2 ")}>
+            Lưu ý hành động không thể hoàn tác !!
+          </div>
+        </div>
       </Modal>
     </div>
   );

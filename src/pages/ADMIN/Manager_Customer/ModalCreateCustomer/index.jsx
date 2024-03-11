@@ -59,11 +59,8 @@ function ModalCreateCustomer(props) {
   };
 
   const onFinishCreate = async (values) => {
-    console.log("Success:", values);
-
     setConfirmLoading(true);
     const res = await AuthServiceService.registerApi(values);
-    console.log("resre", res);
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
       formCreate.setFieldsValue({

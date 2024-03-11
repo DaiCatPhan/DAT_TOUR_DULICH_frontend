@@ -2,6 +2,7 @@ import className from "classnames/bind";
 import styles from "./ModalEditCustomer.module.scss";
 const cx = className.bind(styles);
 import { IconList } from "@tabler/icons-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { toast } from "react-toastify";
 import {
@@ -16,6 +17,8 @@ import {
 } from "antd";
 import { useEffect, useState } from "react";
 import data from "../../../../components/Data/data";
+import CaterogyService from "../../../../services/CategoryService";
+import CustomerService from "../../../../services/CustomerService";
 
 function ModalEditCustomer(props) {
   const {
@@ -26,45 +29,50 @@ function ModalEditCustomer(props) {
     getListCustomers,
   } = props;
 
+  const [categoryRole, setCategoryRole] = useState([]);
+  const [categoryActivity, setCategoryActivity] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [formUpdate] = Form.useForm();
   const { Option } = Select;
 
-  const typeTour = data?.typeTour;
-  const statusActivity = data?.statusActivity;
-  const role = data?.role;
+  const statusActivity = categoryActivity;
+  const role = categoryRole;
+
+  const getCategory = async () => {
+    const res = await CaterogyService.readAllCategory(`type=ROLE`);
+    if (res && res.data.EC == 0) {
+      setCategoryRole(res.data.DT.categories);
+    }
+    const res2 = await CaterogyService.readAllCategory(`type=STATUS_ACTIVITY`);
+    if (res2 && res2.data.EC == 0) {
+      setCategoryActivity(res2.data.DT.categories);
+    }
+  };
 
   useEffect(() => {
+    getCategory();
     formUpdate.setFieldsValue(dataModalUpdateCustomer);
   }, [dataModalUpdateCustomer]);
-
-  const handleOk = async () => {
-    alert("ok");
-    return;
-    setConfirmLoading(true);
-    // Gọi API cập nhật chương trình Tour
-    const data = {
-      ID_Tour: ID_Tour,
-      idProcessTour: ID_ProcessTour,
-      descriptionHTML: processTour_HTML,
-      descriptionTEXT: processTour_TEXT,
-    };
-
-    const res = await ProcessService.updateProcessTour(data);
-
-    if (res && res.data.EC === 0) {
-      toast.success(res.data.EM);
-      getListTours();
-    } else {
-      toast.error(res.data.EM);
-    }
-    setConfirmLoading(false);
-  };
 
   const handleCancel = () => {
     setIsShowModalUpdateCustomer(false);
     formUpdate.resetFields();
     setDataModalUpdateCustomer({});
+  };
+
+  const onFinishUpdateCustomer = async (values) => {
+    values.id = dataModalUpdateCustomer?.id;
+    setConfirmLoading(true);
+    const res = await CustomerService.update(values);
+
+    if (res && res.data.EC === 0) {
+      toast.success(res.data.EM);
+      getListCustomers();
+      handleCancel();
+    } else {
+      toast.error(res.data.EM);
+    }
+    setConfirmLoading(false);
   };
 
   return (
@@ -73,10 +81,9 @@ function ModalEditCustomer(props) {
         style={{ top: 10 }}
         title="Cập nhật thông tin khách hàng "
         open={isShowModalUpdateCustomer}
-        onOk={handleOk}
+        // open={true}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
-        className={cx("modalUpdateTour")}
         width={1000}
         okButtonProps={{ style: { display: "none" } }}
       >
@@ -102,6 +109,7 @@ function ModalEditCustomer(props) {
               style={{
                 maxWidth: 1600,
               }}
+              onFinish={onFinishUpdateCustomer}
             >
               {/* 1 */}
 
@@ -176,8 +184,8 @@ function ModalEditCustomer(props) {
                   <Select>
                     {statusActivity?.map((item) => {
                       return (
-                        <Select.Option value={item?.value} key={item?.id}>
-                          {item?.label}
+                        <Select.Option key={item?.id}>
+                          {item?.value}
                         </Select.Option>
                       );
                     })}
@@ -199,8 +207,8 @@ function ModalEditCustomer(props) {
                   <Select>
                     {role?.map((item) => {
                       return (
-                        <Select.Option value={item?.value} key={item?.id}>
-                          {item?.label}
+                        <Select.Option key={item?.id}>
+                          {item?.value}
                         </Select.Option>
                       );
                     })}
