@@ -42,9 +42,12 @@ const items = [
     getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "9"),
   ]),
   getItem("Quản lí Đặt Tour", "sub4", <TeamOutlined />, [
+    getItem(<Link to="/admin/managerBookingTour/list">Duyệt</Link>, "18"),
     getItem(
-      <Link to="/admin/managerBookingTour/list">Danh sách đặt tour</Link>,
-      "8"
+      <Link to="/admin/managerBookingTour/list_update">
+        Danh sách đặt tour
+      </Link>,
+      "118"
     ),
   ]),
 

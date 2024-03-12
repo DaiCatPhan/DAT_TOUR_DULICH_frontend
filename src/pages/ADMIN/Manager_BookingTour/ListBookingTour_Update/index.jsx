@@ -5,6 +5,8 @@ const cx = className.bind(styles);
 import { Space, Table, Tag } from "antd";
 import { IconList } from "@tabler/icons-react";
 
+
+
 function ListBookingTour_Update() {
   const dataSource = [
     {
@@ -64,7 +66,7 @@ function ListBookingTour_Update() {
           </div>
         </div>
         <div className={cx("p-3")}>
-          <Table dataSource={dataSource} columns={columns} />
+          <Table dataSource={dataSource} columns={columns} /> 
         </div>
       </div>
     </div>
