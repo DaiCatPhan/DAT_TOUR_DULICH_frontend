@@ -52,6 +52,9 @@ import StoreVoucherUser from "./pages/USER/StoreVoucher";
 import ListBlogAdmin from "./pages/ADMIN/Manager_Blog/List_Blog";
 import BlogDetail from "./pages/Blogs/BlogDetail";
 import List_Blog from "./pages/Blogs/List_Blog";
+// == BookingTour==
+import ListBookingTour from "./pages/ADMIN/Manager_BookingTour/ListBookingTour";
+import ListBookingTour_Update from "./pages/ADMIN/Manager_BookingTour/ListBookingTour_Update";
 
 const Layout = () => {
   return (
@@ -212,6 +215,15 @@ function App() {
         {
           path: "managerBlog/list",
           element: <ListBlogAdmin />,
+        },
+        // BOOKINGTOUR
+        {
+          path: "managerBookingTour/list",
+          element: <ListBookingTour />,
+        },
+        {
+          path: "managerBookingTour/list_update",
+          element: <ListBookingTour_Update />,
         },
       ],
     },

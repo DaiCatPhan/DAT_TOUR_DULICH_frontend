@@ -41,22 +41,28 @@ const items = [
     getItem(<Link to="/admin/managerTour/list">Danh sách tour</Link>, "8"),
     getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "9"),
   ]),
+  getItem("Quản lí Đặt Tour", "sub4", <TeamOutlined />, [
+    getItem(
+      <Link to="/admin/managerBookingTour/list">Danh sách đặt tour</Link>,
+      "8"
+    ),
+  ]),
 
-  getItem("Quản lí bài đăng", "sub4", <TeamOutlined />, [
+  getItem("Quản lí bài đăng", "sub5", <TeamOutlined />, [
     getItem(<Link to="/admin/managerBlog/list">Danh sách bài đăng</Link>, "8"),
   ]),
 
-  getItem("Quản lí voucher", "sub5", <TeamOutlined />, [
+  getItem("Quản lí voucher", "sub6", <TeamOutlined />, [
     getItem(
       <Link to="/admin/managerVoucher/listVoucher">DS voucher</Link>,
       "9"
     ),
   ]),
 
-  getItem("Quản lí tin nhắn", "sub6", <TeamOutlined />, [
+  getItem("Quản lí tin nhắn", "sub7", <TeamOutlined />, [
     getItem(<Link to="#">Messager</Link>, "8"),
   ]),
-  getItem("Thống kê", "sub7", <TeamOutlined />, [
+  getItem("Thống kê", "sub8", <TeamOutlined />, [
     getItem(<Link to="#">Thông kê doanh thu</Link>, "8"),
   ]),
 ];
