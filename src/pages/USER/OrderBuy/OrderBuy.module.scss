@@ -1,4 +1,74 @@
 .cardOrderBuy {
-  border: 1px solid red;
+  border: 1px solid silver;
   padding: 10px;
+  border-radius: 15px;
+}
+
+.titleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.contentCard {
+  font-size: 16px;
+  padding: 0 10px;
+
+  .name {
+    font-size: 18px;
+    color: #003c71;
+    font-weight: 500;
+  }
+}
+
+.evaluate {
+  .intoMoney {
+    font-size: 20px;
+    font-weight: 500;
+
+    span {
+      font-size: 25px;
+      color: #ffbd00;
+    }
+  }
+
+  .btn_booking {
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #003c71;
+    color: white;
+    padding: 3px 25px;
+    border-radius: 5px;
+    border: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .btn_eval {
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #ee4d2d;
+    color: white;
+    padding: 3px 35px;
+    border-radius: 5px;
+    border: none;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+}
+
+.color_F79321 {
+  color: #f79321;
+}
+
+.bgcolor_FFFEFB {
+  background-color: #fffefb;
+}
+
+.ml_22 {
+  margin-left: 22px;
 }

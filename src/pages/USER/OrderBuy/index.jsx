@@ -4,8 +4,11 @@ const cx = className.bind(styles);
 
 import { Space, Table, Tag } from "antd";
 import { Tabs } from "antd";
+import { useState } from "react";
 
 function OrderBuy() {
+  const [listBookingTour, setListBookingTour] = useState([]);
+
   const dataSource = [
     {
       key: "1",
@@ -23,19 +26,75 @@ function OrderBuy() {
 
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
+      key: "data",
+      render: (data) => (
+        <div className={cx("cardOrderBuy")}>
+          <div>
+            <div className={cx("titleHeader")}>
+              <div>
+                <div>
+                  <Tag className={cx("poiter")} color="magenta">
+                    Xem tour
+                  </Tag>
+                  <Tag className={cx("poiter")} color="#108ee9">
+                    Chi tiết
+                  </Tag>
+                </div>
+              </div>
+              <div>Tour đã được đặt thành công | HOÀN THÀNH</div>
+            </div>
+            <div className={cx("d-flex")}>
+              <div>
+                <img
+                  src="https://down-vn.img.susercontent.com/file/828dd103dc4133e9320d3bf521383a12_tn"
+                  alt="notFound"
+                  width={130}
+                  height={130}
+                />
+              </div>
+              <div className={cx("contentCard")}>
+                <div className={cx("name")}>
+                  Tour Limousine Cao Cấp Miền Tây 2N2Đ: Cà Mau - Cha Diệp - Sóc
+                  Trăng Cánh Đồng Quạt Gió
+                </div>
+                <div className={cx("d-flex")}>
+                  <div>Khởi hành : </div>
+                  <div>1/2/2023 </div>
+                  <div className={cx("mx-1")}>-</div>
+                  <div> 4/2/2023</div>
+                </div>
+                <div className={cx("d-flex   w-50 justify-content-between")}>
+                  <div>Người lớn : </div>
+                  <div>x3</div>
+                  <div>2.000.000 vnd</div>
+                </div>
+                <div className={cx("d-flex   w-50 justify-content-between")}>
+                  <div>Trẻ em : </div>
+
+                  <div>
+                    <span className={cx("ml_22")}>x3</span>
+                  </div>
+                  <div>2.000.000 vnd</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={cx("my-2")}></div>
+
+          <div className={cx("d-flex justify-content-end", "bgcolor_FFFEFB")}>
+            <div></div>
+            <div className={cx("evaluate")}>
+              <div className={cx("intoMoney")}>
+                Thành tiền: <span>39,800,000 vnd</span>
+              </div>
+              <div className={cx("d-flex mt-3")}>
+                <button className={cx("btn_booking")}>Đặt tour lại</button>
+                <button className={cx("btn_eval")}>Đánh giá </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
     },
   ];
 
@@ -69,8 +128,8 @@ function OrderBuy() {
     <div className={cx("wrapper")}>
       <div className={cx("p-2")}>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-        {/* <Table dataSource={dataSource} columns={columns} />; */}
-        <div className={cx("cardOrderBuy")}>
+        <Table dataSource={dataSource} columns={columns} />;
+        {/* <div className={cx("cardOrderBuy")}>
           <div className={cx("border ")}>
             <div className={cx("border d-flex justify-content-between")}>
               <div className={cx("d-flex")}>
@@ -109,7 +168,7 @@ function OrderBuy() {
               <button>Đánh giá tour</button>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
