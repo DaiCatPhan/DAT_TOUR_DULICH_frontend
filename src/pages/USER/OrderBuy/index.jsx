@@ -2,27 +2,42 @@ import className from "classnames/bind";
 import styles from "./OrderBuy.module.scss";
 const cx = className.bind(styles);
 
+import BookingService from "../../../services/BookingService";
+
 import { Space, Table, Tag } from "antd";
 import { Tabs } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function OrderBuy() {
   const [listBookingTour, setListBookingTour] = useState([]);
+  console.log("listBookingTour >>>>>", listBookingTour);
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
+  const getListBookingTour = async () => {
+    const res = await BookingService.read(`ID_Customer=2`);
+    if (res && res.data.EC == 0) {
+      const cus = res.data.DT.rows.map((item) => {
+        return {
+          ...item,
+          key: item.id,
+        };
+      });
+      setListBookingTour(cus);
+    }
+  };
+
+  useEffect(() => {
+    getListBookingTour();
+  }, []);
+
+  const handleStatusBooking = (status) => {
+    if (status == "Chờ xác nhận") {
+      return <div className={cx("text-primary", "fw_600")}>Chờ xác nhận</div>;
+    } else if (status == "Đã duyệt") {
+      return <div className={cx("text-danger", "fw_600")}>Đã hủy</div>;
+    } else if (status === "Chờ hủy") {
+      return <div className={cx("text-danger", "fw_600")}>Chờ hủy</div>;
+    }
+  };
 
   const columns = [
     {
@@ -39,14 +54,21 @@ function OrderBuy() {
                   <Tag className={cx("poiter")} color="#108ee9">
                     Chi tiết
                   </Tag>
+                  <Tag className={cx("poiter")} color="#f50">
+                    Hủy tour
+                  </Tag>
                 </div>
               </div>
-              <div>Tour đã được đặt thành công | HOÀN THÀNH</div>
+              <div className={cx("d-flex")}>
+                {handleStatusBooking(data?.status)}{" "}
+                <span className={cx("mx-1 text-secondary")}>|</span> Tour đã
+                được đặt thành công
+              </div>
             </div>
             <div className={cx("d-flex")}>
               <div>
                 <img
-                  src="https://down-vn.img.susercontent.com/file/828dd103dc4133e9320d3bf521383a12_tn"
+                  src={data?.Calendar?.Tour?.image || ""}
                   alt="notFound"
                   width={130}
                   height={130}
@@ -54,8 +76,7 @@ function OrderBuy() {
               </div>
               <div className={cx("contentCard")}>
                 <div className={cx("name")}>
-                  Tour Limousine Cao Cấp Miền Tây 2N2Đ: Cà Mau - Cha Diệp - Sóc
-                  Trăng Cánh Đồng Quạt Gió
+                  {data?.Calendar?.Tour?.name || ""}
                 </div>
                 <div className={cx("d-flex")}>
                   <div>Khởi hành : </div>
@@ -85,7 +106,7 @@ function OrderBuy() {
             <div></div>
             <div className={cx("evaluate")}>
               <div className={cx("intoMoney")}>
-                Thành tiền: <span>39,800,000 vnd</span>
+                Thành tiền: <span>{data?.total_money}</span>
               </div>
               <div className={cx("d-flex mt-3")}>
                 <button className={cx("btn_booking")}>Đặt tour lại</button>
@@ -128,7 +149,7 @@ function OrderBuy() {
     <div className={cx("wrapper")}>
       <div className={cx("p-2")}>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-        <Table dataSource={dataSource} columns={columns} />;
+        <Table dataSource={listBookingTour} columns={columns} />;
         {/* <div className={cx("cardOrderBuy")}>
           <div className={cx("border ")}>
             <div className={cx("border d-flex justify-content-between")}>

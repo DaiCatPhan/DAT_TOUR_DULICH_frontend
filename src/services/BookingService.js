@@ -1,12 +1,19 @@
 import axios from "../utils/customize-axios";
 
-const createTour = (data) => {
-  console.log("data>>>", data);
-  return axios.post("/api/v1/tour/create", data);
+const create = (data) => {
+  return axios.post("/api/v1/booking/create", data);
 };
 
-const uploadImageTour = (data) => {
-  return axios.patch("/api/v1/tour/uploadImageTour", data);
+const update = (data) => {
+  return axios.put(`/api/v1/booking/update`, data);
 };
 
-export default {  r };
+const read = (data) => {
+  return axios.get(`/api/v1/booking/read?${data}`);
+};
+
+const readAll = (data) => {
+  return axios.get(`/api/v1/booking/readAll${data}`);
+};
+
+export default { create, read, readAll, update };
