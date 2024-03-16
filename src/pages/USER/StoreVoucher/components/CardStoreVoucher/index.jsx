@@ -12,8 +12,9 @@ function CardStoreVoucher(props) {
   const [messageApi, contextHolder] = message.useMessage();
   const navigate = useNavigate();
   const { item } = props;
-  const { Voucher } = item;
-  const { id, nameVoucher, value, toDate, amount } = Voucher;
+  // const { Voucher } = item;
+
+  // const { id, nameVoucher, value, toDate, amount } = Voucher;
 
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
@@ -37,14 +38,17 @@ function CardStoreVoucher(props) {
               alt="notFoung"
               height={70}
               width={70}
+              s
             />
           </div>
-          <div>{nameVoucher}</div>
+          <div>{item?.Voucher?.nameVoucher}</div>
         </div>
       </div>
       <div className={cx("d-flex justify-content-between  p-2")}>
         <div className={cx("content")}>
-          <div className={cx("title")}> {nameVoucher} giá trị tour</div>
+          <div className={cx("title")}>
+            {item?.Voucher?.nameVoucher} giá trị tour
+          </div>
 
           <button className={cx("btnVoucher")}>Dành riêng cho bạn</button>
 

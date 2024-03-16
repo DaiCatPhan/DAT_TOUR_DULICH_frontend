@@ -44,7 +44,7 @@ instance.interceptors.response.use(
       +error.response.status === 403 &&
       !error.config.headers[NO_RETRY_HEADER]
     ) {
-      const accessToken = await handleRefetshToken();
+      const accessToken = await handleRefetshToken(); 
       error.config.headers[NO_RETRY_HEADER] = "true";
 
       if (accessToken) {

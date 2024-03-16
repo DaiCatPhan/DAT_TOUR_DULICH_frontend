@@ -249,7 +249,7 @@ function App() {
         <Loading />
       )} */}
 
-      <RouterProvider router={router} />
+      <RouterProvider router={router} /> 
 
       <ToastContainer
         position="top-right"

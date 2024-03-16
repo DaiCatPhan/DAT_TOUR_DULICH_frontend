@@ -14,11 +14,9 @@ function StoreVoucher() {
   const [listVoucherUser, setListVoucherUser] = useState([]);
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
-  console.log("listVoucherUser", listVoucherUser);
 
   const getListVoucherUser = async () => {
-    const res = await CustomerService.read(`id=${1}`);
-    console.log("res", res);
+    const res = await CustomerService.read(`id=${user?.id}`);
     if (res && res.data.EC == 0) {
       setListVoucherUser(res.data.DT.VoucherUsers);
     }
@@ -29,7 +27,7 @@ function StoreVoucher() {
 
   const onFinish = async (values) => {
     const data = listVoucherUser?.filter((item) => {
-      return item?.Voucher?.nameVoucher === values.nameVoucher;
+      return item?.Voucher?.nameVoucher === values.nameVoucher; 
     });
     setListVoucherUser(data);
   };

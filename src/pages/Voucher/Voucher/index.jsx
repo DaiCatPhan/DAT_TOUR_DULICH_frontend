@@ -55,7 +55,7 @@ function Voucher() {
                 return (
                   <div key={item?.id} className={cx("col-lg-6")}>
                     <div className={cx(" my-2 d-flex justify-content-center")}>
-                      <CardVoucher item={item} /> 
+                      <CardVoucher item={item} />
                     </div>
                   </div>
                 );

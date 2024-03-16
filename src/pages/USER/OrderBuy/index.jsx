@@ -4,16 +4,43 @@ const cx = className.bind(styles);
 
 import BookingService from "../../../services/BookingService";
 
+import ModalCancelBooking from "./components/ModalCancelBooking";
+import ModalDetailBillBooking from "./components/ModalDetailBillBooking";
+import ModalEvalBooking from "./components/ModalEvalBooking";
+
 import { Space, Table, Tag } from "antd";
 import { Tabs } from "antd";
 import { useEffect, useState } from "react";
 
 function OrderBuy() {
   const [listBookingTour, setListBookingTour] = useState([]);
-  console.log("listBookingTour >>>>>", listBookingTour);
+  const [status, setStatus] = useState("");
+
+  const [isShowModalCancelBooking, setIsShowModalCancelBooking] =
+    useState(false);
+  const [dataModalCancelBooking, setDataModalCancelBooking] = useState({});
+  const [isShowModalDetailBillBooking, setIsShowModalDetailBillBooking] =
+    useState(false);
+  const [dataModalDetailBillBooking, setDataModalDetailBillBooking] = useState(
+    {}
+  );
+  const [isShowModalEvalBooking, setIsShowModalEvalBooking] = useState(false);
+  const [dataModalEvalBooking, setDataModalEvalBooking] = useState({});
+  const handleModalCancelBooking = (data) => {
+    setIsShowModalCancelBooking(true);
+    setDataModalCancelBooking(data);
+  };
+  const handleModalDetailBillBooking = (data) => {
+    setIsShowModalDetailBillBooking(true);
+    setDataModalDetailBillBooking(data);
+  };
+  const handleModalEvalBooking = (data) => {
+    setIsShowModalEvalBooking(true);
+    setDataModalEvalBooking(data);
+  };
 
   const getListBookingTour = async () => {
-    const res = await BookingService.read(`ID_Customer=2`);
+    const res = await BookingService.read(`ID_Customer=2&status=${status}`);
     if (res && res.data.EC == 0) {
       const cus = res.data.DT.rows.map((item) => {
         return {
@@ -27,7 +54,7 @@ function OrderBuy() {
 
   useEffect(() => {
     getListBookingTour();
-  }, []);
+  }, [status]);
 
   const handleStatusBooking = (status) => {
     if (status == "Chờ xác nhận") {
@@ -51,10 +78,18 @@ function OrderBuy() {
                   <Tag className={cx("poiter")} color="magenta">
                     Xem tour
                   </Tag>
-                  <Tag className={cx("poiter")} color="#108ee9">
+                  <Tag
+                    className={cx("poiter")}
+                    color="#108ee9"
+                    onClick={() => handleModalDetailBillBooking(data)}
+                  >
                     Chi tiết
                   </Tag>
-                  <Tag className={cx("poiter")} color="#f50">
+                  <Tag
+                    className={cx("poiter")}
+                    color="#f50"
+                    onClick={() => handleModalCancelBooking(data)}
+                  >
                     Hủy tour
                   </Tag>
                 </div>
@@ -110,7 +145,12 @@ function OrderBuy() {
               </div>
               <div className={cx("d-flex mt-3")}>
                 <button className={cx("btn_booking")}>Đặt tour lại</button>
-                <button className={cx("btn_eval")}>Đánh giá </button>
+                <button
+                  className={cx("btn_eval")}
+                  onClick={() => handleModalEvalBooking(data)}
+                >
+                  Đánh giá
+                </button>
               </div>
             </div>
           </div>
@@ -120,27 +160,31 @@ function OrderBuy() {
   ];
 
   const onChange = (key) => {
-    console.log(key);
+    setStatus(key);
   };
   const items = [
     {
-      key: "1",
+      key: "",
       label: "Tất cả",
     },
     {
-      key: "2",
+      key: "Chờ xác nhận",
       label: "Chờ xác nhận",
     },
     {
-      key: "3",
-      label: "Đã xác nhận",
+      key: "Đã duyệt",
+      label: "Đã duyệt",
     },
     {
-      key: "4",
+      key: "Hoàn thành",
       label: "Hoàn thành",
     },
     {
-      key: "5",
+      key: "Chờ hủy",
+      label: "Chờ hủy",
+    },
+    {
+      key: "Đã hủy",
       label: "Đã hủy",
     },
   ];
@@ -150,47 +194,30 @@ function OrderBuy() {
       <div className={cx("p-2")}>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
         <Table dataSource={listBookingTour} columns={columns} />;
-        {/* <div className={cx("cardOrderBuy")}>
-          <div className={cx("border ")}>
-            <div className={cx("border d-flex justify-content-between")}>
-              <div className={cx("d-flex")}>
-                <div>IVIVU</div>
-                <div>Chat</div>
-                <div>Xem tour</div>
-              </div>
-              <div>Đơn hàng đã được giao thành công HOÀN THÀNH</div>
-            </div>
-            <div className={cx("d-flex")}>
-              <div>
-                <img
-                  src="https://down-vn.img.susercontent.com/file/828dd103dc4133e9320d3bf521383a12_tn"
-                  alt="notFound"
-                  width={130}
-                  height={130}
-                />
-              </div>
-              <div>
-                - Mũi Cà Mau: du khách được thăm cột mốc toạ độ quốc gia, ngắm
-                rừng, ngắm biển, chiêm ngưỡng ráng chiều ẩn hiện trên vùng trời
-                biển bao la. Chinh Phục Cực Nam Tổ Quốc - Tham Quan Nhà Thờ Cha
-                Diệp: còn gọi là nhà thờ Tắc Sậy ở Bạc Liêu gắn liền với nơi an
-                nghỉ của Linh mục Trương Bửu Diệp. Đây là một trong những công
-                trình Công giáo nổi tiếng nhất ở khu vực miền Tây và nhiều người
-                biết đến với lòng sùng mộ.
-              </div>
-              <div>₫34.800</div>
-            </div>
-          </div>
-          <div className={cx("my-2")}></div>
-          <div className={cx("border")}>
-            <div>Thành tiền: ₫39.800</div>
-            <div>
-              <button>Đặt tour lại</button>
-              <button>Đánh giá tour</button>
-            </div>
-          </div>
-        </div> */}
       </div>
+
+      <ModalCancelBooking
+        isShowModalCancelBooking={isShowModalCancelBooking}
+        setIsShowModalCancelBooking={setIsShowModalCancelBooking}
+        dataModalCancelBooking={dataModalCancelBooking}
+        setDataModalCancelBooking={setDataModalCancelBooking}
+        getListBookingTour={getListBookingTour}
+      />
+
+      <ModalDetailBillBooking
+        isShowModalDetailBillBooking={isShowModalDetailBillBooking}
+        setIsShowModalDetailBillBooking={setIsShowModalDetailBillBooking}
+        dataModalDetailBillBooking={dataModalDetailBillBooking}
+        setDataModalDetailBillBooking={setDataModalDetailBillBooking}
+        getListBookingTour={getListBookingTour}
+      />
+      <ModalEvalBooking
+        isShowModalEvalBooking={isShowModalEvalBooking}
+        setIsShowModalEvalBooking={setIsShowModalEvalBooking}
+        dataModalEvalBooking={dataModalEvalBooking}
+        setDataModalEvalBooking={setDataModalEvalBooking}
+        getListBookingTour={getListBookingTour}
+      />
     </div>
   );
 }
