@@ -8,6 +8,8 @@ import ModalCancelBooking from "./components/ModalCancelBooking";
 import ModalDetailBillBooking from "./components/ModalDetailBillBooking";
 import ModalEvalBooking from "./components/ModalEvalBooking";
 
+import Function from "../../../components/Functions/function";
+
 import { Space, Table, Tag } from "antd";
 import { Tabs } from "antd";
 import { useEffect, useState } from "react";
@@ -95,7 +97,7 @@ function OrderBuy() {
                 </div>
               </div>
               <div className={cx("d-flex")}>
-                {handleStatusBooking(data?.status)}{" "}
+                {handleStatusBooking(data?.status)}
                 <span className={cx("mx-1 text-secondary")}>|</span> Tour đã
                 được đặt thành công
               </div>

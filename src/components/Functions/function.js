@@ -16,14 +16,7 @@ function formatDateMoment(date) {
   return moment(date).format("DD-MM-YYYY");
 }
 
-// const handleIconVehicle = (vehicle) => {
-//   if (vehicle == "xe") {
-//     return <IconBus />;
-//   } else if (vehicle == "bay") {
-//     return <IconZeppelin />;
-//   } else {
-//     return <IconShip />;
-//   }
-// };
-
-export default { formatNumberWithCommas, formatDateMoment };
+export default {
+  formatNumberWithCommas,
+  formatDateMoment,
+};

@@ -13,7 +13,7 @@ const read = (data) => {
 };
 
 const readAll = (data) => {
-  return axios.get(`/api/v1/booking/readAll${data}`);
+  return axios.get(`/api/v1/booking/readAll?${data}`);
 };
 
 export default { create, read, readAll, update };
