@@ -2,7 +2,7 @@ import className from "classnames/bind";
 import styles from "./ListBookingTour.module.scss";
 const cx = className.bind(styles);
 
-import { Space, Table, Tag, Tabs, Badge } from "antd";
+import { Space, Table, Tag, Tabs, Badge  } from "antd"; 
 import { IconList } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -17,8 +17,8 @@ function ListBookingTour() {
   const [pageSize, setPageSize] = useState(5);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
-  const [statusTab, setStatusTab] = useState("Chờ xác nhận");
   const [listBookingTour, setListBookingTour] = useState([]);
+  const [statusTab, setStatusTab] = useState("Chờ xác nhận");
   const [numberStatusBooking, setNumberStatusBooking] = useState({});
 
   const [isShowModalDuyetTour, setIsShowModalDuyetTour] = useState(false);

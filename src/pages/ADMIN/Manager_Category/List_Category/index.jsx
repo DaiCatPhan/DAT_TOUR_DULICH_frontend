@@ -143,6 +143,7 @@ function List_Category() {
                         <Option value="ADDRESS_TOUR">ADDRESS_TOUR</Option>
                         <Option value="ROLE">ROLE</Option>
                         <Option value="STATUS_ACTIVITY">STATUS_ACTIVITY</Option>
+                        <Option value="STATUS_BOOKING">STATUS_BOOKING</Option>
                       </Select>
                     </Form.Item>
                   </div>
@@ -207,6 +208,9 @@ function List_Category() {
                             <Option value="ROLE">ROLE</Option>
                             <Option value="STATUS_ACTIVITY">
                               STATUS_ACTIVITY
+                            </Option>
+                            <Option value="STATUS_BOOKING">
+                              STATUS_BOOKING
                             </Option>
                           </Select>
                         </Form.Item>

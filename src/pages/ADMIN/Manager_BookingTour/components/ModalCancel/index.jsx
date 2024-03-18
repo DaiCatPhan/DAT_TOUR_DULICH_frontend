@@ -5,11 +5,9 @@ const cx = className.bind(styles);
 import { toast } from "react-toastify";
 import { Button, Modal } from "antd";
 
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
-import "react-markdown-editor-lite/lib/index.css";
+import { CloseCircleOutlined } from "@ant-design/icons";
+import { Result, Typography } from "antd";
 import { useState } from "react";
-const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 function ModalCancel(props) {
   const {
@@ -31,13 +29,31 @@ function ModalCancel(props) {
   return (
     <div className={cx("wrapper")}>
       <Modal
-        title="Title"
+        // title="HỦY TOUR CHO KHÁCH HÀNG"
+        title={<div className={cx("text-danger")}>HỦY TOUR CHO KHÁCH HÀNG</div>}
         open={isShowModalCancel}
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <div>ModalCancel </div>
+        <div>
+          <Result
+            status="error"
+            title={<div className={cx("text-danger")}>HỦY TOUR </div>}
+            // subTitle="Tour Miền Bắc 5N4Đ: Hà Nội - Bái Đính - Tràng An - Hang Múa - Hạ Long - Sapa"
+            subTitle={
+              <div className={cx("subTitle")}>
+                <div>
+                  Khách hàng : <b>phandaicat12032002@gmail.com</b>
+                </div>
+                <div>
+                  Tour Miền Bắc 5N4Đ: Hà Nội - Bái Đính - Tràng An - Hang Múa -
+                  Hạ Long - Sapa
+                </div>
+              </div>
+            }
+          ></Result>
+        </div>
       </Modal>
     </div>
   );

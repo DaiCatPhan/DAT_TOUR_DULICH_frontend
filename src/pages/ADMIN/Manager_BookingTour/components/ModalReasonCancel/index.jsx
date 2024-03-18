@@ -5,11 +5,10 @@ const cx = className.bind(styles);
 import { toast } from "react-toastify";
 import { Button, Modal } from "antd";
 
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
-import "react-markdown-editor-lite/lib/index.css";
+import { Input } from "antd";
 import { useState } from "react";
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+
+const { TextArea } = Input;
 
 function ModalReasonCancel(props) {
   const {
@@ -17,10 +16,7 @@ function ModalReasonCancel(props) {
     setIsShowModalReasonCancel,
     dataModalReasonCancel,
     setDataModalReasonCancel,
-    getListBlogs,
   } = props;
-
-  console.log("isShowModalReasonCancel ModalReasonCancel  >>>>>>", isShowModalReasonCancel);
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -37,7 +33,30 @@ function ModalReasonCancel(props) {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
       >
-        <div>ModalReasonCancel </div>
+        <div>
+          <div>
+            <div className={cx('row')}>
+              <div className={cx('col-lg-6')}>Khách hàng</div>
+              <div className={cx('col-lg-6')}>Khách hàng</div>
+              
+            </div>
+            <div>
+              Email : <b>phandaicat12032002@gmail.com</b>
+            </div>
+            <div className={cx("row")}>
+              <div className={cx("col-lg-6")}>Thời gian hủy tour</div>
+              <div className={cx("col-lg-6")}>
+                <b>22/3/2024</b>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div>Lí do hủy tour</div>
+            <div>
+              <TextArea rows={4} />
+            </div>
+          </div>
+        </div>
       </Modal>
     </div>
   );
