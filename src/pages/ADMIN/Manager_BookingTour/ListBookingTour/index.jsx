@@ -171,7 +171,7 @@ function ListBookingTour() {
                 Thành tiền: <span>{data?.total_money}</span>
               </div>
               <div className={cx("d-flex mt-3")}>
-                {statusTab === "Chờ xác nhận" ? (
+                {statusTab === "CHỜ XÁC NHẬN" ? (
                   <button
                     className={cx("btn_booking")}
                     onClick={() => handleModalDuyetTour(data)}
@@ -207,7 +207,7 @@ function ListBookingTour() {
   };
   const itemsTab = [
     {
-      key: "Chờ xác nhận",
+      key: "CHỜ XÁC NHẬN",
       label: (
         <Badge count={numberStatusBooking?.Soluong_ChoXacNhan?.count || 0}>
           <div className={cx("px-3")}>CHỜ DUYỆT TOUR</div>
@@ -216,7 +216,7 @@ function ListBookingTour() {
       //   children: "Content of Tab Pane 1",
     },
     {
-      key: "Chờ hủy",
+      key: "CHỜ HỦY",
       label: (
         <Badge count={numberStatusBooking?.Soluong_ChoHuy?.count || 0}>
           <div className={cx("px-3")}>YÊU CẦU HỦY TOUR</div>
@@ -240,7 +240,7 @@ function ListBookingTour() {
         >
           <div>
             <Tabs
-              defaultActiveKey="Chờ xác nhận"
+              defaultActiveKey="CHỜ XÁC NHẬN"
               items={itemsTab}
               onChange={onChangeTab}
             />

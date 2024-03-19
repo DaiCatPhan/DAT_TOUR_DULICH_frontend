@@ -2,7 +2,18 @@ import className from "classnames/bind";
 import styles from "./ListBookingTour_Update.module.scss";
 const cx = className.bind(styles);
 
-import { Badge, Space, Table, Tabs, Tag } from "antd";
+import {
+  Badge,
+  Space,
+  Table,
+  Tabs,
+  Tag,
+  Form,
+  Input,
+  Checkbox,
+  Button,
+  DatePicker,
+} from "antd";
 import { IconList } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -34,6 +45,7 @@ function ListBookingTour_Update() {
       // `page=${current}&limit=${pageSize}&status=${statusTab}`
       `page=${current}&limit=${pageSize}&status=${statusTab}`
     );
+    console.log("res >>>>>>>.", res);
 
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.rows.map((item) => ({
@@ -185,7 +197,7 @@ function ListBookingTour_Update() {
     {
       key: "Đã duyệt",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan?.count || 0}>
+        <Badge count={numberStatusBooking?.Soluong_DaDuyet?.count || 0}>
           <div className={cx("px-3")}>ĐÃ DUYỆT</div>
         </Badge>
       ),
@@ -193,7 +205,7 @@ function ListBookingTour_Update() {
     {
       key: "Đã hủy",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoHuy?.count || 0}>
+        <Badge count={numberStatusBooking?.Soluong_DaHuy?.count || 0}>
           <div className={cx("px-3")}>ĐÃ HỦY</div>
         </Badge>
       ),
@@ -229,7 +241,32 @@ function ListBookingTour_Update() {
         </div>
 
         <div className={cx("px-3")}>
-          <div>ákfjl</div>
+          <div>
+            <Form
+              name="basic"
+              //  onFinish={onFinish}
+            >
+              <div className={cx("d-flex")}>
+                <div>
+                  <Form.Item label="Chọn ngày">
+                    <DatePicker />
+                  </Form.Item>
+                </div>
+                <div>
+                  <Form.Item
+                    wrapperCol={{
+                      offset: 8,
+                      span: 16,
+                    }}
+                  >
+                    <Button type="primary" htmlType="submit">
+                      Tìm kiếm
+                    </Button>
+                  </Form.Item>
+                </div>
+              </div>
+            </Form>
+          </div>
         </div>
 
         <div className={cx("px-3")}>
