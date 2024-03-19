@@ -2,7 +2,7 @@ import className from "classnames/bind";
 import styles from "./ListBookingTour.module.scss";
 const cx = className.bind(styles);
 
-import { Space, Table, Tag, Tabs, Badge  } from "antd"; 
+import { Space, Table, Tag, Tabs, Badge } from "antd";
 import { IconList } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -18,7 +18,7 @@ function ListBookingTour() {
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
-  const [statusTab, setStatusTab] = useState("Chờ xác nhận");
+  const [statusTab, setStatusTab] = useState("CHỜ XÁC NHẬN");
   const [numberStatusBooking, setNumberStatusBooking] = useState({});
 
   const [isShowModalDuyetTour, setIsShowModalDuyetTour] = useState(false);
@@ -48,7 +48,6 @@ function ListBookingTour() {
     const res = await BookingService.readAll(
       `page=${current}&limit=${pageSize}&status=${statusTab}`
     );
-    console.log("res >>", res);
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.rows.map((item) => ({
         ...item,
@@ -65,15 +64,16 @@ function ListBookingTour() {
   }, [current, pageSize, statusTab]);
 
   const handleStatusBooking = (status) => {
-    if (status == "Chờ xác nhận") {
+    if (status == "CHỜ XÁC NHẬN") {
       return <div className={cx("text-primary", "fw_600")}>Chờ xác nhận</div>;
-    } else if (status == "Đã duyệt") {
+    } else if (status == "ĐÃ DUYỆT") {
+      return <div className={cx("text-success", "fw_600")}>Đã duyệt</div>;
+    } else if (status === "CHỜ HỦY") {
+      return <div className={cx("text-warning", "fw_600")}>Chờ hủy</div>;
+    } else if (status === "ĐÃ HỦY") {
       return <div className={cx("text-danger", "fw_600")}>Đã hủy</div>;
-    } else if (status === "Chờ hủy") {
-      return <div className={cx("text-danger", "fw_600")}>Chờ hủy</div>;
     }
   };
-
   const columns = [
     {
       key: "data",
@@ -263,18 +263,21 @@ function ListBookingTour() {
         setIsShowModalDuyetTour={setIsShowModalDuyetTour}
         dataModalDuyetTour={dataModalDuyetTour}
         setDataModalDuyetTour={setDataModalDuyetTour}
+        getListBookingTour={getListBookingTour}
       />
       <ModalReasonCancel
         isShowModalReasonCancel={isShowModalReasonCancel}
         setIsShowModalReasonCancel={setIsShowModalReasonCancel}
         dataModalReasonCancel={dataModalReasonCancel}
         setDataModalReasonCancel={setDataModalReasonCancel}
+        getListBookingTour={getListBookingTour}
       />
       <ModalCancel
         isShowModalCancel={isShowModalCancel}
         setIsShowModalCancel={setIsShowModalCancel}
         dataModalCancel={dataModalCancel}
         setDataModalCancel={setDataModalCancel}
+        getListBookingTour={getListBookingTour}
       />
     </div>
   );

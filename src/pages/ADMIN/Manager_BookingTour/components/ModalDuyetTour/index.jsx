@@ -2,14 +2,11 @@ import className from "classnames/bind";
 import styles from "./ModalDuyetTour.module.scss";
 const cx = className.bind(styles);
 
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import { Modal, Button, Result } from "antd";
-
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
-import "react-markdown-editor-lite/lib/index.css";
 import { useState } from "react";
-const mdParser = new MarkdownIt(/* Markdown-it options */);
+
+import BookingService from "../../../../../services/BookingService";
 
 function ModalDuyetTour(props) {
   const {
@@ -17,12 +14,28 @@ function ModalDuyetTour(props) {
     setIsShowModalDuyetTour,
     dataModalDuyetTour,
     setDataModalDuyetTour,
-    getListBlogs,
+    getListBookingTour,
   } = props;
+
+  const { id } = dataModalDuyetTour;
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const handleOk = () => {};
+  const handleOk = async () => {
+    const data = {
+      id: id,
+      status: "ĐÃ DUYỆT",
+      date_cancel_booking: new Date(),
+    };
+    const res = await BookingService.update(data);
+    if (res && res.data.EC == 0) {
+      toast.success("Cập nhật trạng thái đặt tour thành công");
+      getListBookingTour();
+      handleCancel();
+    } else {
+      toast.error(res.data.EM);
+    }
+  };
   const handleCancel = () => {
     setIsShowModalDuyetTour(false);
   };
@@ -34,6 +47,7 @@ function ModalDuyetTour(props) {
         onOk={handleOk}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
+        width={600}
       >
         <div>
           <Result
@@ -41,12 +55,24 @@ function ModalDuyetTour(props) {
             title="TIẾN HÀNH DUYỆT TOUR"
             subTitle={
               <div className={cx("subTitle")}>
-                <div>
-                  Khách hàng : <b>phandaicat12032002@gmail.com</b>
+                <div className={cx("row")}>
+                  <div className={cx("col-lg-3")}>Khách hàng </div>
+                  <div className={cx("col-lg-9")}>
+                    <b>phandaicat12032002@gmail.com</b>
+                  </div>
                 </div>
-                <div>
-                  Tour Miền Bắc 5N4Đ: Hà Nội - Bái Đính - Tràng An - Hang Múa -
-                  Hạ Long - Sapa
+                <div className={cx("row")}>
+                  <div className={cx("col-lg-3")}>Ngày đặt </div>
+                  <div className={cx("col-lg-9")}>
+                    <b>22/3/2024</b>
+                  </div>
+                </div>
+                <div className={cx("row")}>
+                  <div className={cx("col-lg-3")}>Tên tour</div>
+                  <div className={cx("col-lg-9")}>
+                    Tour Miền Bắc 5N4Đ: Hà Nội - Bái Đính - Tràng An - Hang Múa
+                    - Hạ Long - Sapa
+                  </div>
                 </div>
               </div>
             }

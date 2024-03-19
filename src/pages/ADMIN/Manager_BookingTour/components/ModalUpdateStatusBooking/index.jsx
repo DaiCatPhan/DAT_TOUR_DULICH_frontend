@@ -8,6 +8,7 @@ import { Radio } from "antd";
 import { useEffect, useState } from "react";
 
 import CategoryService from "../../../../../services/CategoryService";
+import BookingService from "../../../../../services/BookingService";
 
 function ModalUpdateStatusBooking(props) {
   const {
@@ -15,12 +16,14 @@ function ModalUpdateStatusBooking(props) {
     setIsShowModalUpdateStatusBooking,
     dataModalUpdateStatusBooking,
     setDataModalUpdateStatusBooking,
-    getListBlogs,
+    getListBookingTour,
   } = props;
 
-  const [value, setValue] = useState(1);
+  const { id } = dataModalUpdateStatusBooking;
+
+  const [status, setStatus] = useState("");
+
   const [category_STATUS_BOOKING, setCategory_STATUS_BOOKING] = useState([]);
-  console.log("category_STATUS_BOOKING >>>>>>>>>>..", category_STATUS_BOOKING);
 
   const getCategorys = async () => {
     try {
@@ -37,18 +40,34 @@ function ModalUpdateStatusBooking(props) {
 
   useEffect(() => {
     getCategorys();
-  }, []);
+    setStatus(dataModalUpdateStatusBooking?.status);
+  }, [dataModalUpdateStatusBooking]);
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const handleOk = () => {};
+  const handleOk = async () => {
+    const data = {
+      id: id,
+      status: status,
+    };
+    const res = await BookingService.update(data);
+    console.log("res >>>>>>>", res);
+    if (res && res.data.EC == 0) {
+      toast.success("Cập nhật trạng thái đặt tour thành công");
+      getListBookingTour();
+      handleCancel();
+    } else {
+      toast.error(res.data.EM);
+    }
+  };
   const handleCancel = () => {
     setIsShowModalUpdateStatusBooking(false);
+    setDataModalUpdateStatusBooking({});
   };
 
   const onChangeStatus = (e) => {
     console.log("radio checked", e.target.value);
-    setValue(e.target.value);
+    setStatus(e.target.value);
   };
 
   return (
@@ -62,11 +81,18 @@ function ModalUpdateStatusBooking(props) {
         width={800}
       >
         <div>
-          ModalUpdateStatusBooking
-          <div className={cx("border")}>
-            <Radio.Group onChange={onChangeStatus} value={value}>
+          <div>
+            <Radio.Group
+              onChange={onChangeStatus}
+              value={status}
+              className={cx("d-flex justify-content-around")}
+            >
               {category_STATUS_BOOKING?.map((item) => {
-                return <Radio value={item?.value}>{item?.value}</Radio>;
+                return (
+                  <Radio key={item.id} value={item?.value}>
+                    {item?.value}
+                  </Radio>
+                );
               })}
             </Radio.Group>
           </div>

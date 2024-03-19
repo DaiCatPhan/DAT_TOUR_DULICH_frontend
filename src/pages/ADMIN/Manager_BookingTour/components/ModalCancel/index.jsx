@@ -9,20 +9,35 @@ import { CloseCircleOutlined } from "@ant-design/icons";
 import { Result, Typography } from "antd";
 import { useState } from "react";
 
+import BookingService from "../../../../../services/BookingService";
+
 function ModalCancel(props) {
   const {
     isShowModalCancel,
     setIsShowModalCancel,
     dataModalCancel,
     setDataModalCancel,
-    getListBlogs,
+    getListBookingTour,
   } = props;
 
-  console.log("isShowModalCancel ModalCancel  >>>>>>", isShowModalCancel);
+  const { id } = dataModalCancel;
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
-  const handleOk = () => {};
+  const handleOk = async () => {
+    const data = {
+      id: id,
+      status: "ĐÃ HỦY",
+    };
+    const res = await BookingService.update(data);
+    if (res && res.data.EC == 0) {
+      toast.success("Cập nhật trạng thái đặt tour thành công");
+      getListBookingTour();
+      handleCancel();
+    } else {
+      toast.error(res.data.EM);
+    }
+  };
   const handleCancel = () => {
     setIsShowModalCancel(false);
   };
