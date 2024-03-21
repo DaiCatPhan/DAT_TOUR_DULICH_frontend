@@ -12,7 +12,7 @@ import { useEffect, useMemo, useState } from "react";
 import TourService from "../../services/TourService";
 import functions from "../../components/Functions/function.js";
 
-import ModalBookingTour from "./components/ModalBookingTour/index.jsx"; 
+import ModalBookingTour from "./components/ModalBookingTour/index.jsx";
 
 import {
   IconClockHour10,
@@ -23,17 +23,15 @@ import {
 
 function TourDetail() {
   const [tourDetail, setTourDetail] = useState({});
-  const [calendarTour, setCalendarTour] = useState([]); 
+  const [calendarTour, setCalendarTour] = useState([]);
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
   const [activeCalendar, setActiveCalendar] = useState({});
 
   const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
-  const [dataModalBookingTour, setDataModalBookingTour] = useState({});
 
-  const handleModalBookingTour = (data) => {
+  const handleModalBookingTour = () => {
     setIsShowModalBookingTour(true);
-    setDataModalBookingTour(data);
   };
 
   const [numberTicketAdult, setNumberTicketAdult] = useState(1);
@@ -222,8 +220,16 @@ function TourDetail() {
 
                 <div className={cx("d-flex my-3  ")}>
                   <div></div>
-                  <div className={cx("xanhBlueMo")}>
-                    Liên hệ để xác nhận chỗ
+                  <div
+                    className={cx(
+                      "xanhBlueMo",
+                      "d-flex justify-content-between  w-100 align-items-center"
+                    )}
+                  >
+                    <div>Liên hệ để xác nhận chỗ</div>
+                    <div className={cx("fs-4")}>
+                      {activeCalendar?.remainingSeats || 0}
+                    </div>
                   </div>
                 </div>
 
@@ -313,8 +319,12 @@ function TourDetail() {
       <ModalBookingTour
         isShowModalBookingTour={isShowModalBookingTour}
         setIsShowModalBookingTour={setIsShowModalBookingTour}
-        dataModalBookingTour={dataModalBookingTour}
-        setDataModalBookingTour={setDataModalBookingTour}
+        tourDetail={tourDetail}
+        setTourDetail={setTourDetail}
+        activeCalendar={activeCalendar}
+        numberTicketAdult={numberTicketAdult}
+        numberTicketChild={numberTicketChild}
+        totalAmount={totalAmount}
       />
     </div>
   );

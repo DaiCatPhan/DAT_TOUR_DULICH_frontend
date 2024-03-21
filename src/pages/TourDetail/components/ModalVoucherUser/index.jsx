@@ -78,7 +78,9 @@ function ModalVoucherUser(props) {
                         >
                           <CardVoucher
                             item={item}
-                            handleSelectVoucher={handleSelectVoucher}
+                            handleSelectVoucher={() =>
+                              handleSelectVoucher(item)
+                            }
                           />
                         </div>
                       </div>

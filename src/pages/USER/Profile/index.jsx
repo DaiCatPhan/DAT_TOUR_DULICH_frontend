@@ -1,13 +1,42 @@
 import className from "classnames/bind";
 import styles from "./Profile.module.scss";
 const cx = className.bind(styles);
+import { useDispatch, useSelector } from "react-redux";
+
+import { toast } from "react-toastify";
 
 import { Button, Checkbox, Form, Input } from "antd";
 import { IconUserSquare } from "@tabler/icons-react";
 
+import CustomerService from "../../../services/CustomerService";
+import { useEffect, useState } from "react";
+
 function Profile() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const user = useSelector((state) => state.account.user);
+  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  const [info, setInfo] = useState({});
+  const [formInfo] = Form.useForm();
+  const getProfile = async () => {
+    const res = await CustomerService.read(`id=${user?.id}`);
+    if (res && res.data.EC == 0) {
+      setInfo(res.data.DT);
+      formInfo.setFieldsValue(res.data.DT);
+    } else {
+      console.log("error", res.data.EM);
+    }
+  };
+  useEffect(() => {
+    getProfile();
+  }, []);
+
+  const onFinish = async (values) => {
+    values.id = user.id;
+    const res = await CustomerService.update(values);
+    if (res && res.data.EC == 0) {
+      toast.success("Cập nhật thông tin thành công");
+    } else {
+      toast.error(res.data.EM);
+    }
   };
 
   return (
@@ -24,9 +53,7 @@ function Profile() {
         <div className={cx("m-5")}>
           <Form
             name="basic"
-            initialValues={{
-              remember: true,
-            }}
+            form={formInfo}
             onFinish={onFinish}
             labelCol={{
               span: 24,
@@ -63,7 +90,7 @@ function Profile() {
 
             <Form.Item
               label="Họ và tên"
-              name="name"
+              name="username"
               rules={[
                 {
                   required: true,

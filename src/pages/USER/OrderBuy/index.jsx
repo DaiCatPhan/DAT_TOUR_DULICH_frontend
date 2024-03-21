@@ -59,12 +59,14 @@ function OrderBuy() {
   }, [status]);
 
   const handleStatusBooking = (status) => {
-    if (status == "Chờ xác nhận") {
+    if (status == "CHỜ XÁC NHẬN") {
       return <div className={cx("text-primary", "fw_600")}>Chờ xác nhận</div>;
-    } else if (status == "Đã duyệt") {
+    } else if (status == "ĐÃ DUYỆT") {
+      return <div className={cx("text-success", "fw_600")}>Đã duyệt</div>;
+    } else if (status === "CHỜ HỦY") {
+      return <div className={cx("text-warning", "fw_600")}>Chờ hủy</div>;
+    } else if (status === "ĐÃ HỦY") {
       return <div className={cx("text-danger", "fw_600")}>Đã hủy</div>;
-    } else if (status === "Chờ hủy") {
-      return <div className={cx("text-danger", "fw_600")}>Chờ hủy</div>;
     }
   };
 
