@@ -56,6 +56,8 @@ import List_Blog from "./pages/Blogs/List_Blog";
 import ListBookingTour from "./pages/ADMIN/Manager_BookingTour/ListBookingTour";
 import ListBookingTour_Update from "./pages/ADMIN/Manager_BookingTour/ListBookingTour_Update";
 
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 const Layout = () => {
   return (
     <div>
@@ -249,7 +251,9 @@ function App() {
         <Loading />
       )} */}
 
-      <RouterProvider router={router} /> 
+     
+
+      <RouterProvider router={router} />
 
       <ToastContainer
         position="top-right"

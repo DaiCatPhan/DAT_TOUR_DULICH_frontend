@@ -13,6 +13,18 @@ import { useSelector } from "react-redux";
 
 import BookingTourService from "../../../../services/BookingService";
 
+import {
+  PayPalScriptProvider,
+  PayPalButtons,
+  BraintreePayPalButtons,
+} from "@paypal/react-paypal-js";
+const initialOptions = {
+  clientId:
+    "Aaz18FxPx37xq4EUhCYA_O-Ks_0EHgFEOFvdZCKdcvLeEJBgjgjGdoDTBIzhvFzlPbS7z9dJ7gLWDzWa",
+  currency: "USD",
+  intent: "capture",
+};
+
 function ModalBookingTour(props) {
   const {
     isShowModalBookingTour,
@@ -123,6 +135,24 @@ function ModalBookingTour(props) {
     } else {
       toast.error(res.data.EM);
     }
+  };
+
+  const initialOptions = {
+    clientId: "test",
+    currency: "USD",
+    intent: "capture",
+  };
+
+  const createOrder = (data, acionts) => {
+    return data.order.create({
+      purchase_units: [{ amount: { currency_code: "USD", value: "0.01" } }],
+    });
+  };
+
+  const onApprove = (data, actions) => {
+    return actions.order.capture().then(function (details) {
+      alert("TRansackalsfj");
+    });
   };
 
   return (
@@ -285,9 +315,9 @@ function ModalBookingTour(props) {
                       <div>
                         <div className={cx("d-flex")}>
                           <div>
-                            <button className={cx("btnPay")}>
-                              thanh toan paypal
-                            </button>
+                            <PayPalScriptProvider options={initialOptions}>
+                              <PayPalButtons style={{ layout: "horizontal" }} />
+                            </PayPalScriptProvider>
                           </div>
                           <div>
                             <button className={cx("btnPay")}>
