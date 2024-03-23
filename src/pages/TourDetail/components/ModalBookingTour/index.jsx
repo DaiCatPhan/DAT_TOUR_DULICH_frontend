@@ -13,6 +13,8 @@ import { useSelector } from "react-redux";
 
 import BookingTourService from "../../../../services/BookingService";
 
+import PayPalButton from "../PayPalButton";
+
 import {
   PayPalScriptProvider,
   PayPalButtons,
@@ -142,18 +144,42 @@ function ModalBookingTour(props) {
     currency: "USD",
     intent: "capture",
   };
-
-  const createOrder = (data, acionts) => {
-    return data.order.create({
-      purchase_units: [{ amount: { currency_code: "USD", value: "0.01" } }],
-    });
-  };
-
-  const onApprove = (data, actions) => {
-    return actions.order.capture().then(function (details) {
-      alert("TRansackalsfj");
-    });
-  };
+  function createOrder() {
+    return fetch("/my-server/create-paypal-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // use the "body" param to optionally pass additional order information
+      // like product ids and quantities
+      body: JSON.stringify({
+        cart: [
+          {
+            id: "YOUR_PRODUCT_ID",
+            quantity: "YOUR_PRODUCT_QUANTITY",
+          },
+        ],
+      }),
+    })
+      .then((response) => response.json())
+      .then((order) => order.id);
+  }
+  function onApprove(data) {
+    return fetch("/my-server/capture-paypal-order", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        orderID: data.orderID,
+      }),
+    })
+      .then((response) => response.json())
+      .then((orderData) => {
+        const name = orderData.payer.name.given_name;
+        alert(`Transaction completed by ${name}`);
+      });
+  }
 
   return (
     <div className={cx("wrapper")}>
@@ -315,9 +341,7 @@ function ModalBookingTour(props) {
                       <div>
                         <div className={cx("d-flex")}>
                           <div>
-                            <PayPalScriptProvider options={initialOptions}>
-                              <PayPalButtons style={{ layout: "horizontal" }} />
-                            </PayPalScriptProvider>
+                            <PayPalButton amount={120} />
                           </div>
                           <div>
                             <button className={cx("btnPay")}>
