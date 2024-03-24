@@ -55,6 +55,8 @@ import List_Blog from "./pages/Blogs/List_Blog";
 // == BookingTour==
 import ListBookingTour from "./pages/ADMIN/Manager_BookingTour/ListBookingTour";
 import ListBookingTour_Update from "./pages/ADMIN/Manager_BookingTour/ListBookingTour_Update";
+// == MESSAGE ==
+import Message from "./pages/Message";
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
@@ -126,6 +128,10 @@ function App() {
         {
           path: "tours/voucher",
           element: <Voucher />,
+        },
+        {
+          path: "user/message",
+          element: <Message />,
         },
       ],
     },
@@ -229,6 +235,7 @@ function App() {
         },
       ],
     },
+
     {
       path: "/login",
       element: <LoginPage />,
@@ -250,8 +257,6 @@ function App() {
       ) : (
         <Loading />
       )} */}
-
-     
 
       <RouterProvider router={router} />
 
