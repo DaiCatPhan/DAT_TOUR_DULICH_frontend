@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.formMessage {
+  width: 500px;
+  height: 600px;
+  border: 1px solid red;
+  .list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat_message {
+    background-color: #f2f2f2; /* Màu nền của tin nhắn */
+    padding: 10px;
+    margin-bottom: 5px; /* Khoảng cách giữa các tin nhắn */
+    border-radius: 5px;
+    width: 50%;
+  }
+
+  .sent {
+    background-color: #dcf8c6; /* Màu nền tin nhắn gửi */
+    align-self: flex-start; /* Đẩy tin nhắn gửi sang phải */
+  }
+
+  .received {
+    background-color: #f2f2f2; /* Màu nền tin nhắn nhận */
+    align-self: flex-end; /* Đẩy tin nhắn nhận sang trái */
+  }
+}
