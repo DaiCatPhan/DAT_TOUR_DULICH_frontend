@@ -5,7 +5,7 @@
 
 .formMessage {
   width: 500px;
-  height: 600px;
+  min-height: 600px;
   border: 1px solid red;
   .list {
     display: flex;
@@ -22,11 +22,11 @@
 
   .sent {
     background-color: #dcf8c6; /* Màu nền tin nhắn gửi */
-    align-self: flex-start; /* Đẩy tin nhắn gửi sang phải */
+    align-self: flex-end; /* Đẩy tin nhắn gửi sang phải */
   }
 
   .received {
     background-color: #f2f2f2; /* Màu nền tin nhắn nhận */
-    align-self: flex-end; /* Đẩy tin nhắn nhận sang trái */
+    align-self: flex-start; /* Đẩy tin nhắn nhận sang trái */
   }
 }

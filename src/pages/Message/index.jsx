@@ -3,21 +3,38 @@ import styles from "./Message.module.scss";
 const cx = className.bind(styles);
 import { io } from "socket.io-client";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Input } from "antd";
 const { TextArea } = Input;
+
+import MessageService from "../../services/MessageService";
 
 const socket = io.connect("http://localhost:3000", {
   transports: ["websocket"],
 });
 
 function Message() {
+  const user = useSelector((state) => state.account.user);
+
   //Room State
-  const [room, setRoom] = useState(2);
-  const [createRoomSever, setCreateRoomSever] = useState();
-  console.log("createRoomSever >>>.", createRoomSever);
+  const [room, setRoom] = useState();
   const [text, setText] = useState("");
-  const [messageReceived, setMessageReceived] = useState("");
+  const [listMessage, setListMessage] = useState([]);
+
+  const getListRoomOfUser = async () => {
+    const res = await MessageService.listRoomOfUser(`userOne=${user?.id}`);
+    console.log("res >>>>>>>.", res);
+    if (res && res.data.EC == 0) {
+      setListMessage(res.data.DT[0]);
+    }
+  };
+
+  useEffect(() => {
+    setRoom(user?.id);
+    getListRoomOfUser();
+  }, [user]);
 
   const joinRoom = () => {
     if (room !== "") {
@@ -25,65 +42,57 @@ function Message() {
     }
   };
 
-  // const sendMessage = () => {
-  //   socket.emit("send_message", { message, room });
-  // };
-
   const sendMessage = () => {
-    socket.emit("send_message", { text, room: createRoomSever, ID_User: 2 });
+    const room = localStorage.getItem("room");
+    if (!room) {
+      toast.warning("Vui lòng chọn phòng trước khi gửi tin nhắn ");
+    }
+    socket.emit("send_message", { text, room: room, ID_User: user?.id });
+    setText("");
   };
 
   useEffect(() => {
     // Lắng nghe sự kiện "room_created" từ máy chủ
     socket.on("room_created", (room) => {
-      setCreateRoomSever(room); // Cập nhật số phòng mới được tạo
+      localStorage.setItem("room", room);
     });
 
-    socket.on("receive_message", (data) => {
-      setMessageReceived(data.text);
+    socket.on("receive_message", async (data) => {
+      if (data && data.id) {
+        const res = await MessageService.listRoomOfUser(
+          `userOne=${data.ID_User}`
+        );
+        if (res && res.data.EC == 0) {
+          setListMessage(res.data.DT[0]);
+        }
+      }
     });
   }, [socket]);
   return (
     <div className={cx("mx-5")}>
-      {/* <div>
-        <input
-          placeholder="Room Number..."
-          onChange={(event) => {
-            setRoom(event.target.value);
-          }}
-        />
-        <button onClick={joinRoom}> Join Room</button>
-      </div>
-      <div>
-        <input
-          placeholder="Message..."
-          onChange={(event) => {
-            setMessage(event.target.value);
-          }}
-        />
-        <button onClick={sendMessage}> Send Message</button>
-      </div>
-      <div>
-        <div> Message:</div>
-        {messageReceived}
-      </div> */}
-
       <div className={cx("formMessage")}>
-        {/* <div className={cx("list")}>
-          <div className={cx("chat_message", "received")}>Tin nhắn 1</div>
-          <div className={cx("chat_message", "sent")}>Tin nhắn 2</div>
-          <div className={cx("chat_message", "sent")}>Tin nhắn 2</div>
-          <div className={cx("chat_message", "received")}>Tin nhắn 1</div>
-          <div className={cx("chat_message", "sent")}>Tin nhắn 2</div>
-          <div className={cx("chat_message", "received")}>Tin nhắn 1</div>
-        </div> */}
-
         <button onClick={joinRoom}>Phòng 1</button>
-
-        <div>{messageReceived}</div>
+        <div className={cx("list")}>
+          {listMessage?.messageData?.map((item) => {
+            if (item?.Customer?.email != "admin@gmail.com") {
+              return (
+                <div key={item.id} className={cx("chat_message", "sent")}>
+                  {item?.text}
+                </div>
+              );
+            } else {
+              return (
+                <div key={item.id} className={cx("chat_message", "received")}>
+                  {item?.text}
+                </div>
+              );
+            }
+          })}
+        </div>
 
         <div>
           <TextArea
+            value={text}
             rows={3}
             onChange={(event) => {
               setText(event.target.value);
