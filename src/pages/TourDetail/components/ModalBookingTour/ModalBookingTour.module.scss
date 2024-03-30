@@ -1,10 +1,22 @@
+.session1 {
+  .titleCount {
+    font-size: 15px;
+    color: red;
+  }
+}
+
 .sesion2 {
-  .btnPay {
+  .btnPayHome {
     border: 1px solid grey;
     background-color: transparent;
     padding: 5px 7px;
     min-width: 200px;
-    margin: 10px;
+    margin: 0 10px;
+    border-radius: 5px;
+  }
+
+  .btnPayHome.active {
+    border: 2px solid blue;
   }
 
   .btnBookingTour {
@@ -16,4 +28,10 @@
     padding: 6px 40px;
     border-radius: 5px;
   }
+}
+
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

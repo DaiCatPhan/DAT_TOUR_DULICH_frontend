@@ -228,7 +228,11 @@ function TourDetail() {
                   >
                     <div>Liên hệ để xác nhận chỗ</div>
                     <div className={cx("fs-4")}>
-                      {activeCalendar?.remainingSeats || 0}
+                      {activeCalendar?.remainingSeats == 0 ? (
+                        <div>Hết chỗ</div>
+                      ) : (
+                        <div>{activeCalendar?.remainingSeats}</div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -250,12 +254,22 @@ function TourDetail() {
                     <button className={cx("btnLienHe")}>Liên hệ tư vấn</button>
                   </div>
                   <div>
-                    <button
-                      onClick={handleModalBookingTour}
-                      className={cx("btnYeuCau")}
-                    >
-                      Đặt tour ngay
-                    </button>
+                    {activeCalendar?.remainingSeats == 0 ? (
+                      <button
+                        onClick={handleModalBookingTour}
+                        className={cx("btnYeuCau",'disable')}
+                        disabled={true}
+                      >
+                        Đặt tour ngay
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleModalBookingTour}
+                        className={cx("btnYeuCau")}
+                      >
+                        Đặt tour ngay
+                      </button>
+                    )}
                   </div>
                 </div>
 

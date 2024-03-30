@@ -4,7 +4,8 @@ const cx = className.bind(styles);
 
 import { toast } from "react-toastify";
 import { Button, Modal } from "antd";
-import { Space, Table, Tag, Form, Input } from "antd";
+import { Space, Table, Tag, Form, Input, Result } from "antd";
+import { useNavigate } from "react-router-dom";
 
 import { useEffect, useMemo, useState } from "react";
 
@@ -41,6 +42,7 @@ function ModalBookingTour(props) {
   const [formInfo] = Form.useForm();
   tourDetail.key = tourDetail.id;
 
+  const navigate = useNavigate();
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
@@ -51,7 +53,14 @@ function ModalBookingTour(props) {
   const [isShowModalVoucherUser, setIsShowModalVoucherUser] = useState(false);
   const [dataModalVoucherUser, setDataModalVoucherUser] = useState({});
   const [voucherSelected, setVoucherSelected] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("tại quầy");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const [showBtnPayHome, setShowBtnPayHome] = useState(false);
+  const [showModalResult, setShowModalResult] = useState(false);
+
+  const handleClickPaymentMethodHome = () => {
+    setShowBtnPayHome(true);
+    setPaymentMethod("TẠI QUẦY");
+  };
 
   const handleModalVoucherUser = (data) => {
     setIsShowModalVoucherUser(true);
@@ -115,7 +124,7 @@ function ModalBookingTour(props) {
 
   useEffect(() => {
     formInfo.setFieldsValue(user);
-  }, []);
+  }, [user]);
 
   const onFinishForm = async (values) => {
     const dataSend = values;
@@ -128,15 +137,18 @@ function ModalBookingTour(props) {
     dataSend.numberTicketChild = numberTicketChild;
     dataSend.payment_method = paymentMethod;
 
-    console.log("dataSend", dataSend);
-
-    const res = await BookingTourService.create(dataSend);
-    console.log("res >>>>>>>>>", res);
-    if (res && res.data.EC == 0) {
-      toast.success("Đặt tour thành công");
-    } else {
-      toast.error(res.data.EM);
-    }
+    setConfirmLoading(true);
+    setTimeout(async () => {
+      const res = await BookingTourService.create(dataSend);
+      console.log("res >>>>>>>>>", res);
+      setConfirmLoading(false);
+      if (res && res.data.EC == 0) {
+        setShowModalResult(true);
+        setIsShowModalBookingTour(false);
+      } else {
+        toast.error(res.data.EM);
+      }
+    }, 1000);
   };
 
   const initialOptions = {
@@ -144,6 +156,7 @@ function ModalBookingTour(props) {
     currency: "USD",
     intent: "capture",
   };
+
   function createOrder() {
     return fetch("/my-server/create-paypal-order", {
       method: "POST",
@@ -164,6 +177,7 @@ function ModalBookingTour(props) {
       .then((response) => response.json())
       .then((order) => order.id);
   }
+
   function onApprove(data) {
     return fetch("/my-server/capture-paypal-order", {
       method: "POST",
@@ -181,6 +195,34 @@ function ModalBookingTour(props) {
       });
   }
 
+  const ResultComponent = () => {
+    const handleBill = () => {
+      navigate("/user/order-buy");
+    };
+    return (
+      <Modal
+        open={showModalResult}
+        onCancel={() => setShowModalResult(false)}
+        cancelButtonProps={{ style: { display: "none" } }}
+        okButtonProps={{ style: { display: "none" } }}
+      >
+        <div>
+          <Result
+            status="success"
+            title="Chúc mừng bạn đã đặc tour thành công"
+            subTitle="Mã tour : 2017182818828182881 . Chúng tôi đã gửi mail đến bạn vui lòng xác nhận "
+            extra={[
+              <Button type="primary" key="console" onClick={handleBill}>
+                Hóa đơn
+              </Button>,
+              <Button key="buy">Trở về</Button>,
+            ]}
+          />
+        </div>
+      </Modal>
+    );
+  };
+
   return (
     <div className={cx("wrapper")}>
       <Modal
@@ -196,8 +238,8 @@ function ModalBookingTour(props) {
       >
         <div className={cx("p-4")}>
           <div className={cx("border p-3", "session1")}>
-            <div className={cx("border row  ")}>
-              <div className={cx("col-lg-2 ")}>
+            <div className={cx("d-flex justify-content-between ")}>
+              <div>
                 <img
                   src={tourDetail?.image}
                   alt="notFound"
@@ -205,34 +247,37 @@ function ModalBookingTour(props) {
                 />
               </div>
 
-              <div className={cx("col-lg-3")}>{tourDetail?.name}</div>
+              <div>{tourDetail?.name}</div>
 
-              <div className={cx("col-lg-3")}>
+              <div>
                 <div className={cx("row")}>
-                  <div className={cx("col-lg-7")}>Người lớn</div>
-                  <div className={cx("col-lg-4")}>
-                    <span>X</span>
-                    <span className={cx("mx-1")}></span>
-                    <span>{numberTicketChild}</span>
+                  <div className={cx("col-lg-8")}>Người lớn</div>
+                  <div className={cx("col-lg-2")}>
+                    <div className={cx("mx-2 d-flex")}>
+                      <span>x</span>
+                      <span>{numberTicketChild}</span>
+                    </div>
                   </div>
                 </div>
+
                 <div className={cx("row")}>
-                  <div className={cx("col-lg-7 ")}>Trẻ em</div>
-                  <div className={cx("col-lg-4")}>
-                    <span>X</span>
-                    <span className={cx("mx-1")}></span>
-                    <span>{numberTicketAdult}</span>
+                  <div className={cx("col-lg-8")}>Trẻ em</div>
+                  <div className={cx("col-lg-2")}>
+                    <div className={cx("mx-2 d-flex text-bold")}>
+                      <span>x</span>
+                      <span>{numberTicketAdult}</span>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div className={cx("col-lg-2")}>
+              <div>
                 <div>{activeCalendar?.priceAdult} VND</div>
                 <div>{activeCalendar?.priceChild} VND</div>
               </div>
 
-              <div className={cx("col-lg-2")}>
-                <div>Tổng cộng</div>
+              <div>
+                <div className={cx("titleCount")}>Tổng cộng</div>
                 <div>{totalAmount} VND</div>
               </div>
             </div>
@@ -274,14 +319,13 @@ function ModalBookingTour(props) {
           </div>
 
           {isShowSession2 ? (
-            <div className={cx("border   my-2 p-3", "sesion2")}>
+            <div className={cx("border   my-2 px-3", "sesion2")}>
               <div className={cx("row")}>
                 <div className={cx("col-lg-6")}>
-                  <div>
-                    <div>
-                      Quí khách vui lòng nhập thông tin liên hệ bên dưới
-                    </div>
+                  <div className={cx("my-2")}>
+                    <b>Quí khách vui lòng nhập thông tin liên hệ bên dưới</b>
                   </div>
+
                   <div>
                     <Form name="basic" form={formInfo} onFinish={onFinishForm}>
                       <Form.Item
@@ -329,45 +373,31 @@ function ModalBookingTour(props) {
                           },
                         ]}
                       >
-                        <Input />
+                        <Input className={cx("disabled")} />
                       </Form.Item>
                     </Form>
                   </div>
                 </div>
                 <div className={cx("col-lg-6")}>
                   <div>
+                    <div>Phương thức thanh toán</div>
                     <div>
-                      <div>Phuong thuc thanh toan</div>
-                      <div>
-                        <div className={cx("d-flex")}>
-                          <div>
-                            <PayPalButton amount={120} />
-                          </div>
-                          <div>
-                            <button className={cx("btnPay")}>
-                              thanh toan khi nhan hang
-                            </button>
-                          </div>
+                      <div className={cx("d-flex border")}>
+                        <div>
+                          <PayPalButton amount={resultAmount} />
                         </div>
-
-                        <div className={cx("d-flex")}>
-                          <div>
-                            <button className={cx("btnPay")}>
-                              thanh toan paypal
-                            </button>
-                          </div>
-                          <div>
-                            <button className={cx("btnPay")}>
-                              thanh toan VNPAY
-                            </button>
-                          </div>
+                        <div>
+                          <button
+                            onClick={handleClickPaymentMethodHome}
+                            className={
+                              showBtnPayHome
+                                ? cx("btnPayHome", "active")
+                                : cx("btnPayHome")
+                            }
+                          >
+                            Thanh toán khi nhận hàng
+                          </button>
                         </div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className={cx("row")}>
-                        <div className={cx("col-lg-4")}>Tổng thanh toán</div>
-                        <div className={cx("col-lg")}>{resultAmount} VND</div>
                       </div>
                     </div>
                   </div>
@@ -386,6 +416,7 @@ function ModalBookingTour(props) {
         setDataModalVoucherUser={setDataModalVoucherUser}
         setVoucherSelected={setVoucherSelected}
       />
+      <ResultComponent />
     </div>
   );
 }

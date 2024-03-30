@@ -130,6 +130,11 @@
     }
   }
 
+  .btnYeuCau:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
   .btnLienHe {
     border: 2px solid #f79321;
     color: #f79321;
