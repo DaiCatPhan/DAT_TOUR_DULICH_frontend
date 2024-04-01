@@ -63,14 +63,14 @@ const items = [
   ]),
 
   getItem("Quản lí tin nhắn", "sub7", <TeamOutlined />, [
-    getItem(<Link to="#">Messager</Link>, "8"),
+    getItem(<Link to="/admin/managerMessage/messages">Messager</Link>, "8"),
   ]),
   getItem("Thống kê", "sub8", <TeamOutlined />, [
     getItem(<Link to="#">Thông kê doanh thu</Link>, "8"),
   ]),
 ];
 function LayoutAdmin() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(false); 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
