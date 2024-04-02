@@ -28,7 +28,7 @@ const items = [
   getItem(<Link to="/admin">Trang chủ</Link>, "1", <PieChartOutlined />),
   getItem(
     <Link to="/admin/dashboard">Dashboard</Link>,
-    "2",
+    "2", 
     <DesktopOutlined />
   ),
   getItem("Doanh mục", "sub1", <UserOutlined />, [

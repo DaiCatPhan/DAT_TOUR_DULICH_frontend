@@ -16,6 +16,8 @@ function Messages() {
   const [listMessages, setListMessages] = useState([]);
   const [listMessage, setListMessage] = useState([]);
   const [text, setText] = useState("");
+  const [room, setRoom] = useState();
+  const [test, setTest] = useState("");
 
   const getListUserComment = async () => {
     const res = await MessageService.listRoomOfAdmin();
@@ -28,6 +30,7 @@ function Messages() {
     const room = listMessage?.id;
     const ID_User = listMessage?.userTwo;
     const ID_UserOne = listMessage?.userOne;
+
     if (!room) {
       toast.warning("Vui lòng chọn phòng trước khi gửi tin nhắn ");
     }
@@ -40,6 +43,7 @@ function Messages() {
   }, []);
 
   const handleRoomMessageUser = async (data) => {
+    socket.emit("join_room_admin", { room: data.id });
     const res = await MessageService.listRoomOfUser(`userOne=${data?.userOne}`);
     if (res && res.data.EC === 0) {
       setListMessage(res.data.DT[0]);
@@ -48,14 +52,15 @@ function Messages() {
 
   useEffect(() => {
     socket.on("receive_message", async (data) => {
-      if (data && data.id) {
-        const res = await MessageService.listRoomOfUser(
-          `userOne=${data?.exitRoom?.userOne}`
-        );
-        if (res && res.data.EC == 0) {
-          setListMessage(res.data.DT[0]);
-        }
-      }
+      // if (data) {
+      //   const res = await MessageService.listRoomOfUser(
+      //     `userOne=${data?.exitRoom?.userOne}`
+      //   );
+      //   if (res && res.data.EC == 0) {
+      //     setListMessage(res.data.DT[0]);
+      //   }
+      // }
+      setTest(data.text);
     });
   }, [socket]);
 
@@ -100,6 +105,8 @@ function Messages() {
                 }
               })}
             </div>
+
+            <div>{test}</div>
 
             <div>
               <TextArea

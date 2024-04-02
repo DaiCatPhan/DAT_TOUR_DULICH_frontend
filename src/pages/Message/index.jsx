@@ -20,8 +20,11 @@ function Message() {
 
   //Room State
   const [room, setRoom] = useState();
+  const [userOne, setUserOne] = useState();
   const [text, setText] = useState("");
   const [listMessage, setListMessage] = useState([]);
+
+  const [test, setTest] = useState("");
 
   const getListRoomOfUser = async () => {
     const res = await MessageService.listRoomOfUser(`userOne=${user?.id}`);
@@ -32,13 +35,13 @@ function Message() {
   };
 
   useEffect(() => {
-    setRoom(user?.id);
+    setUserOne(user?.id);
     getListRoomOfUser();
   }, [user]);
 
   const joinRoom = () => {
-    if (room !== "") {
-      socket.emit("join_room", { room });
+    if (userOne !== "") {
+      socket.emit("join_room", { userOne });
     }
   };
 
@@ -58,7 +61,9 @@ function Message() {
     });
 
     socket.on("receive_message", async (data) => {
-      if (data && data.id) {
+      console.log("data >>>>>", data);
+
+      if (data) {
         const res = await MessageService.listRoomOfUser(
           `userOne=${data.ID_User}`
         );
@@ -66,6 +71,8 @@ function Message() {
           setListMessage(res.data.DT[0]);
         }
       }
+
+      setTest(data.text);
     });
   }, [socket]);
   return (
@@ -89,6 +96,8 @@ function Message() {
             }
           })}
         </div>
+
+        <div>{test}</div>
 
         <div>
           <TextArea
