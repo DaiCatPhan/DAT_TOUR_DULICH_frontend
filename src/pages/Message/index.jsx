@@ -61,7 +61,7 @@ function Message() {
     });
 
     socket.on("receive_message", async (data) => {
-      console.log("data >>>>>", data);
+      console.log("data fl >>>>>", data);
 
       if (data) {
         const res = await MessageService.listRoomOfUser(

@@ -52,14 +52,14 @@ function Messages() {
 
   useEffect(() => {
     socket.on("receive_message", async (data) => {
-      // if (data) {
-      //   const res = await MessageService.listRoomOfUser(
-      //     `userOne=${data?.exitRoom?.userOne}`
-      //   );
-      //   if (res && res.data.EC == 0) {
-      //     setListMessage(res.data.DT[0]);
-      //   }
-      // }
+      if (data) {
+        const res = await MessageService.listRoomOfUser(
+          `userOne=${data?.exitRoom?.userOne}`
+        );
+        if (res && res.data.EC == 0) {
+          setListMessage(res.data.DT[0]);
+        }
+      }
       setTest(data.text);
     });
   }, [socket]);
