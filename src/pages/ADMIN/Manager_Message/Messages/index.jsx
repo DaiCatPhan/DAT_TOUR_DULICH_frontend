@@ -28,7 +28,6 @@ function Messages() {
   };
 
   const getListRoomOfUser = async (userOne) => {
-    console.log("res  useOne >>>>>>>.", userOne);
     const res = await MessageService.listRoomOfUser(`userOne=${userOne}`);
     if (res && res.data.EC == 0) {
       setListMessage(res.data.DT[0]);
@@ -36,9 +35,8 @@ function Messages() {
   };
 
   const handleRoomMessageUser = async (data) => {
-    console.log("data >", data);
+    socket.emit("join_room_admin", { room: data?.id });
     getListRoomOfUser(data?.userOne);
-    socket.emit("join_room_admin", { room: data.id });
   };
 
   const sendMessage = async () => {
@@ -50,11 +48,10 @@ function Messages() {
     }
     const res = await MessageService.create({
       text,
-      ID_Room: room,
+      ID_Room: +room,
       ID_User: ID_User,
     });
     if (res && res.data.EC === 0) {
-      console.log("res test", res);
       getListRoomOfUser(res.data.DT.exitRoom.userOne);
     }
     socket.emit("send_message", { text, room: room, ID_User: ID_User });
@@ -67,6 +64,8 @@ function Messages() {
 
   useEffect(() => {
     socket.on("receive_message", async (data) => {
+      console.log("data backend nhan >>> ", data);
+
       const res = await MessageService.listRoomOfUser(
         `userOne=${data?.ID_User}`
       );
@@ -120,7 +119,7 @@ function Messages() {
               })}
             </div>
 
-            <div>{test}</div>
+            {/* <div>{test}</div> */}
 
             <div>
               <TextArea

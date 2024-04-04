@@ -27,9 +27,9 @@ function Message() {
 
   const getListRoomOfUser = async () => {
     const res = await MessageService.listRoomOfUser(`userOne=${user?.id}`);
-    console.log("res v >>>>>>>.", res);
     if (res && res.data.EC == 0) {
       setListMessage(res.data.DT[0]);
+      localStorage.setItem("ID_UserOne", user?.id);
     }
   };
 
@@ -51,14 +51,14 @@ function Message() {
     }
     const res = await MessageService.create({
       text,
-      ID_Room: room,
+      ID_Room: +room,
       ID_User: user?.id,
     });
     if (res && res.data.EC === 0) {
       setListMessage(res.data.DT[0]);
       getListRoomOfUser();
     }
-    socket.emit("send_message", { text, room: room, ID_User: user?.id });
+    socket.emit("send_message", { text, room: +room, ID_User: user?.id });
     setText("");
   };
 
@@ -69,13 +69,12 @@ function Message() {
     });
 
     socket.on("receive_message", async (data) => {
-      console.log("data fl >>>>>", data);
-      const res = await MessageService.listRoomOfUser(`userOne=${user?.id}`);
-      console.log("res v >>>>>>>.", res);
+      const ID_UserOne = localStorage.getItem("ID_UserOne");
+      const res = await MessageService.listRoomOfUser(`userOne=${ID_UserOne}`);
       if (res && res.data.EC == 0) {
         setListMessage(res.data.DT[0]);
       }
-      // getListRoomOfUser();
+      getListRoomOfUser();
       setTest(data.text);
     });
   }, [socket]);
@@ -101,7 +100,7 @@ function Message() {
           })}
         </div>
 
-        <div>{test}</div>
+        {/* <div>{test}</div> */}
 
         <div>
           <TextArea
