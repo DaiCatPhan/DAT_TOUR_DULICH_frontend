@@ -9,7 +9,12 @@ const listRoomOfAdmin = (data) => {
   return axios.get(`/api/v1/message/listRoomOfAdmin`);
 };
 
+const create = (data) => {
+  return axios.post(`/api/v1/message/create`, data);
+};
+
 export default {
   listRoomOfUser,
   listRoomOfAdmin,
+  create,
 };

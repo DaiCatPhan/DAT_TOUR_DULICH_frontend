@@ -17,7 +17,6 @@ const socket = io.connect("http://localhost:3000", {
 
 function Message() {
   const user = useSelector((state) => state.account.user);
-
   //Room State
   const [room, setRoom] = useState();
   const [userOne, setUserOne] = useState();
@@ -28,7 +27,7 @@ function Message() {
 
   const getListRoomOfUser = async () => {
     const res = await MessageService.listRoomOfUser(`userOne=${user?.id}`);
-    console.log("res >>>>>>>.", res);
+    console.log("res v >>>>>>>.", res);
     if (res && res.data.EC == 0) {
       setListMessage(res.data.DT[0]);
     }
@@ -45,10 +44,19 @@ function Message() {
     }
   };
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     const room = localStorage.getItem("room");
     if (!room) {
       toast.warning("Vui lòng chọn phòng trước khi gửi tin nhắn ");
+    }
+    const res = await MessageService.create({
+      text,
+      ID_Room: room,
+      ID_User: user?.id,
+    });
+    if (res && res.data.EC === 0) {
+      setListMessage(res.data.DT[0]);
+      getListRoomOfUser();
     }
     socket.emit("send_message", { text, room: room, ID_User: user?.id });
     setText("");
@@ -62,23 +70,19 @@ function Message() {
 
     socket.on("receive_message", async (data) => {
       console.log("data fl >>>>>", data);
-
-      if (data) {
-        const res = await MessageService.listRoomOfUser(
-          `userOne=${data.ID_User}`
-        );
-        if (res && res.data.EC == 0) {
-          setListMessage(res.data.DT[0]);
-        }
+      const res = await MessageService.listRoomOfUser(`userOne=${user?.id}`);
+      console.log("res v >>>>>>>.", res);
+      if (res && res.data.EC == 0) {
+        setListMessage(res.data.DT[0]);
       }
-
+      // getListRoomOfUser();
       setTest(data.text);
     });
   }, [socket]);
   return (
     <div className={cx("mx-5")}>
       <div className={cx("formMessage")}>
-        <button onClick={joinRoom}>Phòng 1</button>
+        <button onClick={joinRoom}>Lien he tu van</button>
         <div className={cx("list")}>
           {listMessage?.messageData?.map((item) => {
             if (item?.Customer?.email != "admin@gmail.com") {

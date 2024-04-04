@@ -18,6 +18,7 @@ function Messages() {
   const [text, setText] = useState("");
   const [room, setRoom] = useState();
   const [test, setTest] = useState("");
+  const [userOne, setUserOne] = useState();
 
   const getListUserComment = async () => {
     const res = await MessageService.listRoomOfAdmin();
@@ -26,13 +27,35 @@ function Messages() {
     }
   };
 
-  const sendMessage = () => {
+  const getListRoomOfUser = async (userOne) => {
+    console.log("res  useOne >>>>>>>.", userOne);
+    const res = await MessageService.listRoomOfUser(`userOne=${userOne}`);
+    if (res && res.data.EC == 0) {
+      setListMessage(res.data.DT[0]);
+    }
+  };
+
+  const handleRoomMessageUser = async (data) => {
+    console.log("data >", data);
+    getListRoomOfUser(data?.userOne);
+    socket.emit("join_room_admin", { room: data.id });
+  };
+
+  const sendMessage = async () => {
     const room = listMessage?.id;
     const ID_User = listMessage?.userTwo;
-    const ID_UserOne = listMessage?.userOne;
 
     if (!room) {
       toast.warning("Vui lòng chọn phòng trước khi gửi tin nhắn ");
+    }
+    const res = await MessageService.create({
+      text,
+      ID_Room: room,
+      ID_User: ID_User,
+    });
+    if (res && res.data.EC === 0) {
+      console.log("res test", res);
+      getListRoomOfUser(res.data.DT.exitRoom.userOne);
     }
     socket.emit("send_message", { text, room: room, ID_User: ID_User });
     setText("");
@@ -42,24 +65,15 @@ function Messages() {
     getListUserComment();
   }, []);
 
-  const handleRoomMessageUser = async (data) => {
-    socket.emit("join_room_admin", { room: data.id });
-    const res = await MessageService.listRoomOfUser(`userOne=${data?.userOne}`);
-    if (res && res.data.EC === 0) {
-      setListMessage(res.data.DT[0]);
-    }
-  };
-
   useEffect(() => {
     socket.on("receive_message", async (data) => {
-      if (data) {
-        const res = await MessageService.listRoomOfUser(
-          `userOne=${data?.exitRoom?.userOne}`
-        );
-        if (res && res.data.EC == 0) {
-          setListMessage(res.data.DT[0]);
-        }
+      const res = await MessageService.listRoomOfUser(
+        `userOne=${data?.ID_User}`
+      );
+      if (res && res.data.EC == 0) {
+        setListMessage(res.data.DT[0]);
       }
+
       setTest(data.text);
     });
   }, [socket]);
