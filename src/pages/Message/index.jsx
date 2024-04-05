@@ -8,6 +8,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Input } from "antd";
 const { TextArea } = Input;
+import { FloatButton } from "antd";
+import {
+  CustomerServiceOutlined,
+  QuestionCircleOutlined,
+} from "@ant-design/icons";
 
 import MessageService from "../../services/MessageService";
 
@@ -78,41 +83,74 @@ function Message() {
       setTest(data.text);
     });
   }, [socket]);
+
   return (
-    <div className={cx("mx-5")}>
-      <div className={cx("formMessage")}>
-        <button onClick={joinRoom}>Lien he tu van</button>
-        <div className={cx("list")}>
-          {listMessage?.messageData?.map((item) => {
-            if (item?.Customer?.email != "admin@gmail.com") {
-              return (
-                <div key={item.id} className={cx("chat_message", "sent")}>
-                  {item?.text}
-                </div>
-              );
-            } else {
-              return (
-                <div key={item.id} className={cx("chat_message", "received")}>
-                  {item?.text}
-                </div>
-              );
-            }
-          })}
+    <div className={cx("wrapper")}>
+      <div className={cx("row")}>
+        <div className={cx("col-lg-4 ")}>
+          <div className={cx("listCard")}>
+            <div className={cx("cardMessage", "d-flex align-items-center")}>
+              <div className={cx("circle")}>ad</div>
+              <div className={cx("mx-3")} onClick={joinRoom}>
+                admin@gmail.com
+              </div>
+            </div>
+          </div>
         </div>
+        <div className={cx("col-lg-8  ")}>
+          <div className={cx("  d-flex justify-content-start")}>
+            <div className={cx("formMessage")}>
+              <div className={cx("list")}>
+                {listMessage?.messageData?.map((item) => {
+                  if (item?.Customer?.email != "admin@gmail.com") {
+                    return (
+                      <div
+                        key={item.id}
+                        className={cx(
+                          "chat_message",
+                          "sent",
+                          "d-flex align-items-center"
+                        )}
+                      >
+                        <div className={cx("mx-2")}>{item?.text}</div>
+                        <div className={cx("time")}>22:10</div>
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <div
+                        key={item.id}
+                        className={cx("chat_message", "received")}
+                      >
+                        {item?.text}
+                      </div>
+                    );
+                  }
+                })}
+              </div>
 
-        {/* <div>{test}</div> */}
+              <div className={cx("mt_80")}></div>
 
-        <div>
-          <TextArea
-            value={text}
-            rows={3}
-            onChange={(event) => {
-              setText(event.target.value);
-            }}
-          />
-          <Button type="primary" onClick={sendMessage}>
-            Gửi
-          </Button>
+              <div className={cx("TextArea")}>
+                <TextArea
+                  className={cx("border")}
+                  value={text}
+                  rows={2}
+                  onChange={(event) => {
+                    setText(event.target.value);
+                  }}
+                />
+
+                <Button
+                  type="primary"
+                  onClick={sendMessage}
+                  className={cx("mx-2")}
+                >
+                  Gửi
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -13,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown, Space } from "antd";
 import { DownOutlined } from "@ant-design/icons";
+import { IconMessage } from "@tabler/icons-react";
 
 function Header() {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function Header() {
     const res = await AuthService.LogoutApi();
     if (res && res.data.EC === 0) {
       dispatch(doLogoutAction());
-      toast.success("Đăng xuất thành công"); 
+      toast.success("Đăng xuất thành công");
       navigate("/");
     }
   };
@@ -92,38 +93,50 @@ function Header() {
                 <Nav.Link href="/tours/blogs">TIN TỨC</Nav.Link>
                 <Nav.Link href="/tours/voucher">VOUCHER</Nav.Link>
               </div>
+
               <div>
-                {isAuthenticated ? (
-                  <Dropdown
-                    menu={{
-                      items: itemsDropdown,
-                    }}
-                    trigger={["click"]}
-                    className={cx("poiter")}
-                  >
-                    <a onClick={(e) => e.preventDefault()}>
-                      <Space>
-                        Welcome to {user?.username || ""}
-                        <DownOutlined />
-                      </Space>
-                    </a>
-                  </Dropdown>
-                ) : (
-                  <Dropdown
-                    menu={{
-                      items: itemsDropdownNotLogin,
-                    }}
-                    trigger={["click"]}
-                    className={cx("poiter")}
-                  >
-                    <a onClick={(e) => e.preventDefault()}>
-                      <Space>
-                        Tài khoản
-                        <DownOutlined />
-                      </Space>
-                    </a>
-                  </Dropdown>
-                )}
+                <div>
+                  {isAuthenticated ? (
+                    <div className={cx("d-flex")}>
+                      <div className={cx("mx-4", "poiter", "iconMessage")}>
+                        <Link to={"/user/message"}> 
+                          <IconMessage />
+                        </Link>
+                      </div>
+                      <div>
+                        <Dropdown
+                          menu={{
+                            items: itemsDropdown,
+                          }}
+                          trigger={["click"]}
+                          className={cx("poiter")}
+                        >
+                          <a onClick={(e) => e.preventDefault()}>
+                            <Space>
+                              Welcome to {user?.username || ""}
+                              <DownOutlined />
+                            </Space>
+                          </a>
+                        </Dropdown>
+                      </div>
+                    </div>
+                  ) : (
+                    <Dropdown
+                      menu={{
+                        items: itemsDropdownNotLogin,
+                      }}
+                      trigger={["click"]}
+                      className={cx("poiter")}
+                    >
+                      <a onClick={(e) => e.preventDefault()}>
+                        <Space>
+                          Tài khoản
+                          <DownOutlined />
+                        </Space>
+                      </a>
+                    </Dropdown>
+                  )}
+                </div>
               </div>
             </Nav>
           </Navbar.Collapse>

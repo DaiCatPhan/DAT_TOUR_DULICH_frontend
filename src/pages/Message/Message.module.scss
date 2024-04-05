@@ -1,23 +1,56 @@
 .wrapper {
+  padding: 20px;
+}
+
+.listCard {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+
+  .cardMessage {
+    border: 1px solid black;
+    width: 400px;
+    height: 60px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+
+  .circle {
+    border: 1px solid red;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .formMessage {
-  width: 500px;
+  width: 750px;
   min-height: 600px;
-  border: 1px solid red;
+
   .list {
     display: flex;
     flex-direction: column;
   }
 
   .chat_message {
-    background-color: #f2f2f2; /* Màu nền của tin nhắn */
-    padding: 10px;
-    margin-bottom: 5px; /* Khoảng cách giữa các tin nhắn */
+    padding: 3px;
+    margin-bottom: 5px;
     border-radius: 5px;
-    width: 50%;
+    position: relative;
+    word-break: break-all;
+    max-width: 49%;
+
+    .time {
+      color: grey;
+      font-size: 12px;
+      margin-top: 10px;
+    }
   }
 
   .sent {
@@ -29,4 +62,18 @@
     background-color: #f2f2f2; /* Màu nền tin nhắn nhận */
     align-self: flex-start; /* Đẩy tin nhắn nhận sang trái */
   }
+}
+
+.mt_80 {
+  margin-top: 100px; 
+}
+
+.TextArea {
+  display: flex;
+  align-items: center;
+  position: fixed;
+  bottom: 0px;
+  width: 50%;
+  padding-bottom: 20px;
+  background-color: white;
 }

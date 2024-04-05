@@ -72,6 +72,15 @@ const Layout = () => {
   );
 };
 
+const LayoutNotFooter = () => {
+  return (
+    <div>
+      <Header />
+      <Outlet />
+    </div>
+  );
+};
+
 function App() {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
@@ -131,8 +140,19 @@ function App() {
           path: "tours/voucher",
           element: <Voucher />,
         },
+        // {
+        //   path: "user/message",
+        //   element: <Message />,
+        // },
+      ],
+    },
+    {
+      path: "/user/message",
+      element: <LayoutNotFooter />,
+      // errorElement: <NotFound />,
+      children: [
         {
-          path: "user/message",
+          path: "",
           element: <Message />,
         },
       ],
