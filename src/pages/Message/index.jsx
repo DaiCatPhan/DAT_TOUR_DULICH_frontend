@@ -21,31 +21,28 @@ const socket = io.connect("http://localhost:3000", {
 });
 
 function Message() {
-  const user = useSelector((state) => state.account.user);
+  const ID_User = localStorage.getItem("ID_User");
   //Room State
   const [room, setRoom] = useState();
-  const [userOne, setUserOne] = useState();
   const [text, setText] = useState("");
   const [listMessage, setListMessage] = useState([]);
 
   const [test, setTest] = useState("");
 
   const getListRoomOfUser = async () => {
-    const res = await MessageService.listRoomOfUser(`userOne=${user?.id}`);
+    const res = await MessageService.listRoomOfUser(`userOne=${ID_User}`);
     if (res && res.data.EC == 0) {
       setListMessage(res.data.DT[0]);
-      localStorage.setItem("ID_UserOne", user?.id);
     }
   };
 
   useEffect(() => {
-    setUserOne(user?.id);
     getListRoomOfUser();
-  }, [user]);
+  }, []);
 
   const joinRoom = () => {
-    if (userOne !== "") {
-      socket.emit("join_room", { userOne });
+    if (ID_User !== "") {
+      socket.emit("join_room", { ID_User }); 
     }
   };
 
@@ -57,13 +54,13 @@ function Message() {
     const res = await MessageService.create({
       text,
       ID_Room: +room,
-      ID_User: user?.id,
+      ID_User: ID_User,
     });
     if (res && res.data.EC === 0) {
       setListMessage(res.data.DT[0]);
       getListRoomOfUser();
     }
-    socket.emit("send_message", { text, room: +room, ID_User: user?.id });
+    socket.emit("send_message", { text, room: +room, ID_User: ID_User });
     setText("");
   };
 
@@ -74,12 +71,13 @@ function Message() {
     });
 
     socket.on("receive_message", async (data) => {
-      const ID_UserOne = localStorage.getItem("ID_UserOne");
-      const res = await MessageService.listRoomOfUser(`userOne=${ID_UserOne}`);
+      console.log("data", data);
+      const ID_User = localStorage.getItem("ID_User");
+      const res = await MessageService.listRoomOfUser(`userOne=${ID_User}`);
       if (res && res.data.EC == 0) {
         setListMessage(res.data.DT[0]);
       }
-      getListRoomOfUser();
+      // getListRoomOfUser();
       setTest(data.text);
     });
   }, [socket]);
@@ -88,12 +86,10 @@ function Message() {
     <div className={cx("wrapper")}>
       <div className={cx("row")}>
         <div className={cx("col-lg-4 ")}>
-          <div className={cx("listCard")}>
+          <div onClick={joinRoom} className={cx("listCard")}>
             <div className={cx("cardMessage", "d-flex align-items-center")}>
               <div className={cx("circle")}>ad</div>
-              <div className={cx("mx-3")} onClick={joinRoom}>
-                admin@gmail.com
-              </div>
+              <div className={cx("mx-3")}>admin@gmail.com</div>
             </div>
           </div>
         </div>
@@ -120,9 +116,14 @@ function Message() {
                     return (
                       <div
                         key={item.id}
-                        className={cx("chat_message", "received")}
+                        className={cx(
+                          "chat_message",
+                          "received",
+                          "d-flex align-items-center"
+                        )}
                       >
-                        {item?.text}
+                        <div className={cx("mx-2")}>{item?.text}</div>
+                        <div className={cx("time")}>22:10</div>
                       </div>
                     );
                   }

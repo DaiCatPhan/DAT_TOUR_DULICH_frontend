@@ -25,6 +25,7 @@ function LoginPage() {
     const res = await AuthService.loginApi({ email, password });
     if (res && res.data.EC == 0) {
       localStorage.setItem("accessToken", res.data.DT.accessToken);
+      localStorage.setItem("ID_User", res.data.DT.tokentData.id);
       dispatch(doLoginAction(res.data.DT.tokentData));
       toast.success("Đăng nhập thành công");
 
