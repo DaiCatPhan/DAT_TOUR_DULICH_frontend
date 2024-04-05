@@ -112,7 +112,7 @@ function Messages() {
                       key={item.id}
                       className={cx("chat_message", "received")}
                     >
-                      {item?.text}
+                      {item?.text} 
                     </div>
                   );
                 }
@@ -143,4 +143,3 @@ function Messages() {
 export default Messages;
 
 
- 

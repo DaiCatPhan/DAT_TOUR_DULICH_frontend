@@ -26,6 +26,7 @@ function Message() {
   const [room, setRoom] = useState();
   const [text, setText] = useState("");
   const [listMessage, setListMessage] = useState([]);
+  const [showRoom, setShowRoom] = useState(false);
 
   const [test, setTest] = useState("");
 
@@ -37,12 +38,15 @@ function Message() {
   };
 
   useEffect(() => {
-    getListRoomOfUser();
-  }, []);
+    if (showRoom) {
+      getListRoomOfUser();
+    }
+  }, [showRoom]);
 
   const joinRoom = () => {
+    setShowRoom(true);
     if (ID_User !== "") {
-      socket.emit("join_room", { ID_User }); 
+      socket.emit("join_room", { ID_User });
     }
   };
 
@@ -50,6 +54,9 @@ function Message() {
     const room = localStorage.getItem("room");
     if (!room) {
       toast.warning("Vui lòng chọn phòng trước khi gửi tin nhắn ");
+    }
+    if (!ID_User) {
+      toast.warning("Người dùng chưa đăng nhập ");
     }
     const res = await MessageService.create({
       text,
@@ -71,13 +78,12 @@ function Message() {
     });
 
     socket.on("receive_message", async (data) => {
-      console.log("data", data);
       const ID_User = localStorage.getItem("ID_User");
       const res = await MessageService.listRoomOfUser(`userOne=${ID_User}`);
       if (res && res.data.EC == 0) {
         setListMessage(res.data.DT[0]);
       }
-      // getListRoomOfUser();
+      getListRoomOfUser();
       setTest(data.text);
     });
   }, [socket]);
@@ -96,6 +102,14 @@ function Message() {
         <div className={cx("col-lg-8  ")}>
           <div className={cx("  d-flex justify-content-start")}>
             <div className={cx("formMessage")}>
+              {showRoom ? (
+                <div className={cx("headerContact")}>
+                  Chat với <b>admin@mail.com</b>
+                </div>
+              ) : (
+                <div></div>
+              )}
+
               <div className={cx("list")}>
                 {listMessage?.messageData?.map((item) => {
                   if (item?.Customer?.email != "admin@gmail.com") {

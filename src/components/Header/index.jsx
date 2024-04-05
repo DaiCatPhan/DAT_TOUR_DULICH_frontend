@@ -26,6 +26,8 @@ function Header() {
     if (res && res.data.EC === 0) {
       dispatch(doLogoutAction());
       toast.success("Đăng xuất thành công");
+      localStorage.setItem("room", "");
+      localStorage.setItem("ID_User", "");
       navigate("/");
     }
   };
@@ -99,7 +101,7 @@ function Header() {
                   {isAuthenticated ? (
                     <div className={cx("d-flex")}>
                       <div className={cx("mx-4", "poiter", "iconMessage")}>
-                        <Link to={"/user/message"}> 
+                        <Link to={"/user/message"}>
                           <IconMessage />
                         </Link>
                       </div>

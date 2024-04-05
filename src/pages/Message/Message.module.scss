@@ -33,6 +33,11 @@
   width: 750px;
   min-height: 600px;
 
+  .headerContact {
+    border-bottom: 2px solid black;
+    margin-bottom: 20px;
+  }
+
   .list {
     display: flex;
     flex-direction: column;
