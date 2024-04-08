@@ -59,6 +59,9 @@ import ListBookingTour_Update from "./pages/ADMIN/Manager_BookingTour/ListBookin
 // == MESSAGE ==
 import Message from "./pages/Message";
 import Manager_Message from "./pages/ADMIN/Manager_Message/Messages";
+// == REVENUE ==
+import RevenueTour from "./pages/ADMIN/Manager_Revenue/RevenueTour";
+import RevenueTours from "./pages/ADMIN/Manager_Revenue/RevenueTours";
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
@@ -260,6 +263,18 @@ function App() {
         {
           path: "managerMessage/messages",
           element: <Manager_Message />,
+        },
+
+        // REVENUR
+
+        {
+          path: "managerRevenue/tour",
+          element: <RevenueTour />,
+        },
+
+        {
+          path: "managerRevenue/tours",
+          element: <RevenueTours />, 
         },
       ],
     },

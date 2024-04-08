@@ -28,7 +28,7 @@ const items = [
   getItem(<Link to="/admin">Trang chủ</Link>, "1", <PieChartOutlined />),
   getItem(
     <Link to="/admin/dashboard">Dashboard</Link>,
-    "2", 
+    "2",
     <DesktopOutlined />
   ),
   getItem("Doanh mục", "sub1", <UserOutlined />, [
@@ -66,11 +66,18 @@ const items = [
     getItem(<Link to="/admin/managerMessage/messages">Messager</Link>, "8"),
   ]),
   getItem("Thống kê", "sub8", <TeamOutlined />, [
-    getItem(<Link to="#">Thông kê doanh thu</Link>, "8"),
+    getItem(
+      <Link to="/admin/managerRevenue/tour">Doanh thu tour</Link>,
+      "8"
+    ),
+    getItem(
+      <Link to="/admin/managerRevenue/tours">Tổng doanh thu</Link>,
+      "9"
+    ),
   ]),
 ];
 function LayoutAdmin() {
-  const [collapsed, setCollapsed] = useState(false); 
+  const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
