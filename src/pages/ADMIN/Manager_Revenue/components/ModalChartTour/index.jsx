@@ -14,7 +14,6 @@ function ModalChartTour(props) {
     setDataModalChartTour,
   } = props;
 
-  console.log('isShowModalChartTour',isShowModalChartTour);
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 

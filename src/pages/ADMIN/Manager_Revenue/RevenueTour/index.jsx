@@ -1,77 +1,171 @@
 import className from "classnames/bind";
 import styles from "./RevenueTour.module.scss";
 const cx = className.bind(styles);
+import moment from "moment";
 
 import { Space, Table, Tag } from "antd";
+import { Select } from "antd";
+import { DatePicker } from "antd";
+const { RangePicker } = DatePicker;
+import { Button } from "antd";
 
 import ModalChartTour from "../components/ModalChartTour";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import RevenueService from "../../../../services/RevenueService";
 
 function RevenueTour() {
   const [isShowModalChartTour, setIsShowModalChartTour] = useState(false);
   const [dataModalChartTour, setDataModalChartTour] = useState({});
+  const [type, setType] = useState("Ngày");
+  const [time, setTime] = useState("");
+  const [revenue, setRevenue] = useState("");
+
+  const today = new Date();
+  const todayFomat = moment(today).format("YYYY-MM-DD");
+  const timeCurrent = "startDay=" + todayFomat;
+
+  const getDataRevenue = async () => {
+    const res = await RevenueService.revenueTour(`${timeCurrent}`);
+    if (res && res.data.EC == 0) {
+      setRevenue(res.data.DT);
+    }
+  };
+
+  useEffect(() => {
+    getDataRevenue();
+  }, []);
 
   const handleModalChartTour = (data) => {
     setIsShowModalChartTour(true);
     // setDataModalChartTour(data);
   };
 
-  const dataSource = [
-    {
-      key: "1",
-      name: "Mike",
-      age: 32,
-      address: "10 Downing Street",
-    },
-    {
-      key: "2",
-      name: "John",
-      age: 42,
-      address: "10 Downing Street",
-    },
-  ];
-
   const columns = [
     {
       title: "Mã tour",
+      dataIndex: "id",
+      key: "id",
+    },
+    {
+      title: "Tên tour",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Tên tour",
-      dataIndex: "age",
-      key: "age",
-    },
-    {
       title: "Doanh thu",
-      dataIndex: "address",
-      key: "address",
-    },
-    {
-      title: "Biểu đồ",
-      dataIndex: "address",
-      key: "address",
-      render: (chart) => {
-        return (
-          <div className={cx("poiter")}>
-            <Tag onClick={() => handleModalChartTour(chart)} color="geekblue">
-              Xem biểu đồ
-            </Tag>
-          </div>
-        );
-      },
+      dataIndex: "revenueDay",
+      key: "revenueDay",
     },
   ];
 
+  const optionSelect = [
+    {
+      value: "Ngày",
+      label: "Ngày",
+    },
+    {
+      value: "Khoảng ngày",
+      label: "Khoảng ngày",
+    },
+    {
+      value: "Tháng",
+      label: "Tháng",
+    },
+    {
+      value: "Năm",
+      label: "Năm",
+    },
+  ];
+
+  const handleChangeSelect = (value) => {
+    setType(value);
+  };
+
+  const onChangePickerDay = (date, dateString) => {
+    const formatdateString = moment(dateString, "DD-MM-YYYY").format(
+      "YYYY-MM-DD"
+    );
+    setTime("startDay=" + formatdateString);
+  };
+
+  const onChangePickerDayDistance = (date, dateString) => {
+    const formatStartDay = moment(dateString[0], "DD-MM-YYYY").format(
+      "YYYY-MM-DD"
+    );
+    const formatEndDay = moment(dateString[1], "DD-MM-YYYY").format(
+      "YYYY-MM-DD"
+    );
+    setTime("startDay=" + formatStartDay + "&" + "endDay=" + formatEndDay);
+  };
+
+  const onChangePickerMonth = (date, dateString) => {
+    setTime("month=" + dateString);
+  };
+
+  const onChangePickerYear = (date, dateString) => {
+    setTime("year=" + dateString);
+  };
+
+  const handleShowDatePicker = (data) => {
+    if (data == "Ngày") {
+      return <DatePicker onChange={onChangePickerDay} format={"DD-MM-YYYY"} />;
+    } else if (data == "Khoảng ngày") {
+      return (
+        <RangePicker
+          onChange={onChangePickerDayDistance}
+          format={"DD-MM-YYYY"}
+        />
+      );
+    } else if (data == "Tháng") {
+      return (
+        <DatePicker
+          onChange={onChangePickerMonth}
+          picker="month"
+          format={"MM/YYYY"}
+        />
+      );
+    } else if (data == "Năm") {
+      return (
+        <DatePicker
+          onChange={onChangePickerYear}
+          picker="year"
+          format={"YYYY"}
+        />
+      );
+    }
+  };
+
+  const handleSearch = async () => {
+    const res = await RevenueService.revenueTour(`${time}`);
+    if (res && res.data.EC == 0) {
+      setRevenue(res.data.DT);
+    }
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("border border-danger")}>
         <div className={cx("border p-2")}>RevenueTour</div>
-        <div>
-          <div></div>
+        <div className={cx("d-flex px-4 py-2")}>
+          <div>
+            <Select
+              defaultValue="Ngày"
+              style={{
+                width: 120,
+              }}
+              onChange={handleChangeSelect}
+              options={optionSelect}
+            />
+          </div>
+          <div className={cx("mx-5")}>{handleShowDatePicker(type)}</div>
+          <div>
+            <Button type="primary" onClick={handleSearch}>
+              Tìm
+            </Button>
+          </div>
         </div>
         <div className={cx("p-4")}>
-          <Table bordered dataSource={dataSource} columns={columns} />
+          <Table bordered dataSource={revenue} columns={columns} />
         </div>
       </div>
       <ModalChartTour
