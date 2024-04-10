@@ -20,6 +20,7 @@ function RevenueTour() {
   const [type, setType] = useState("Ngày");
   const [time, setTime] = useState("");
   const [revenue, setRevenue] = useState("");
+  const [title, setTitle] = useState("");
 
   const today = new Date();
   const todayFomat = moment(today).format("YYYY-MM-DD");
@@ -29,17 +30,13 @@ function RevenueTour() {
     const res = await RevenueService.revenueTour(`${timeCurrent}`);
     if (res && res.data.EC == 0) {
       setRevenue(res.data.DT);
+      setTitle(res.data.EM);
     }
   };
 
   useEffect(() => {
     getDataRevenue();
   }, []);
-
-  const handleModalChartTour = (data) => {
-    setIsShowModalChartTour(true);
-    // setDataModalChartTour(data);
-  };
 
   const columns = [
     {
@@ -140,6 +137,7 @@ function RevenueTour() {
     const res = await RevenueService.revenueTour(`${time}`);
     if (res && res.data.EC == 0) {
       setRevenue(res.data.DT);
+      setTitle(res.data.EM);
     }
   };
   return (
@@ -164,10 +162,14 @@ function RevenueTour() {
             </Button>
           </div>
         </div>
+        <div className={cx("px-4 py-2")}>
+          <b>{title}</b>
+        </div>
         <div className={cx("p-4")}>
           <Table bordered dataSource={revenue} columns={columns} />
         </div>
       </div>
+
       <ModalChartTour
         isShowModalChartTour={isShowModalChartTour}
         setIsShowModalChartTour={setIsShowModalChartTour}

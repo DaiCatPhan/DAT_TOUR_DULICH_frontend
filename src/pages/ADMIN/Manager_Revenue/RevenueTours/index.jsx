@@ -4,6 +4,7 @@ const cx = className.bind(styles);
 
 import Chart from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import moment from "moment";
 
 import { Space, Table, Tag } from "antd";
@@ -13,13 +14,18 @@ const { RangePicker } = DatePicker;
 import { Button } from "antd";
 import { Tabs } from "antd";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+import RevenueService from "../../../../services/RevenueService";
 
 function RevenueTours() {
-  const [revenue, setRevenue] = useState("");
+  const [revenueMonth, setRevenueMonth] = useState([]);
+  const [revenueYear, setRevenueYear] = useState([]);
   const [tab, setTab] = useState("Tháng");
-  const [typeChartTab, setTypeChartTab] = useState("");
-
+  const [typeChartTab, setTypeChartTab] = useState("Biểu đồ cột");
+  const [titleMonth, setTitleMonth] = useState("");
+  const [titleYear, setTitleYear] = useState("");
+  const [selectYearofMonth, setSelectYearofMonth] = useState("year=2024");
   const itemsTab = [
     {
       key: "Tháng",
@@ -33,61 +39,6 @@ function RevenueTours() {
   const onChangeTab = (key) => {
     setTab(key);
   };
-
-  const getDataRevenue = async () => {
-    const res = await RevenueService.revenueTour(`${timeCurrent}`);
-    if (res && res.data.EC == 0) {
-      setRevenue(res.data.DT);
-    }
-  };
-
-  useEffect(() => {
-    getDataRevenue();
-  }, []);
-
-  const dataChartBar = [10000, 15000, 20000, 18000, 22000, 0, 2500];
-
-  const dataBarChart = {
-    labels: [
-      "Tháng 1",
-      "Tháng 2",
-      "Tháng 3",
-      "Tháng 4",
-      "Tháng 5",
-      "Tháng 6",
-      "Tháng 7",
-      "Tháng 8",
-      "Tháng 9",
-      "Tháng 10",
-      "Tháng 6",
-      "Tháng 6",
-    ],
-    datasets: [
-      {
-        label: "Doanh thu tổng tất cả tour theo tháng",
-        data: dataChartBar,
-      },
-    ],
-  };
-
-  const optionSelect = [
-    {
-      value: "Ngày",
-      label: "Ngày",
-    },
-    {
-      value: "Khoảng ngày",
-      label: "Khoảng ngày",
-    },
-    {
-      value: "Tháng",
-      label: "Tháng",
-    },
-    {
-      value: "Năm",
-      label: "Năm",
-    },
-  ];
 
   const itemsTypeChartTab = [
     {
@@ -104,40 +55,66 @@ function RevenueTours() {
     setTypeChartTab(key);
   };
 
-  const handleShowDatePicker = (data) => {
-    if (data == "Ngày") {
-      return <DatePicker onChange={onChangePickerDay} format={"DD-MM-YYYY"} />;
-    } else if (data == "Khoảng ngày") {
-      return (
-        <RangePicker
-          onChange={onChangePickerDayDistance}
-          format={"DD-MM-YYYY"}
-        />
-      );
-    } else if (data == "Tháng") {
-      return (
-        <DatePicker
-          onChange={onChangePickerMonth}
-          picker="month"
-          format={"MM/YYYY"}
-        />
-      );
-    } else if (data == "Năm") {
-      return (
-        <DatePicker
-          onChange={onChangePickerYear}
-          picker="year"
-          format={"YYYY"}
-        />
-      );
+  // ===  TỔNG DOANH THU TẤT CẢ THÁNG CỦA NĂM ===
+  const getDataRevenueToursMonth = async () => {
+    const res = await RevenueService.revenueToursMonth(`${selectYearofMonth}`);
+    if (res && res.data.EC == 0) {
+      setRevenueMonth(res.data.DT);
+      setTitleMonth(res.data.EM);
     }
   };
 
-  const handleSearch = async () => {
-    const res = await RevenueService.revenueTour(`${time}`);
+  const getDataRevenueToursYear = async () => {
+    const res = await RevenueService.revenueToursYear(`${selectYearofMonth}`);
+    console.log("getDataRevenueToursYear >>", res);
     if (res && res.data.EC == 0) {
-      setRevenue(res.data.DT);
+      setRevenueYear(res.data.DT);
+      setTitleYear(res.data.EM);
     }
+  };
+
+  useEffect(() => {
+    getDataRevenueToursMonth();
+    getDataRevenueToursYear();
+  }, [selectYearofMonth]);
+
+  const dataChartBarMonth = useMemo(() => {
+    return revenueMonth?.map((item) => item.value);
+  }, [revenueMonth]);
+  const labelsChartBar = useMemo(() => {
+    return revenueMonth?.map((item) => item.month);
+  }, [revenueMonth]);
+
+  const dataBarChartMonth = {
+    labels: labelsChartBar,
+    datasets: [
+      {
+        label: "Doanh thu tổng tất cả tour theo tháng",
+        data: dataChartBarMonth,
+      },
+    ],
+  };
+
+  const handleChangeSelectYearofMonth = (value) => {
+    setSelectYearofMonth(value);
+  };
+
+  //---------------------------
+  const dataChartBarYear = useMemo(() => {
+    return revenueYear?.map((item) => item.value);
+  }, [revenueYear]);
+  const labelsChartBarYear = useMemo(() => {
+    return revenueYear?.map((item) => item.year);
+  }, [revenueYear]);
+
+  const dataBarChartYear = {
+    labels: labelsChartBarYear,
+    datasets: [
+      {
+        label: "Doanh thu từng năm",
+        data: dataChartBarYear,
+      },
+    ],
   };
 
   return (
@@ -146,22 +123,60 @@ function RevenueTours() {
         <div className={cx("border p-2")}>
           <b>Tổng doanh thu</b>
         </div>
-        <div>
-          <Tabs defaultActiveKey="1" items={itemsTab} onChange={onChangeTab} />
+        <div className={cx("d-flex justify-content-between")}>
+          <div>
+            <Tabs
+              defaultActiveKey="1"
+              items={itemsTab}
+              onChange={onChangeTab}
+            />
+          </div>
+          <div className={cx("d-flex align-items-center")}>
+            <div className={cx("mx-2")}>Chọn năm</div>
+            <Select
+              defaultValue="2024"
+              style={{ width: 120 }}
+              onChange={handleChangeSelectYearofMonth}
+              options={[
+                { value: "year=2024", label: "2024" },
+                { value: "year=2023", label: "2023" },
+                { value: "year=2022", label: "2022" },
+                { value: "year=2021", label: "2021" },
+                { value: "year=2020", label: "2020" },
+              ]}
+            />
+          </div>
         </div>
+
+        <Tabs items={itemsTypeChartTab} onChange={onChangeTypeChartTab} />
 
         {tab === "Tháng" ? (
           <div className={cx("px-5")}>
-            <Tabs
-              defaultActiveKey="1"
-              items={itemsTypeChartTab}
-              onChange={onChangeTypeChartTab}
-            />
+            <div>
+              <b>{titleMonth}</b>
+            </div>
 
-            <Bar data={dataBarChart} />
+            <div className={cx("p-5")}>
+              {typeChartTab === "Biểu đồ cột" ? (
+                <Bar data={dataBarChartMonth} />
+              ) : (
+                <Line data={dataBarChartMonth} />
+              )}
+            </div>
           </div>
         ) : (
-          <div className={cx("px-5")}>Doanh thu theo năm</div>
+          <div className={cx("px-5")}>
+            <div>
+              <b>{titleYear}</b>
+            </div>
+            <div className={cx("p-5")}>
+              {typeChartTab === "Biểu đồ cột" ? (
+                <Bar data={dataBarChartYear} />
+              ) : (
+                <Line data={dataBarChartYear} />
+              )}
+            </div>
+          </div>
         )}
       </div>
     </div>

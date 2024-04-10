@@ -5,8 +5,12 @@ const revenueTour = (data) => {
   return axios.get(`/api/v1/statistical/revenueTour?${data}`);
 };
 
-const revenueTours = (data) => {
-  return axios.get(`/api/v1/statistical/revenueTours?${data}`);
+const revenueToursMonth = (data) => {
+  return axios.get(`/api/v1/statistical/revenueToursMonth?${data}`);
 };
 
-export default { revenueTour, revenueTours };
+const revenueToursYear = (data) => {
+  return axios.get(`/api/v1/statistical/revenueToursYear?${data}`);
+};
+
+export default { revenueTour, revenueToursMonth, revenueToursYear };
