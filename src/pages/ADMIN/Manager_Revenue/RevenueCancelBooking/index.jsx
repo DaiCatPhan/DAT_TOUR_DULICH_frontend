@@ -1,5 +1,5 @@
 import className from "classnames/bind";
-import styles from "./RevenueTour.module.scss";
+import styles from "./RevenueCancelBooking.module.scss";
 const cx = className.bind(styles);
 import moment from "moment";
 
@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 
 import RevenueService from "../../../../services/RevenueService";
 
-function RevenueTour() {
+function RevenueCancelBooking() {
   const [isShowModalChartTour, setIsShowModalChartTour] = useState(false);
   const [dataModalChartTour, setDataModalChartTour] = useState({});
   const [type, setType] = useState("Ngày");
@@ -26,8 +26,8 @@ function RevenueTour() {
   const todayFomat = moment(today).format("YYYY-MM-DD");
   const timeCurrent = "startDay=" + todayFomat;
 
-  const getDataRevenue = async () => {
-    const res = await RevenueService.revenueTour(`${timeCurrent}`);
+  const getDataRevenueCancelBooking = async () => {
+    const res = await RevenueService.revenueToursCancel(`${timeCurrent}`);
     if (res && res.data.EC == 0) {
       setRevenue(res.data.DT);
       setTitle(res.data.EM);
@@ -35,25 +35,38 @@ function RevenueTour() {
   };
 
   useEffect(() => {
-    getDataRevenue();
+    getDataRevenueCancelBooking();
   }, []);
 
   const columns = [
     {
-      title: "Mã tour",
+      title: "Mã đơn hàng",
       dataIndex: "id",
       key: "id",
     },
     {
-      title: "Tên tour",
-      dataIndex: "name",
-      key: "name",
+      title: "Khách hàng",
+      dataIndex: "",
+      key: "customer",
+      render: (data) => {
+        return <div>{data?.Customer?.username}</div>;
+      },
     },
     {
-      title: "Doanh thu",
-      dataIndex: "revenueDay",
-      key: "revenueDay",
-      sorter: (a, b) => a.revenueDay - b.revenueDay,
+      title: "Tour đã hủy",
+      dataIndex: "",
+      key: "tour",
+      render: (data) => {
+        return <div>{data?.Calendar?.Tour?.name}</div>;
+      },
+    },
+    {
+      title: "Ngày hủy đơn",
+      dataIndex: "date_cancel_booking",
+      key: "date_cancel_booking",
+      render: (date_cancel_booking) => {
+        return <div>{moment(date_cancel_booking).format("DD-MM-YYYY")}</div>;
+      },
     },
   ];
 
@@ -135,7 +148,7 @@ function RevenueTour() {
   };
 
   const handleSearch = async () => {
-    const res = await RevenueService.revenueTour(`${time}`);
+    const res = await RevenueService.revenueToursCancel(`${time}`);
     if (res && res.data.EC == 0) {
       setRevenue(res.data.DT);
       setTitle(res.data.EM);
@@ -144,7 +157,7 @@ function RevenueTour() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("border border-danger")}>
-        <div className={cx("border p-2")}>RevenueTour</div>
+        <div className={cx("border p-2")}>THỐNG KÊ SỐ ĐƠN HỦY TOUR</div>
         <div className={cx("d-flex px-4 py-2")}>
           <div>
             <Select
@@ -181,4 +194,4 @@ function RevenueTour() {
   );
 }
 
-export default RevenueTour;
+export default RevenueCancelBooking;

@@ -68,11 +68,15 @@ const items = [
   getItem("Thống kê", "sub8", <TeamOutlined />, [
     getItem(
       <Link to="/admin/managerRevenue/tour">Doanh thu tour</Link>,
-      "8"
+      "sub8-1"
     ),
     getItem(
       <Link to="/admin/managerRevenue/tours">Tổng doanh thu</Link>,
-      "9"
+      "sub8-2"
+    ),
+    getItem(
+      <Link to="/admin/managerRevenue/cancel">Thống kê hủy </Link>,  
+      "sub8-3"
     ),
   ]),
 ];
