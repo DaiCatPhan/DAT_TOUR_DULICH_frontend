@@ -17,9 +17,14 @@ const revenueToursCancel = (data) => {
   return axios.get(`/api/v1/statistical/revenueToursCancel?${data}`);
 };
 
+const revenueToursCancelMonth = (data) => {
+  return axios.get(`/api/v1/statistical/revenueToursCancelMonth?${data}`);
+};
+
 export default {
   revenueTour,
   revenueToursMonth,
   revenueToursYear,
   revenueToursCancel,
+  revenueToursCancelMonth,
 };
