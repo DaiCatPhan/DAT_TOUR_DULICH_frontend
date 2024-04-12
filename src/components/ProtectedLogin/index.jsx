@@ -11,7 +11,7 @@ function ProtectedLogin({ children }) {
       {isAuthenticated === true ? (
         <>{children}</>
       ) : (
-        <Navigate to="/#" replace />
+        <Navigate to="/#" replace /> 
       )}
     </>
   );

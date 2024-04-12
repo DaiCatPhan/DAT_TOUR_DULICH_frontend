@@ -9,13 +9,19 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { useState } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { Dropdown, Space } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
+
+import AuthService from "../../services/AuthService";
+import { doLogoutAction } from "../../redux/account/accountSlide";
+
 function getItem(label, key, icon, children) {
   return {
     key,
@@ -75,19 +81,33 @@ const items = [
       "sub8-2"
     ),
     getItem(
-      <Link to="/admin/managerRevenue/cancel">Thống kê hủy </Link>,  
+      <Link to="/admin/managerRevenue/cancel">Thống kê hủy </Link>,
       "sub8-3"
     ),
   ]),
 ];
+
 function LayoutAdmin() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.account.user);
+
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const handleLogout = async () => {
-    alert("Đăng xuất");
+    const res = await AuthService.LogoutApi();
+    if (res && res.data.EC === 0) {
+      dispatch(doLogoutAction());
+      toast.success("Đăng xuất thành công");
+      localStorage.setItem("room", "");
+      localStorage.setItem("ID_User", "");
+      navigate("/");
+    } else {
+      toast.error(res.data.EM);
+    }
   };
 
   const itemsDropdown = [
@@ -150,7 +170,7 @@ function LayoutAdmin() {
                   >
                     <a onClick={(e) => e.preventDefault()}>
                       <Space>
-                        Welcome Phan Dai Cat
+                        ADMIN
                         <DownOutlined />
                       </Space>
                     </a>
@@ -173,13 +193,13 @@ function LayoutAdmin() {
             </div>
           </Content>
 
-          <Footer
+          {/* <Footer
             style={{
               textAlign: "center",
             }}
           >
-            Ant Design ©{new Date().getFullYear()} Created by Ant UED
-          </Footer>
+            DU LỊCH MỌI NƠI
+          </Footer> */}
         </Layout>
       </Layout>
     </div>

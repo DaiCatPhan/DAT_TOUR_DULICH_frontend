@@ -29,7 +29,6 @@ function LoginPage() {
       dispatch(doLoginAction(res.data.DT.tokentData));
       toast.success("Đăng nhập thành công");
 
-      console.log("resLogin >>", res);
       if (res.data.DT.tokentData.role === "khách hàng") {
         navigate("/");
       } else if (res.data.DT.tokentData.role === "admin") {

@@ -91,12 +91,12 @@ function App() {
   const isLoading = useSelector((state) => state.account.isLoading);
 
   const getAccount = async () => {
-    if (
-      window.location.pathname === "/login" ||
-      window.location.pathname === "/register"
-    ) {
-      return;
-    }
+    // if (
+    //   window.location.pathname === "/login" ||
+    //   window.location.pathname === "/register"
+    // ) {
+    //   return;
+    // }
 
     const res = await AuthService.fetchProfile();
     console.log("fetchProfile", res);
@@ -297,7 +297,7 @@ function App() {
 
   return (
     <>
-      {/* {isLoading === false ||
+      {isLoading === false ||
       window.location.pathname === "/login" ||
       window.location.pathname === "/register" ||
       window.location.pathname.startsWith("/tours") ||
@@ -305,9 +305,9 @@ function App() {
         <RouterProvider router={router} />
       ) : (
         <Loading />
-      )} */}
+      )}
 
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} /> */}
 
       <ToastContainer
         position="top-right"

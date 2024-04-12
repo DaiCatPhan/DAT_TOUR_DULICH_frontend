@@ -1,5 +1,15 @@
 .wrapper {
-  padding: 20px;
+}
+
+.listMessage {
+}
+
+.frame {
+  padding: 0 100px;
+}
+
+.vh_80 {
+  height: 92vh;
 }
 
 .listCard {
@@ -7,14 +17,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-top: 10px;
 
   .cardMessage {
+    display: flex;
+    align-items: center;
     border: 1px solid black;
-    width: 400px;
-    height: 60px;
+    width: 80%;
     border-radius: 10px;
     cursor: pointer;
-    margin-bottom: 10px;
     padding: 5px;
   }
 
@@ -35,50 +46,62 @@
 
   .headerContact {
     border-bottom: 2px solid black;
-    margin-bottom: 20px;
+    padding: 5px 0;
   }
 
   .list {
-    display: flex;
-    flex-direction: column;
   }
 
   .chat_message {
-    padding: 3px;
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     border-radius: 5px;
-    position: relative;
-    word-break: break-all;
-    max-width: 49%;
+    max-width: 89%;
+
+    .content {
+      padding: 5px 15px;
+    }
 
     .time {
       color: grey;
       font-size: 12px;
-      margin-top: 10px;
     }
   }
 
   .sent {
-    background-color: #dcf8c6; /* Màu nền tin nhắn gửi */
-    align-self: flex-end; /* Đẩy tin nhắn gửi sang phải */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 5px 25px;
+    background-color: #dcf8c6;
+    min-width: 70px;
+    word-break: break-all;
   }
 
   .received {
-    background-color: #f2f2f2; /* Màu nền tin nhắn nhận */
-    align-self: flex-start; /* Đẩy tin nhắn nhận sang trái */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    padding: 5px 25px;
+    background-color: white;
+    min-width: 70px;
+    word-break: break-all;
   }
 }
 
-.mt_80 {
-  margin-top: 100px; 
-}
-
-.TextArea {
+.frame_TextArea {
   display: flex;
   align-items: center;
-  position: fixed;
-  bottom: 0px;
-  width: 50%;
-  padding-bottom: 20px;
   background-color: white;
+  width: 750px;
+  margin-top: 5px;
+}
+
+.ScrollStyle {
+  height: 540px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.float_right {
+  float: right;
+}
+
+.float_left {
+  float: left;
 }

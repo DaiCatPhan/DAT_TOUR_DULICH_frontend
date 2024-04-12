@@ -6,6 +6,7 @@ import MessageService from "../../../../services/MessageService";
 import { useEffect, useState } from "react";
 import { Button, Input } from "antd";
 const { TextArea } = Input;
+import moment from "moment";
 
 import { io } from "socket.io-client";
 const socket = io.connect("http://localhost:3000", {
@@ -19,6 +20,7 @@ function Messages() {
   const [room, setRoom] = useState();
   const [test, setTest] = useState("");
   const [userOne, setUserOne] = useState();
+  const [showHeaderRoom, setShowHeaderRoom] = useState("");
 
   const getListUserComment = async () => {
     const res = await MessageService.listRoomOfAdmin();
@@ -35,7 +37,9 @@ function Messages() {
   };
 
   const handleRoomMessageUser = async (data) => {
+    console.log("test >>>>>>", data);
     socket.emit("join_room_admin", { room: data?.id });
+    setShowHeaderRoom(data.userOneData.username);
     getListRoomOfUser(data?.userOne);
   };
 
@@ -79,61 +83,125 @@ function Messages() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("row")}>
-        <div className={cx("col-lg-5 border")}>
-          <div className={cx("listMessage")}>
-            {listMessages?.map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  className={cx("frame")}
-                  onClick={() => handleRoomMessageUser(item)}
-                >
-                  <div></div>
-                  <div>Phan dai Cat</div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className={cx("col-lg-7")}>
-          <div className={cx("formMessage")}>
-            <div className={cx("list")}>
-              {listMessage?.messageData?.map((item) => {
-                if (item?.Customer?.email != "admin@gmail.com") {
-                  return (
-                    <div key={item.id} className={cx("chat_message", "sent")}>
-                      {item?.text}
+      <div className={cx("frame")}>
+        <div className={cx("row", "vh_80")}>
+          <div className={cx("col-lg-4 border")}>
+            <div className={cx("listCard")}>
+              <div className={cx("my-2")}>
+                <b>Vui lòng chọn phòng chát để tham gia</b>
+              </div>
+              {listMessages?.map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    className={cx("cardMessage")}
+                    onClick={() => handleRoomMessageUser(item)}
+                  >
+                    <div className={cx("circle")}>user</div>
+                    <div className={cx("mx-3")}>
+                      {item?.userOneData?.username}
                     </div>
-                  );
-                } else {
-                  return (
-                    <div
-                      key={item.id}
-                      className={cx("chat_message", "received")}
-                    >
-                      {item?.text} 
-                    </div>
-                  );
-                }
+                  </div>
+                );
               })}
             </div>
-
-            {/* <div>{test}</div> */}
-
-            <div>
-              <TextArea
-                value={text}
-                rows={3}
-                onChange={(event) => {
-                  setText(event.target.value);
-                }}
-              />
-              <Button type="primary" onClick={sendMessage}>
-                Gửi
-              </Button>
-            </div>
           </div>
+          {showHeaderRoom ? (
+            <div className={cx("col-lg-8 border")}>
+              <div className={cx("d-flex justify-content-center")}>
+                <div className={cx("formMessage")}>
+                  <div className={cx("headerContact")}>
+                    Chat với <b>{listMessage?.userOneData?.username}</b>
+                  </div>
+
+                  <div
+                    className={cx("list", "border", "ScrollStyle")}
+                    id="message-container"
+                  >
+                    {listMessage?.messageData?.map((item) => {
+                      if (item?.Customer?.email != "admin@gmail.com") {
+                        return (
+                          <div className={cx("d-flex justify-content-start")}>
+                            <div
+                              key={item.id}
+                              className={cx(
+                                "chat_message",
+                                "d-flex align-items-center"
+                              )}
+                            >
+                              <div>
+                                <img
+                                  src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
+                                  alt="notFound"
+                                  width={30}
+                                  height={30}
+                                />
+                              </div>
+
+                              <div className={cx("mx-2", "received")}>
+                                {item?.text}
+                              </div>
+
+                              <div className={cx("time")}>
+                                {moment(item?.createdAt).format("HH:mm")}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      } else {
+                        return (
+                          <div className={cx("d-flex justify-content-end")}>
+                            <div
+                              key={item.id}
+                              className={cx(
+                                "d-flex align-items-center",
+                                "chat_message"
+                              )}
+                            >
+                              <div className={cx("time")}>
+                                {moment(item?.createdAt).format("HH:mm")}
+                              </div>
+                              <div className={cx("mx-2", "sent")}>
+                                {item?.text}
+                              </div>
+                              <div>
+                                <img
+                                  src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
+                                  alt="notFound"
+                                  width={30}
+                                  height={30}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                  <div className={cx("frame_TextArea")}>
+                    <TextArea
+                      className={cx("border")}
+                      value={text}
+                      rows={2}
+                      onChange={(event) => {
+                        setText(event.target.value);
+                      }}
+                    />
+
+                    <Button
+                      type="primary"
+                      onClick={sendMessage}
+                      className={cx("mx-2")}
+                    >
+                      Gửi
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div></div>
+          )}
         </div>
       </div>
     </div>
@@ -141,5 +209,3 @@ function Messages() {
 }
 
 export default Messages;
-
-
