@@ -12,23 +12,14 @@ import { useEffect, useMemo, useState } from "react";
 import ModalVoucherUser from "../ModalVoucherUser";
 import { useSelector } from "react-redux";
 
-import BookingTourService from "../../../../services/BookingService";
+import qs from "qs";
+import { useSearchParams } from "react-router-dom";
 
-import PayPalButton from "../PayPalButton";
-
-import {
-  PayPalScriptProvider,
-  PayPalButtons,
-  BraintreePayPalButtons,
-} from "@paypal/react-paypal-js";
-const initialOptions = {
-  clientId:
-    "Aaz18FxPx37xq4EUhCYA_O-Ks_0EHgFEOFvdZCKdcvLeEJBgjgjGdoDTBIzhvFzlPbS7z9dJ7gLWDzWa",
-  currency: "USD",
-  intent: "capture",
-};
+import BookingService from "../../../../services/BookingService";
 
 function ModalBookingTour(props) {
+  const [searchParams] = useSearchParams();
+
   const {
     isShowModalBookingTour,
     setIsShowModalBookingTour,
@@ -47,18 +38,14 @@ function ModalBookingTour(props) {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [isShowSession2, setIsShowSession2] = useState(false);
-  const [isShowBTNPay, setIsShowBTNPay] = useState(true);
 
   const [isShowModalVoucherUser, setIsShowModalVoucherUser] = useState(false);
   const [dataModalVoucherUser, setDataModalVoucherUser] = useState({});
   const [voucherSelected, setVoucherSelected] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [showBtnPayHome, setShowBtnPayHome] = useState(false);
   const [showModalResult, setShowModalResult] = useState(false);
 
   const handleClickPaymentMethodHome = () => {
-    setShowBtnPayHome(true);
     setPaymentMethod("TẠI QUẦY");
   };
 
@@ -67,16 +54,9 @@ function ModalBookingTour(props) {
     setDataModalVoucherUser(data);
   };
 
-  const handleShowSession2 = () => {
-    setIsShowSession2(true);
-    setIsShowBTNPay(false);
-  };
-
   const handleOk = () => {};
   const handleCancel = () => {
     setIsShowModalBookingTour(false);
-    setIsShowSession2(false);
-    setIsShowBTNPay(true);
   };
 
   // Hàm tính tiền theo Voucher
@@ -139,10 +119,10 @@ function ModalBookingTour(props) {
 
     setConfirmLoading(true);
     setTimeout(async () => {
-      const res = await BookingTourService.create(dataSend);
+      const res = await BookingService.create(dataSend);
       console.log("res >>>>>>>>>", res);
       setConfirmLoading(false);
-      if (res && res.data.EC == 0) {
+      if (res & (res.data.EC == 0)) {
         setShowModalResult(true);
         setIsShowModalBookingTour(false);
       } else {
@@ -151,49 +131,23 @@ function ModalBookingTour(props) {
     }, 1000);
   };
 
-  const initialOptions = {
-    clientId: "test",
-    currency: "USD",
-    intent: "capture",
+  // Thanh toán VNPAY
+  const handleBookingWithVNPAY = async () => {
+    const data = {
+      ID_Customer: user?.id,
+      ID_Calendar: activeCalendar?.id,
+      numberTicketChild: numberTicketChild,
+      numberTicketAdult: numberTicketAdult,
+    };
+    if (voucherSelected) {
+      data.ID_Voucher = voucherSelected?.Voucher?.id;
+    }
+
+    const res = await BookingService.createVNP(data);
+    if (res && res.data.EC == 0) {
+      window.location.href = res.data.DT.url;
+    }
   };
-
-  function createOrder() {
-    return fetch("/my-server/create-paypal-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      // use the "body" param to optionally pass additional order information
-      // like product ids and quantities
-      body: JSON.stringify({
-        cart: [
-          {
-            id: "YOUR_PRODUCT_ID",
-            quantity: "YOUR_PRODUCT_QUANTITY",
-          },
-        ],
-      }),
-    })
-      .then((response) => response.json())
-      .then((order) => order.id);
-  }
-
-  function onApprove(data) {
-    return fetch("/my-server/capture-paypal-order", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        orderID: data.orderID,
-      }),
-    })
-      .then((response) => response.json())
-      .then((orderData) => {
-        const name = orderData.payer.name.given_name;
-        alert(`Transaction completed by ${name}`);
-      });
-  }
 
   const ResultComponent = () => {
     const handleBill = () => {
@@ -305,108 +259,115 @@ function ModalBookingTour(props) {
                 <div className={cx("mx-5")}>
                   Tổng thanh toán : {resultAmount} VND
                 </div>
-                {isShowBTNPay ? (
-                  <div>
-                    <Button onClick={handleShowSession2} type="primary">
-                      Đi Đến Thanh Toán
-                    </Button>
-                  </div>
-                ) : (
-                  <></>
-                )}
               </div>
             </div>
           </div>
 
-          {isShowSession2 ? (
-            <div className={cx("border   my-2 px-3", "sesion2")}>
-              <div className={cx("row")}>
-                <div className={cx("col-lg-6")}>
-                  <div className={cx("my-2")}>
-                    <b>Quí khách vui lòng nhập thông tin liên hệ bên dưới</b>
-                  </div>
-
-                  <div>
-                    <Form name="basic" form={formInfo} onFinish={onFinishForm}>
-                      <Form.Item
-                        label="Họ và tên"
-                        name="username"
-                        labelCol={{
-                          span: 5,
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Vui lòng nhập họ và tên",
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-
-                      <Form.Item
-                        label="Số điện thoại"
-                        name="phone"
-                        labelCol={{
-                          span: 5,
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Vui lòng nhập số điện thoại!",
-                          },
-                        ]}
-                      >
-                        <Input />
-                      </Form.Item>
-
-                      <Form.Item
-                        label="Email"
-                        name="email"
-                        labelCol={{
-                          span: 5,
-                        }}
-                        rules={[
-                          {
-                            required: true,
-                            message: "Vui lòng nhập email",
-                          },
-                        ]}
-                      >
-                        <Input className={cx("disabled")} />
-                      </Form.Item>
-                    </Form>
-                  </div>
+          <div className={cx("border   my-2 px-3", "sesion2")}>
+            <div className={cx("row")}>
+              <div className={cx("col-lg-6")}>
+                <div className={cx("my-2")}>
+                  <b>Quí khách vui lòng nhập thông tin liên hệ bên dưới</b>
                 </div>
-                <div className={cx("col-lg-6")}>
+
+                <div>
+                  <Form name="basic" form={formInfo} onFinish={onFinishForm}>
+                    <Form.Item
+                      label="Họ và tên"
+                      name="username"
+                      labelCol={{
+                        span: 5,
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập họ và tên",
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Số điện thoại"
+                      name="phone"
+                      labelCol={{
+                        span: 5,
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập số điện thoại!",
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                      label="Email"
+                      name="email"
+                      labelCol={{
+                        span: 5,
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập email",
+                        },
+                      ]}
+                    >
+                      <Input className={cx("disabled")} />
+                    </Form.Item>
+                  </Form>
+                </div>
+              </div>
+
+              <div className={cx("col-lg-6")}>
+                <div>
+                  <div>Phương thức thanh toán</div>
                   <div>
-                    <div>Phương thức thanh toán</div>
-                    <div>
-                      <div className={cx("d-flex border")}>
-                        <div>
-                          <PayPalButton amount={resultAmount} />
-                        </div>
-                        <div>
-                          <button
-                            onClick={handleClickPaymentMethodHome}
-                            className={
-                              showBtnPayHome
-                                ? cx("btnPayHome", "active")
-                                : cx("btnPayHome")
-                            }
-                          >
-                            Thanh toán khi nhận hàng
-                          </button>
-                        </div>
+                    <div className={cx("d-flex")}>
+                      <div>
+                        <Button
+                          className={cx(
+                            "d-flex align-items-center justify-content-center"
+                          )}
+                          style={{
+                            borderColor: "#005baa",
+                            color: "#005baa",
+                          }}
+                          onClick={handleBookingWithVNPAY}
+                        >
+                          <div>
+                            <img
+                              src="/src/assets/Payment/img_VNPAY.jpg"
+                              alt="notFound"
+                              width={20}
+                              height={20}
+                            />
+                          </div>
+                          <div className={cx("mx-2")}>VN PAY</div>
+                        </Button>
+                      </div>
+
+                      <div className={cx("mx-5")}>
+                        <Button
+                          style={{
+                            borderColor: "blue",
+                            color: "blue",
+                          }}
+                          // onClick={handleClickPaymentMethodHome}
+                        >
+                          Thanh toán khi nhận hàng
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          ) : (
-            <></>
-          )}
+          </div>
         </div>
       </Modal>
       <ModalVoucherUser

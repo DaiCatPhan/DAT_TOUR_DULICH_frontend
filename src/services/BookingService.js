@@ -16,4 +16,12 @@ const readAll = (data) => {
   return axios.get(`/api/v1/booking/readAll?${data}`);
 };
 
-export default { create, read, readAll, update };
+const createVNP = (data) => {
+  return axios.post("/api/v1/booking/vnpay/create_payment_url", data);
+};
+
+const vnpay_return = (data) => {
+  return axios.get(`/api/v1/booking/vnpay/vnpay_return?${data}`);
+};
+
+export default { create, read, readAll, update, createVNP, vnpay_return };

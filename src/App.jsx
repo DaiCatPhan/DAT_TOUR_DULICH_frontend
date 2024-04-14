@@ -56,6 +56,7 @@ import List_Blog from "./pages/Blogs/List_Blog";
 // == BookingTour==
 import ListBookingTour from "./pages/ADMIN/Manager_BookingTour/ListBookingTour";
 import ListBookingTour_Update from "./pages/ADMIN/Manager_BookingTour/ListBookingTour_Update";
+import PaymentResult from "./pages/TourDetail/components/PaymentResult";
 // == MESSAGE ==
 import Message from "./pages/Message";
 import Manager_Message from "./pages/ADMIN/Manager_Message/Messages";
@@ -141,13 +142,13 @@ function App() {
           element: <BlogDetail />,
         },
         {
-          path: "tours/voucher",
-          element: <Voucher />,
+          path: "tours/payment/result",
+          element: <PaymentResult />,
         },
-        // {
-        //   path: "user/message",
-        //   element: <Message />,
-        // },
+        {
+          path: "user/message",
+          element: <PaymentResult />,
+        },
       ],
     },
     {
