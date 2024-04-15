@@ -8,7 +8,7 @@ import ModalCancelBooking from "./components/ModalCancelBooking";
 import ModalDetailBillBooking from "./components/ModalDetailBillBooking";
 import ModalEvalBooking from "./components/ModalEvalBooking";
 
-import Function from "../../../components/Functions/function";
+import Function from "../../../components/Functions/function"; 
 
 import { Space, Table, Tag } from "antd";
 import { Tabs } from "antd";
@@ -60,13 +60,13 @@ function OrderBuy() {
 
   const handleStatusBooking = (status) => {
     if (status == "CHỜ XÁC NHẬN") {
-      return <div className={cx("text-primary", "fw_600")}>Chờ xác nhận</div>;
+      return <div className={cx("text-primary", "fw_600")}>CHỜ XÁC NHẬN</div>;
     } else if (status == "ĐÃ DUYỆT") {
-      return <div className={cx("text-success", "fw_600")}>Đã duyệt</div>;
+      return <div className={cx("text-success", "fw_600")}>ĐÃ DUYỆT</div>;
     } else if (status === "CHỜ HỦY") {
-      return <div className={cx("text-warning", "fw_600")}>Chờ hủy</div>;
+      return <div className={cx("text-warning", "fw_600")}>CHỜ HỦY</div>;
     } else if (status === "ĐÃ HỦY") {
-      return <div className={cx("text-danger", "fw_600")}>Đã hủy</div>;
+      return <div className={cx("text-danger", "fw_600")}>ĐÃ HỦY</div>;  
     }
   };
 

@@ -6,6 +6,9 @@ import { Space, Table, Tag, Tabs, Badge } from "antd";
 import { IconList } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import moment from "moment";
+
+import Function from "../../../../components/Functions/function";
 
 import BookingService from "../../../../services/BookingService";
 
@@ -14,7 +17,7 @@ import ModalReasonCancel from "../components/ModalReasonCancel";
 import ModalCancel from "../components/ModalCancel";
 
 function ListBookingTour() {
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
@@ -55,7 +58,7 @@ function ListBookingTour() {
       }));
       setNumberStatusBooking(res.data.DT.numberStatus);
       setListBookingTour(cus);
-      setTotal(res.data.DT.totalRows);
+      setTotal(res.data.DT.count);
     }
   };
 
@@ -65,13 +68,21 @@ function ListBookingTour() {
 
   const handleStatusBooking = (status) => {
     if (status == "CHỜ XÁC NHẬN") {
-      return <div className={cx("text-primary", "fw_600")}>Chờ xác nhận</div>;
+      return <div className={cx("text-primary", "fw_600")}>CHỜ XÁC NHẬN</div>;
     } else if (status == "ĐÃ DUYỆT") {
-      return <div className={cx("text-success", "fw_600")}>Đã duyệt</div>;
+      return <div className={cx("text-success", "fw_600")}>ĐÃ DUYỆT</div>;
     } else if (status === "CHỜ HỦY") {
-      return <div className={cx("text-warning", "fw_600")}>Chờ hủy</div>;
+      return <div className={cx("text-warning", "fw_600")}>CHỜ HỦY</div>;
     } else if (status === "ĐÃ HỦY") {
-      return <div className={cx("text-danger", "fw_600")}>Đã hủy</div>;
+      return <div className={cx("text-danger", "fw_600")}>ĐÃ HỦY</div>;
+    }
+  };
+
+  const handleStatusPayment = (status) => {
+    if (status == "ĐÃ THANH TOÁN") {
+      return <div className={cx("text-success", "fw_600")}>ĐÃ THANH TOÁN</div>;
+    } else if (status == "CHƯA THANH TOÁN") {
+      return <div className={cx("text-danger", "fw_600")}>CHƯA THANH TOÁN</div>;
     }
   };
   const columns = [
@@ -79,69 +90,81 @@ function ListBookingTour() {
       key: "data",
       render: (data) => (
         <div className={cx("cardOrderBuy")}>
-          <div>
-            <div className={cx("titleHeader")}>
-              <div>
-                <div>
-                  <Tag className={cx("poiter")} color="magenta">
-                    Xem tour
-                  </Tag>
-                  <Tag
-                    className={cx("poiter")}
-                    color="#108ee9"
-                    // onClick={() => handleModalDetailBillBooking(data)}
-                  >
-                    Chi tiết
-                  </Tag>
-                </div>
-              </div>
+          <div className={cx("row")}>
+            <div className={cx("col-lg-9")}>
               <div className={cx("d-flex")}>
-                {handleStatusBooking(data?.status)}
-                <span className={cx("mx-1 text-secondary")}>|</span> Tour đã
-                được đặt thành công
+                <div>
+                  <img
+                    src={data?.Calendar?.Tour?.image || ""}
+                    alt="notFound"
+                    width={130}
+                    height={130}
+                  />
+                </div>
+                <div className={cx("contentCard")}>
+                  <div className={cx("name")}>
+                    {data?.Calendar?.Tour?.name || ""}
+                  </div>
+                  <div className={cx("d-flex")}>
+                    <div>Khởi hành : </div>
+                    <div className={cx("mx-2")}>
+                      <b>
+                        {moment(data?.Calendar?.startDay).format("DD-MM-YYYY")}
+                      </b>
+                    </div>
+                    <div className={cx("mx-2")}>---</div>
+                    <div>
+                      <b>
+                        {moment(data?.Calendar?.endDay).format("DD-MM-YYYY")}
+                      </b>
+                    </div>
+                  </div>
+                  <div className={cx("d-flex")}>
+                    <div>Người lớn : </div>
+                    <div className={cx("mx-5")}>
+                      x <span>{data?.numberTicketAdult}</span>
+                    </div>
+                    <div className={cx("mx-5")}>
+                      {Function.formatNumberWithCommas(
+                        data?.Calendar?.priceAdult
+                      )}{" "}
+                      VND
+                    </div>
+                  </div>
+                  <div className={cx("d-flex")}>
+                    <div>Trẻ em : </div>
+                    <div className={cx("mx-2")}></div>
+                    <div className={cx("mx-1")}></div>
+                    <div className={cx("mx-5")}>
+                      x <span>{data?.numberTicketChild || 0}</span>
+                    </div>
+                    <div className={cx("mx-5")}>
+                      {Function.formatNumberWithCommas(
+                        data?.Calendar?.priceChild
+                      )}{" "}
+                      VND
+                    </div>
+                  </div>
+                  <div className={cx("d-flex")}>
+                    <div>Ngày đặt : </div>
+                    <div className={cx("mx-5")}>
+                      {moment(data?.createdAt).format("DD-MM-YYYY")}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className={cx("d-flex")}>
-              <div>
-                <img
-                  src={data?.Calendar?.Tour?.image || ""}
-                  alt="notFound"
-                  width={130}
-                  height={130}
-                />
-              </div>
-              <div className={cx("contentCard")}>
-                <div className={cx("name")}>
-                  {data?.Calendar?.Tour?.name || ""}
-                </div>
-                <div className={cx("d-flex")}>
-                  <div>Khởi hành : </div>
-                  <div>
-                    <b>1/2/2023</b>
-                  </div>
-                  <div className={cx("mx-1")}>-</div>
-                  <div>
-                    <b> 4/2/2023</b>
-                  </div>
-                </div>
-                <div className={cx("d-flex   w-50 justify-content-between")}>
-                  <div>Người lớn : </div>
-                  <div>x3</div>
-                  <div>2.000.000 vnd</div>
-                </div>
-                <div className={cx("d-flex   w-50 justify-content-between")}>
-                  <div>Trẻ em : </div>
 
-                  <div>
-                    <span className={cx("ml_22")}>x3</span>
-                  </div>
-                  <div>2.000.000 vnd</div>
-                </div>
+            <div className={cx("col-lg-3")}>
+              <div className={cx("d-flex")}>
+                <div>{handleStatusBooking(data?.status)}</div>
+                <div className={cx("mx-1 text-secondary")}>|</div>
+                <div>{handleStatusPayment(data?.payment_status)}</div>
               </div>
             </div>
           </div>
-          <div className={cx("my-2")}></div>
 
+          {/* THÔNG TIN KHÁCH HÀNG */}
           <div
             className={cx("d-flex justify-content-between  ", "bgcolor_FFFEFB")}
           >
@@ -150,25 +173,28 @@ function ListBookingTour() {
               <div className={cx("row my-1")}>
                 <div className={cx("col-lg-3")}>Họ và tên</div>
                 <div className={cx("col-lg-3")}>
-                  <b>Phan dai cat</b>
+                  <b>{data?.Customer?.username}</b>
                 </div>
 
                 <div className={cx("col-lg-3")}>Số điện thoại</div>
                 <div className={cx("col-lg-3")}>
-                  <b>0328472724</b>
+                  <b>{data?.Customer?.phone}</b>
                 </div>
               </div>
               <div className={cx("row my-1")}>
                 <div className={cx("col-lg-3")}>Email</div>
                 <div className={cx("col-lg-9")}>
-                  <b>phandaicat12032002@gmail.com</b>
+                  <b>{data?.Customer?.email}</b>
                 </div>
               </div>
             </div>
 
             <div className={cx("evaluate")}>
               <div className={cx("intoMoney")}>
-                Thành tiền: <span>{data?.total_money}</span>
+                Thành tiền:{" "}
+                <span>
+                  {Function.formatNumberWithCommas(data?.remaining_money)} VND
+                </span>
               </div>
               <div className={cx("d-flex mt-3")}>
                 {statusTab === "CHỜ XÁC NHẬN" ? (
@@ -209,20 +235,18 @@ function ListBookingTour() {
     {
       key: "CHỜ XÁC NHẬN",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan?.count || 0}>
+        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan || 0}>
           <div className={cx("px-3")}>CHỜ DUYỆT TOUR</div>
         </Badge>
       ),
-      //   children: "Content of Tab Pane 1",
     },
     {
       key: "CHỜ HỦY",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoHuy?.count || 0}>
+        <Badge count={numberStatusBooking?.Soluong_ChoHuy || 0}>
           <div className={cx("px-3")}>YÊU CẦU HỦY TOUR</div>
         </Badge>
       ),
-      //   children: "Content of Tab Pane 2",
     },
     {
       key: "",

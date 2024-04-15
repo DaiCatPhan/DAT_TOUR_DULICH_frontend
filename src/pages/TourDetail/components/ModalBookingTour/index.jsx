@@ -13,12 +13,13 @@ import ModalVoucherUser from "../ModalVoucherUser";
 import { useSelector } from "react-redux";
 
 import qs from "qs";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 
 import BookingService from "../../../../services/BookingService";
 
 function ModalBookingTour(props) {
   const [searchParams] = useSearchParams();
+  const [showModalSucces, setShowModalSucces] = useState(false);
 
   const {
     isShowModalBookingTour,
@@ -131,7 +132,7 @@ function ModalBookingTour(props) {
     }, 1000);
   };
 
-  // Thanh toán VNPAY
+  // THANH TOÁN VNPAY
   const handleBookingWithVNPAY = async () => {
     const data = {
       ID_Customer: user?.id,
@@ -149,14 +150,40 @@ function ModalBookingTour(props) {
     }
   };
 
-  const ResultComponent = () => {
+  // THÁNH TOÁN TẠI QUẦY
+  const handleBooking = async () => {
+    const data = {
+      ID_Customer: user?.id,
+      ID_Calendar: activeCalendar?.id,
+      numberTicketChild: numberTicketChild,
+      numberTicketAdult: numberTicketAdult,
+    };
+    if (voucherSelected) {
+      data.ID_Voucher = voucherSelected?.Voucher?.id;
+    }
+
+    const res = await BookingService.create(data);
+    if (res && res.data.EC == 0) {
+      setShowModalSucces(true);
+    } else {
+      toast.error(res.data.EM);
+    }
+  };
+
+  // MODAL sucess
+  const ResultComponentSuscess = () => {
     const handleBill = () => {
+      setIsShowModalBookingTour(false);
       navigate("/user/order-buy");
+    };
+    const handleBack = () => {
+      setShowModalSucces(false);
+      setIsShowModalBookingTour(false);
+      navigate(`/tours/${tourDetail.id}`);
     };
     return (
       <Modal
-        open={showModalResult}
-        onCancel={() => setShowModalResult(false)}
+        open={showModalSucces}
         cancelButtonProps={{ style: { display: "none" } }}
         okButtonProps={{ style: { display: "none" } }}
       >
@@ -169,7 +196,9 @@ function ModalBookingTour(props) {
               <Button type="primary" key="console" onClick={handleBill}>
                 Hóa đơn
               </Button>,
-              <Button key="buy">Trở về</Button>,
+              <Button key="buy" onClick={handleBack}>
+                Trở về
+              </Button>,
             ]}
           />
         </div>
@@ -182,9 +211,9 @@ function ModalBookingTour(props) {
       <Modal
         title="Yêu cầu đặt tour"
         open={isShowModalBookingTour}
-        onOk={() => {
-          formInfo.submit();
-        }}
+        // onOk={() => {
+        //   formInfo.submit();
+        // }}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         width={1200}
@@ -357,9 +386,9 @@ function ModalBookingTour(props) {
                             borderColor: "blue",
                             color: "blue",
                           }}
-                          // onClick={handleClickPaymentMethodHome}
+                          onClick={handleBooking}
                         >
-                          Thanh toán khi nhận hàng
+                          THANH TOÁN TẠI QUẦY
                         </Button>
                       </div>
                     </div>
@@ -377,7 +406,7 @@ function ModalBookingTour(props) {
         setDataModalVoucherUser={setDataModalVoucherUser}
         setVoucherSelected={setVoucherSelected}
       />
-      <ResultComponent />
+      <ResultComponentSuscess />
     </div>
   );
 }
