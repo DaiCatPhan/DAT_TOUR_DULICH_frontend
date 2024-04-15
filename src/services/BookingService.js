@@ -8,6 +8,10 @@ const update = (data) => {
   return axios.put(`/api/v1/booking/update`, data);
 };
 
+const updatePaid = (data) => {
+  return axios.put(`/api/v1/booking/updatePaid`, data);
+};
+
 const read = (data) => {
   return axios.get(`/api/v1/booking/read?${data}`);
 };
@@ -24,4 +28,12 @@ const vnpay_return = (data) => {
   return axios.get(`/api/v1/booking/vnpay/vnpay_return?${data}`);
 };
 
-export default { create, read, readAll, update, createVNP, vnpay_return };
+export default {
+  create,
+  read,
+  readAll,
+  update,
+  createVNP,
+  vnpay_return,
+  updatePaid,
+};

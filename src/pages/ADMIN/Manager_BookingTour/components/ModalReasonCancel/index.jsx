@@ -35,10 +35,8 @@ function ModalReasonCancel(props) {
       >
         <div>
           <div>
-            <div className={cx('row')}>
-              <div className={cx('col-lg-6')}>Khách hàng</div>
-              <div className={cx('col-lg-6')}>Khách hàng</div>
-              
+            <div className={cx("row")}>
+              <div className={cx("col-lg-6")}>Khách hàng</div>
             </div>
             <div>
               Email : <b>phandaicat12032002@gmail.com</b>

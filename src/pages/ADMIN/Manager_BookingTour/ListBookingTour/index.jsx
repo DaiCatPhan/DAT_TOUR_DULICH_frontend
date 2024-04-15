@@ -7,6 +7,7 @@ import { IconList } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { Form } from "antd";
 
 import Function from "../../../../components/Functions/function";
 
@@ -15,13 +16,14 @@ import BookingService from "../../../../services/BookingService";
 import ModalDuyetTour from "../components/ModalDuyetTour";
 import ModalReasonCancel from "../components/ModalReasonCancel";
 import ModalCancel from "../components/ModalCancel";
+import ModalUpdatePaid from "../components/ModalUpdatePaid";
 
 function ListBookingTour() {
   const [pageSize, setPageSize] = useState(10);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
-  const [statusTab, setStatusTab] = useState("CHỜ XÁC NHẬN");
+  const [tab, setTab] = useState("status=CHỜ XÁC NHẬN");
   const [numberStatusBooking, setNumberStatusBooking] = useState({});
 
   const [isShowModalDuyetTour, setIsShowModalDuyetTour] = useState(false);
@@ -30,6 +32,8 @@ function ListBookingTour() {
   const [dataModalReasonCancel, setDataModalReasonCancel] = useState({});
   const [isShowModalCancel, setIsShowModalCancel] = useState(false);
   const [dataModalCancel, setDataModalCancel] = useState({});
+  const [isShowModalUpdatePaid, setIsShowModalUpdatePaid] = useState(false);
+  const [dataModalUpdatePaid, setDataModalUpdatePaid] = useState({});
 
   const handleModalDuyetTour = (data) => {
     setIsShowModalDuyetTour(true);
@@ -46,10 +50,15 @@ function ListBookingTour() {
     setDataModalCancel(data);
   };
 
+  const handleModalUpdatePaid = (data) => {
+    setIsShowModalUpdatePaid(true);
+    setDataModalUpdatePaid(data);
+  };
+
   // GOI API LAY LIST TOUR
   const getListBookingTour = async () => {
     const res = await BookingService.readAll(
-      `page=${current}&limit=${pageSize}&status=${statusTab}`
+      `page=${current}&limit=${pageSize}&${tab}`
     );
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.rows.map((item) => ({
@@ -64,7 +73,7 @@ function ListBookingTour() {
 
   useEffect(() => {
     getListBookingTour();
-  }, [current, pageSize, statusTab]);
+  }, [current, pageSize, tab]);
 
   const handleStatusBooking = (status) => {
     if (status == "CHỜ XÁC NHẬN") {
@@ -83,6 +92,45 @@ function ListBookingTour() {
       return <div className={cx("text-success", "fw_600")}>ĐÃ THANH TOÁN</div>;
     } else if (status == "CHƯA THANH TOÁN") {
       return <div className={cx("text-danger", "fw_600")}>CHƯA THANH TOÁN</div>;
+    }
+  };
+
+  const handleButtonUpdate = (data) => {
+    if (tab == "status=CHỜ XÁC NHẬN") {
+      return (
+        <button
+          className={cx("btn_booking")}
+          onClick={() => handleModalDuyetTour(data)}
+        >
+          Duyệt tour
+        </button>
+      );
+    } else if (tab == "status=CHỜ HỦY") {
+      return (
+        <div className={cx("d-flex")}>
+          <button
+            className={cx("btn_reason")}
+            onClick={() => handleModalReasonCancel(data)}
+          >
+            Lí do hủy
+          </button>
+          <button
+            className={cx("btn_eval")}
+            onClick={() => handleModalCancel(data)}
+          >
+            Hủy tour
+          </button>
+        </div>
+      );
+    } else if (tab == "status=ĐÃ DUYỆT&payment_status=CHƯA THANH TOÁN") {
+      return (
+        <button
+          className={cx("btn_booking")}
+          onClick={() => handleModalUpdatePaid(data)}
+        >
+          CẬP NHẬT ĐÃ THANH TOÁN
+        </button>
+      );
     }
   };
   const columns = [
@@ -197,29 +245,7 @@ function ListBookingTour() {
                 </span>
               </div>
               <div className={cx("d-flex mt-3")}>
-                {statusTab === "CHỜ XÁC NHẬN" ? (
-                  <button
-                    className={cx("btn_booking")}
-                    onClick={() => handleModalDuyetTour(data)}
-                  >
-                    Duyệt tour
-                  </button>
-                ) : (
-                  <div className={cx("d-flex")}>
-                    <button
-                      className={cx("btn_reason")}
-                      onClick={() => handleModalReasonCancel(data)}
-                    >
-                      Lí do hủy
-                    </button>
-                    <button
-                      className={cx("btn_eval")}
-                      onClick={() => handleModalCancel(data)}
-                    >
-                      Hủy tour
-                    </button>
-                  </div>
-                )}
+                {handleButtonUpdate(data)}
               </div>
             </div>
           </div>
@@ -229,21 +255,22 @@ function ListBookingTour() {
   ];
 
   const onChangeTab = (key) => {
-    setStatusTab(key);
+    setTab(key);
   };
+
   const itemsTab = [
     {
-      key: "CHỜ XÁC NHẬN",
+      key: "status=CHỜ XÁC NHẬN",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan || 0}>
+        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan || 0} >
           <div className={cx("px-3")}>CHỜ DUYỆT TOUR</div>
         </Badge>
       ),
     },
     {
-      key: "CHỜ HỦY",
+      key: "status=CHỜ HỦY",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoHuy || 0}>
+        <Badge count={numberStatusBooking?.Soluong_ChoHuy || 0} showZero>
           <div className={cx("px-3")}>YÊU CẦU HỦY TOUR</div>
         </Badge>
       ),
@@ -252,7 +279,20 @@ function ListBookingTour() {
       key: "",
       label: "",
     },
+    {
+      key: "status=ĐÃ DUYỆT&payment_status=CHƯA THANH TOÁN",
+      label: (
+        <Badge count={numberStatusBooking?.Soluong_ChuaThanhToan || 0}>
+          <div className={cx("px-3")}>ĐƠN HÀNG CHƯA THANH TOÁN</div>
+        </Badge>
+      ),
+    },
+    {
+      key: "",
+      label: "",
+    },
   ];
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("border")}>
@@ -262,7 +302,7 @@ function ListBookingTour() {
             "border d-flex justify-content-between align-items-center px-3"
           )}
         >
-          <div>
+          <div className={cx("d-flex border w-75 justify-content-between")}>
             <Tabs
               defaultActiveKey="CHỜ XÁC NHẬN"
               items={itemsTab}
@@ -301,6 +341,13 @@ function ListBookingTour() {
         setIsShowModalCancel={setIsShowModalCancel}
         dataModalCancel={dataModalCancel}
         setDataModalCancel={setDataModalCancel}
+        getListBookingTour={getListBookingTour}
+      />
+      <ModalUpdatePaid
+        isShowModalUpdatePaid={isShowModalUpdatePaid}
+        setIsShowModalUpdatePaid={setIsShowModalUpdatePaid}
+        dataModalUpdatePaid={dataModalUpdatePaid}
+        setDataModalUpdatePaid={setDataModalUpdatePaid}
         getListBookingTour={getListBookingTour}
       />
     </div>

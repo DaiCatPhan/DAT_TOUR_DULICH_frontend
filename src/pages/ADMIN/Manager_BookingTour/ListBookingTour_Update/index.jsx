@@ -26,7 +26,9 @@ function ListBookingTour_Update() {
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
-  const [statusTab, setStatusTab] = useState("Đã duyệt");
+  const [statusTab, setStatusTab] = useState(
+    "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN"
+  );
   const [numberStatusBooking, setNumberStatusBooking] = useState({});
 
   const [isShowModalUpdateStatusBooking, setIsShowModalUpdateStatusBooking] =
@@ -42,11 +44,8 @@ function ListBookingTour_Update() {
   // GOI API LAY LIST TOUR
   const getListBookingTour = async () => {
     const res = await BookingService.readAll(
-      // `page=${current}&limit=${pageSize}&status=${statusTab}`
-      `page=${current}&limit=${pageSize}&status=${statusTab}`
+      `page=${current}&limit=${pageSize}&${statusTab}`
     );
-    console.log("res >>>>>>>.", res);
-
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.rows.map((item) => ({
         ...item,
@@ -71,6 +70,14 @@ function ListBookingTour_Update() {
       return <div className={cx("text-warning", "fw_600")}>Chờ hủy</div>;
     } else if (status === "ĐÃ HỦY") {
       return <div className={cx("text-danger", "fw_600")}>Đã hủy</div>;
+    }
+  };
+
+  const handleStatusPayment = (status) => {
+    if (status == "ĐÃ THANH TOÁN") {
+      return <div className={cx("text-success", "fw_600")}>ĐÃ THANH TOÁN</div>;
+    } else if (status == "CHƯA THANH TOÁN") {
+      return <div className={cx("text-danger", "fw_600")}>CHƯA THANH TOÁN</div>;
     }
   };
 
@@ -104,9 +111,9 @@ function ListBookingTour_Update() {
                 </div>
               </div>
               <div className={cx("d-flex")}>
-                {handleStatusBooking(data?.status)}
-                <span className={cx("mx-1 text-secondary")}>|</span> Tour đã
-                được đặt thành công
+                <div>{handleStatusBooking(data?.status)}</div>
+                <div className={cx("mx-1 text-secondary")}>|</div>
+                <div>{handleStatusPayment(data?.payment_status)}</div>
               </div>
             </div>
             <div className={cx("d-flex")}>
@@ -195,7 +202,7 @@ function ListBookingTour_Update() {
 
   const itemsTab = [
     {
-      key: "Đã duyệt",
+      key: "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN",
       label: (
         <Badge count={numberStatusBooking?.Soluong_DaDuyet?.count || 0}>
           <div className={cx("px-3")}>ĐÃ DUYỆT</div>
@@ -203,7 +210,7 @@ function ListBookingTour_Update() {
       ),
     },
     {
-      key: "Đã hủy",
+      key: "status=ĐÃ HỦY",
       label: (
         <Badge count={numberStatusBooking?.Soluong_DaHuy?.count || 0}>
           <div className={cx("px-3")}>ĐÃ HỦY</div>
