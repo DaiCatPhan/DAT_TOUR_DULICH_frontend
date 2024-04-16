@@ -3,7 +3,7 @@ import styles from "./Messages.module.scss";
 const cx = className.bind(styles);
 import { toast } from "react-toastify";
 import MessageService from "../../../../services/MessageService";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Input } from "antd";
 const { TextArea } = Input;
 import moment from "moment";
@@ -21,6 +21,11 @@ function Messages() {
   const [test, setTest] = useState("");
   const [userOne, setUserOne] = useState();
   const [showHeaderRoom, setShowHeaderRoom] = useState("");
+
+  const messagesEndRef = useRef(null);
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [listMessage]);
 
   const getListUserComment = async () => {
     const res = await MessageService.listRoomOfAdmin();
@@ -121,7 +126,10 @@ function Messages() {
                     {listMessage?.messageData?.map((item) => {
                       if (item?.Customer?.email != "admin@gmail.com") {
                         return (
-                          <div className={cx("d-flex justify-content-start")}>
+                          <div
+                            className={cx("d-flex justify-content-start")}
+                            ref={messagesEndRef}
+                          >
                             <div
                               key={item.id}
                               className={cx(
