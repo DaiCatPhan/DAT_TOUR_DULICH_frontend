@@ -7,7 +7,13 @@ import { Button, Modal } from "antd";
 import { Input } from "antd";
 import { useState } from "react";
 const { TextArea } = Input;
+import { Rate } from "antd";
+
+import CommentService from "../../../../../services/CommentService";
+
+import { useDispatch, useSelector } from "react-redux";
 function ModalEvalBooking(props) {
+  const user = useSelector((state) => state.account.user);
   const {
     isShowModalEvalBooking,
     setIsShowModalEvalBooking,
@@ -15,16 +21,40 @@ function ModalEvalBooking(props) {
     setDataModalEvalBooking,
     getListBookingTour,
   } = props;
-
+  console.log(dataModalEvalBooking);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [textAreaValue, setTextAreaValue] = useState("");
+  const [star, setStar] = useState(5);
+
   const handleTextAreaChange = (e) => {
-    console.log(e.target.value);
     setTextAreaValue(e.target.value); // Cập nhật giá trị của TextArea
   };
-  const handleOk = () => {};
+
+  const handleOk = async () => {
+    if (!star && !textAreaValue) {
+      toast.warning("Nhập thiếu dữ liệu !!!");
+      return;
+    }
+    const data = {
+      ID_Customer: dataModalEvalBooking?.Customer?.id,
+      ID_Tour: dataModalEvalBooking?.Calendar?.ID_Tour,
+      content: textAreaValue,
+      star: star,
+    };
+
+    console.log("adfa", data);
+
+    const res = await CommentService.createComment(data);
+    if (res && res.data.EC == 0) {
+      toast.success("Đánh giá thành công");
+      handleCancel();
+    } else {
+      toast.error(res.data.EM);
+    }
+  };
   const handleCancel = () => {
     setIsShowModalEvalBooking(false);
+    setTextAreaValue("");
   };
   return (
     <div className={cx("wrapper")}>
@@ -48,6 +78,7 @@ function ModalEvalBooking(props) {
                 value={textAreaValue}
                 onChange={handleTextAreaChange}
               />
+              <Rate value={star} onChange={(number) => setStar(number)} />
             </div>
           </div>
         </div>
