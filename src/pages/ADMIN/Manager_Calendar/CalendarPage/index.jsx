@@ -34,8 +34,6 @@ function CalendarPage() {
   const [infoDetailTour, setInfoDetailTour] = useState({});
   const [timeDate, setTimeDate] = useState("");
 
-  console.log("time", timeDate);
-
   const getTourInformation = async () => {
     if (id) {
       const res = await TourService.getTour(id);
@@ -82,6 +80,7 @@ function CalendarPage() {
   };
 
   const onFinishCalendar = async (values) => {
+    console.log(values);
     const id_tour = id;
 
     if (!id_tour) {
@@ -95,12 +94,12 @@ function CalendarPage() {
       numberSeat: values.numberSeat,
       priceAdult: values.priceAdult,
       priceChild: values.priceChild,
-      startDay: fromDay,
-      endDay: toDay,
+      // startDay: fromDay,
+      // endDay: toDay,
+      startDay: values.calendar[0],
+      endDay: values.calendar[1],
       status: "0",
     };
-
-    console.log("dataCalendar", dataCalendar);
 
     const res = await CalendarService.createCalendar(dataCalendar);
 

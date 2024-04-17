@@ -17,11 +17,7 @@ import { PlusOutlined } from "@ant-design/icons";
 const { RangePicker } = DatePicker;
 import moment from "moment";
 
-import MarkdownIt from "markdown-it";
-import MdEditor from "react-markdown-editor-lite";
-import "react-markdown-editor-lite/lib/index.css";
 import { useState } from "react";
-const mdParser = new MarkdownIt(/* Markdown-it options */);
 
 import VoucherService from "../../../../../../services/VoucherService";
 
@@ -52,7 +48,6 @@ function ModalCreateVoucher(props) {
   // FORM
   const onFinish = async (values) => {
     const { typeVoucher, nameVoucher, value, amount, date } = values;
-    // const [f, t] = date;
     if (!timeDate) {
       toast.warning("Chọn thời gian sử dụng Voucher !!!");
     }
@@ -63,8 +58,8 @@ function ModalCreateVoucher(props) {
       nameVoucher: nameVoucher,
       value: value,
       amount: amount,
-      fromDate: fromDay,
-      toDate: toDay,
+      fromDate: date[0],
+      toDate: date[1],
     };
 
     const res = await VoucherService.createVoucher(data);
