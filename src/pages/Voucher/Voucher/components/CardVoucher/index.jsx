@@ -26,7 +26,6 @@ function CardVoucher(props) {
     };
 
     const res = await VoucherService.createVoucherUser(dataSend);
-    console.log("res", res);
     if (res && res.data.EC === 0) {
       messageApi.open({
         type: "success",
@@ -51,7 +50,7 @@ function CardVoucher(props) {
   };
 
   return (
-    <div className={cx("cardVoucher")}>
+    <div className={cx("cardVoucher")}> 
       {contextHolder}
       <div className={cx("bg")}>
         <div className={cx("icon")}>

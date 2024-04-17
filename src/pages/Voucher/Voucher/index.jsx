@@ -22,7 +22,7 @@ function Voucher() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("container  ")}>
+      <div className={cx("container")}>
         <div className={cx("farmVoucher")}>
           <img
             src="/src/assets/Voucher/3.png"
@@ -46,16 +46,12 @@ function Voucher() {
           />
 
           <div>
-            <div>
-              Số lượng có hại , chỉ áp dụng cho người dùng và đơn hàng thỏa mãn
-              điều kiện chương trình
-            </div>
             <div className={cx("row")}>
               {listVoucher?.map((item) => {
                 return (
-                  <div key={item?.id} className={cx("col-lg-6")}>
-                    <div className={cx(" my-2 d-flex justify-content-center")}>
-                      <CardVoucher item={item} />
+                  <div key={item?.id} className={cx("col-lg-6")}> 
+                    <div className={cx("my-2 d-flex justify-content-center border")}>
+                      <CardVoucher item={item} className={cx('w-100')} />
                     </div>
                   </div>
                 );

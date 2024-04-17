@@ -32,6 +32,9 @@ function CalendarPage() {
   const [messageApi, contextHolder] = message.useMessage();
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
   const [infoDetailTour, setInfoDetailTour] = useState({});
+  const [timeDate, setTimeDate] = useState("");
+
+  console.log("time", timeDate);
 
   const getTourInformation = async () => {
     if (id) {
@@ -85,14 +88,19 @@ function CalendarPage() {
       return toast.warning("Vui lòng tạo tour trước !!!");
     }
 
+    const [fromDay, toDay] = timeDate;
+
     const dataCalendar = {
       ID_Tour: +id_tour,
       numberSeat: values.numberSeat,
       priceAdult: values.priceAdult,
       priceChild: values.priceChild,
-      startDay: values.calendar[0].$d,
-      endDay: values.calendar[1].$d,
+      startDay: fromDay,
+      endDay: toDay,
+      status: "0",
     };
+
+    console.log("dataCalendar", dataCalendar);
 
     const res = await CalendarService.createCalendar(dataCalendar);
 
@@ -276,7 +284,11 @@ function CalendarPage() {
                     },
                   ]}
                 >
-                  <RangePicker className={cx("w-100")} format="DD/MM/YYYY  " />
+                  <RangePicker
+                    className={cx("w-100")}
+                    format="DD-MM-YYYY"
+                    onChange={(value, valueString) => setTimeDate(valueString)}
+                  />
                 </Form.Item>
 
                 <Form.Item

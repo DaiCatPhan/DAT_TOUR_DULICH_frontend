@@ -44,10 +44,6 @@ function ModalCreateVoucher(props) {
   const [nameVoucher, setNameVoucher] = useState("");
   const [timeDate, setTimeDate] = useState("");
 
-  console.log("1data", {
-    typeVoucher,
-  });
-
   const handleOk = () => {};
   const handleCancel = () => {
     setIsShowModalCreateVoucher(false);

@@ -152,6 +152,10 @@ function App() {
           path: "user/message",
           element: <PaymentResult />,
         },
+        {
+          path: "tours/voucher",
+          element: <Voucher />,
+        },
       ],
     },
     {
