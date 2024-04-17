@@ -64,6 +64,9 @@ import Manager_Message from "./pages/ADMIN/Manager_Message/Messages";
 import RevenueTour from "./pages/ADMIN/Manager_Revenue/RevenueTour";
 import RevenueTours from "./pages/ADMIN/Manager_Revenue/RevenueTours";
 import RevenueCancelBooking from "./pages/ADMIN/Manager_Revenue/RevenueCancelBooking";
+import moment from "moment";
+import "moment/dist/locale/vi";
+moment.locale("vi");
 
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 

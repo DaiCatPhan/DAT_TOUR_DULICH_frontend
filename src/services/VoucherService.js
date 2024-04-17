@@ -2,6 +2,7 @@ import axios from "../utils/customize-axios";
 
 // ------------------ VOUCHER -------------------
 const createVoucher = (data) => {
+  console.log('result >>',data);
   return axios.post("/api/v1/voucher/create", data);
 };
 

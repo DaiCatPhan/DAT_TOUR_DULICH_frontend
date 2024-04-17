@@ -3,9 +3,19 @@ import styles from "./ModalCreateVoucher.module.scss";
 const cx = className.bind(styles);
 
 import { toast } from "react-toastify";
-import { Button, Checkbox, Form, Input, Modal, Select, DatePicker } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  Modal,
+  Select,
+  DatePicker,
+  InputNumber,
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 const { RangePicker } = DatePicker;
+import moment from "moment";
 
 import MarkdownIt from "markdown-it";
 import MdEditor from "react-markdown-editor-lite";
@@ -26,6 +36,17 @@ function ModalCreateVoucher(props) {
   } = props;
 
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [typeVoucher, setTypeVoucher] = useState("");
+  const [value, setValue] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [amount, setAmount] = useState("");
+  const [nameVoucher, setNameVoucher] = useState("");
+  const [timeDate, setTimeDate] = useState("");
+
+  console.log("1data", {
+    typeVoucher,
+  });
 
   const handleOk = () => {};
   const handleCancel = () => {
@@ -35,13 +56,19 @@ function ModalCreateVoucher(props) {
   // FORM
   const onFinish = async (values) => {
     const { typeVoucher, nameVoucher, value, amount, date } = values;
+    // const [f, t] = date;
+    if (!timeDate) {
+      toast.warning("Chọn thời gian sử dụng Voucher !!!");
+    }
+    const [fromDay, toDay] = timeDate;
+
     const data = {
       typeVoucher: typeVoucher,
       nameVoucher: nameVoucher,
       value: value,
       amount: amount,
-      fromDate: date[0].$d,
-      toDate: date[1].$d,
+      fromDate: fromDay,
+      toDate: toDay,
     };
 
     const res = await VoucherService.createVoucher(data);
@@ -85,7 +112,10 @@ function ModalCreateVoucher(props) {
                       },
                     ]}
                   >
-                    <Select placeholder="Kiểu voucher">
+                    <Select
+                      placeholder="Kiểu voucher"
+                      onChange={(value) => setTypeVoucher(value)}
+                    >
                       <Option value="percent">percent</Option>
                       <Option value="money">money</Option>
                     </Select>
@@ -115,21 +145,39 @@ function ModalCreateVoucher(props) {
             <div className={cx("row")}>
               <div className={cx("col-lg-6")}>
                 <div>
-                  <Form.Item
-                    label="Giá trị voucher"
-                    name="value"
-                    labelCol={{
-                      span: 24,
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập giá trị voucher !",
-                      },
-                    ]}
-                  >
-                    <Input />
-                  </Form.Item>
+                  {typeVoucher == "percent" ? (
+                    <Form.Item
+                      label="Giá trị voucher"
+                      name="value"
+                      labelCol={{
+                        span: 24,
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập giá trị voucher !",
+                        },
+                      ]}
+                    >
+                      <Input addonAfter="%" />
+                    </Form.Item>
+                  ) : (
+                    <Form.Item
+                      label="Giá trị voucher"
+                      name="value"
+                      labelCol={{
+                        span: 24,
+                      }}
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập giá trị voucher !",
+                        },
+                      ]}
+                    >
+                      <Input addonAfter="VND" />
+                    </Form.Item>
+                  )}
                 </div>
               </div>
               <div className={cx("col-lg-6")}>
@@ -147,7 +195,7 @@ function ModalCreateVoucher(props) {
                       },
                     ]}
                   >
-                    <Input />
+                    <InputNumber className={cx("w-100")} min={0} />
                   </Form.Item>
                 </div>
               </div>
@@ -164,26 +212,21 @@ function ModalCreateVoucher(props) {
                     rules={[
                       {
                         required: true,
-                        message: "Vui lòng nhập giá trị max !",
+                        message: "Vui lòng nhập thời gian sử dụng Voucher !",
                       },
                     ]}
                   >
-                    <RangePicker className={cx("w-100")} />
+                    <RangePicker
+                      format={"DD-MM-YYYY"}
+                      className={cx("w-100")}
+                      onChange={(value, valueString) =>
+                        setTimeDate(valueString)
+                      }
+                    />
                   </Form.Item>
                 </div>
               </div>
             </div>
-
-            {/* <Form.Item
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            >
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item> */}
           </Form>
         </div>
       </Modal>

@@ -62,7 +62,7 @@ function ListVoucher() {
     setIsShowModalDeleteVoucher(true);
     setDataModalDeleteVoucher(data);
   };
-  const handleModalCreateVoucher = async () => {
+  const handleModalCreateVoucher = async (data) => {
     setIsShowModalCreateVoucher(true);
     setDataModalCreateVoucher(data);
   };
