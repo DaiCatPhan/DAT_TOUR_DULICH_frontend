@@ -241,7 +241,7 @@ function ListBookingTour() {
               <div className={cx("intoMoney")}>
                 Thành tiền:{" "}
                 <span>
-                  {Function.formatNumberWithCommas(data?.remaining_money)} VND
+                  {Function.formatNumberWithCommas(data?.remaining_money || 0)} VND
                 </span>
               </div>
               <div className={cx("d-flex mt-3")}>
@@ -262,7 +262,7 @@ function ListBookingTour() {
     {
       key: "status=CHỜ XÁC NHẬN",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan || 0} >
+        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan || 0} showZero>
           <div className={cx("px-3")}>CHỜ DUYỆT TOUR</div>
         </Badge>
       ),
@@ -282,7 +282,7 @@ function ListBookingTour() {
     {
       key: "status=ĐÃ DUYỆT&payment_status=CHƯA THANH TOÁN",
       label: (
-        <Badge count={numberStatusBooking?.Soluong_ChuaThanhToan || 0}>
+        <Badge count={numberStatusBooking?.Soluong_ChuaThanhToan || 0} showZero>
           <div className={cx("px-3")}>ĐƠN HÀNG CHƯA THANH TOÁN</div>
         </Badge>
       ),
