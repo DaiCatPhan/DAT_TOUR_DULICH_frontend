@@ -217,7 +217,7 @@ function RevenueCancelBooking() {
       </div>
 
       {tab === "Thống kê số liệu" ? (
-        <div className={cx("border border-danger")}>
+        <div className={cx("border  ")}>
           <div className={cx("d-flex px-4 py-2")}>
             <div>
               <Select
@@ -279,7 +279,7 @@ function RevenueCancelBooking() {
             />
           </div>
           <div className={cx("px-2")}>
-            <Line className={cx('chartLine')} data={dataBarChartCancelMonth} /> 
+            <Line className={cx("chartLine")} data={dataBarChartCancelMonth} />
           </div>
         </div>
       )}

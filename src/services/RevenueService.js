@@ -1,6 +1,11 @@
 import axios from "../utils/customize-axios";
 
 // ------------------ VOUCHER -------------------
+
+const Dashboard = (data) => {
+  return axios.get(`/api/v1/statistical/dashboard`);
+};
+
 const revenueTour = (data) => {
   return axios.get(`/api/v1/statistical/revenueTour?${data}`);
 };
@@ -22,6 +27,7 @@ const revenueToursCancelMonth = (data) => {
 };
 
 export default {
+  Dashboard,
   revenueTour,
   revenueToursMonth,
   revenueToursYear,

@@ -31,58 +31,61 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem(<Link to="/admin">Trang chủ</Link>, "1", <PieChartOutlined />),
+  getItem(<Link to="/admin">Trang chủ</Link>, "sub1", <PieChartOutlined />),
   getItem(
-    <Link to="/admin/dashboard">Dashboard</Link>,
-    "2",
+    <Link to="/admin/dashboard">Tổng quan</Link>,
+    "sub2",
     <DesktopOutlined />
   ),
-  getItem("Doanh mục", "sub1", <UserOutlined />, [
-    getItem(<Link to="/admin/managerCatogory/list">Danh sách</Link>, "3"),
+  getItem("Doanh mục", "sub3", <UserOutlined />, [
+    getItem(<Link to="/admin/managerCatogory/list">Danh sách</Link>, "sub3-1"),
   ]),
-  getItem("Khách hàng", "sub2", <UserOutlined />, [
-    getItem(<Link to="/admin/managerCus/list">Danh sách</Link>, "3"),
+  getItem("Khách hàng", "sub4", <UserOutlined />, [
+    getItem(<Link to="/admin/managerCus/list">Danh sách</Link>, "sub4-1"),
   ]),
-  getItem("Quản lí Tour", "sub3", <TeamOutlined />, [
-    getItem(<Link to="/admin/managerTour/list">Danh sách tour</Link>, "8"),
-    getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "9"),
+  getItem("Quản lí Tour", "sub5", <TeamOutlined />, [
+    getItem(<Link to="/admin/managerTour/list">Danh sách tour</Link>, "sub5-1"),
+    getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "sub5-2"),
   ]),
-  getItem("Quản lí Đặt Tour", "sub4", <TeamOutlined />, [
-    getItem(<Link to="/admin/managerBookingTour/list">Duyệt</Link>, "18"),
+  getItem("Quản lí Đặt Tour", "sub6", <TeamOutlined />, [
+    getItem(<Link to="/admin/managerBookingTour/list">Duyệt</Link>, "sub6-1"),
     getItem(
       <Link to="/admin/managerBookingTour/list_update">
         Danh sách đặt tour
       </Link>,
-      "118"
+      "sub6-2"
     ),
   ]),
 
-  getItem("Quản lí bài đăng", "sub5", <TeamOutlined />, [
-    getItem(<Link to="/admin/managerBlog/list">Danh sách bài đăng</Link>, "8"),
+  getItem("Quản lí bài đăng", "sub7", <TeamOutlined />, [
+    getItem(
+      <Link to="/admin/managerBlog/list">Danh sách bài đăng</Link>,
+      "sub7-1"
+    ),
   ]),
 
-  getItem("Quản lí voucher", "sub6", <TeamOutlined />, [
+  getItem("Quản lí voucher", "sub8", <TeamOutlined />, [
     getItem(
       <Link to="/admin/managerVoucher/listVoucher">DS voucher</Link>,
-      "9"
+      "sub8-1"
     ),
   ]),
 
-  getItem("Quản lí tin nhắn", "sub7", <TeamOutlined />, [
+  getItem("Quản lí tin nhắn", "sub9", <TeamOutlined />, [
     getItem(<Link to="/admin/managerMessage/messages">Messager</Link>, "8"),
   ]),
-  getItem("Thống kê", "sub8", <TeamOutlined />, [
+  getItem("Thống kê", "sub10", <TeamOutlined />, [
     getItem(
       <Link to="/admin/managerRevenue/tour">Doanh thu tour</Link>,
-      "sub8-1"
+      "sub10-1"
     ),
     getItem(
       <Link to="/admin/managerRevenue/tours">Tổng doanh thu</Link>,
-      "sub8-2"
+      "sub10-2"
     ),
     getItem(
       <Link to="/admin/managerRevenue/cancel">Thống kê hủy </Link>,
-      "sub8-3"
+      "sub10-3"
     ),
   ]),
 ];
@@ -111,14 +114,14 @@ function LayoutAdmin() {
   };
 
   const itemsDropdown = [
-    {
-      label: <a href="https://www.antgroup.com">1st menu item</a>,
-      key: "0",
-    },
-    {
-      label: <a href="https://www.aliyun.com">2nd menu item</a>,
-      key: "1",
-    },
+    // {
+    //   label: <a href="https://www.antgroup.com">1st menu item</a>,
+    //   key: "0",
+    // },
+    // {
+    //   label: <a href="https://www.aliyun.com">2nd menu item</a>,
+    //   key: "1",
+    // },
     {
       type: "divider",
     },
@@ -158,10 +161,12 @@ function LayoutAdmin() {
               border: "1px solid black",
             }}
           >
-            <div className={cx("border mx-5")}>
+            <div className={cx("mx-5")}>
               <div className={cx("d-flex justify-content-between")}>
-                <div>HEADER</div>
-                <div className={cx("border")}>
+                <div>
+                  <b>DU LỊCH MỌI NƠI</b>
+                </div>
+                <div>
                   <Dropdown
                     menu={{
                       items: itemsDropdown,

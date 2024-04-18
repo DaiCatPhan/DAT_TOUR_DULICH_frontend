@@ -64,9 +64,16 @@ function List_Category() {
 
   const getListCaterogy = async () => {
     const res = await CategoryService.readAllCategory();
+    console.log("res", res);
 
     if (res && res.data.EC === 0) {
-      setListCategory(res.data.DT?.categories);
+      const cusData = res.data.DT?.categories.map((item) => {
+        return {
+          ...item,
+          key: item.id,
+        };
+      });
+      setListCategory(cusData);
     }
   };
 
