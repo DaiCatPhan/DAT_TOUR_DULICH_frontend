@@ -6,11 +6,11 @@ import { toast } from "react-toastify";
 import { Button, Modal } from "antd";
 import { Space, Table, Tag, Form, Input, Result } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { useEffect, useMemo, useState } from "react";
 
 import ModalVoucherUser from "../ModalVoucherUser";
-import { useSelector } from "react-redux";
 
 import qs from "qs";
 import { useSearchParams, useParams } from "react-router-dom";
@@ -45,10 +45,6 @@ function ModalBookingTour(props) {
   const [voucherSelected, setVoucherSelected] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [showModalResult, setShowModalResult] = useState(false);
-
-  const handleClickPaymentMethodHome = () => {
-    setPaymentMethod("TẠI QUẦY");
-  };
 
   const handleModalVoucherUser = (data) => {
     setIsShowModalVoucherUser(true);
@@ -159,8 +155,10 @@ function ModalBookingTour(props) {
       numberTicketAdult: numberTicketAdult,
     };
     if (voucherSelected) {
-      data.ID_Voucher = voucherSelected?.Voucher?.id;
+      data.ID_Voucher = voucherSelected?.Voucher?.id; 
     }
+
+    console.log("data >>>.", data);
 
     const res = await BookingService.create(data);
     if (res && res.data.EC == 0) {

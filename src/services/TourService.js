@@ -9,7 +9,7 @@ const updateTour = (data) => {
 };
 
 const getTour = (data) => {
-  return axios.get(`/api/v1/tour/read?id=${data}`); 
+  return axios.get(`/api/v1/tour/read?${data}`);
 };
 
 const getTours = (data) => {
@@ -20,4 +20,4 @@ const uploadImageTour = (data) => {
   return axios.patch("/api/v1/tour/uploadImageTour", data);
 };
 
-export default { createTour, uploadImageTour, getTour, getTours , updateTour};
+export default { createTour, uploadImageTour, getTour, getTours, updateTour };

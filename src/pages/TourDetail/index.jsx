@@ -20,8 +20,10 @@ import {
   IconZeppelin,
   IconShip,
 } from "@tabler/icons-react";
+import { useSelector } from "react-redux";
 
 function TourDetail() {
+  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const [tourDetail, setTourDetail] = useState({});
   const [calendarTour, setCalendarTour] = useState([]);
   const [processTour, setProcessTour] = useState({});
@@ -31,6 +33,10 @@ function TourDetail() {
   const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
 
   const handleModalBookingTour = () => {
+    if (!isAuthenticated) {
+      toast.error("Vui lòng đăng nhập để đặt tour");
+      return;
+    }
     setIsShowModalBookingTour(true);
   };
 
@@ -50,7 +56,9 @@ function TourDetail() {
   // Gọi API lấy dữ liệu
   const getTourById = async () => {
     try {
-      const res = await TourService.getTour(id);
+      const res = await TourService.getTour(
+        `id=${id}&sortCalendar=ASC&numberCalenadar=3&getAll=false`
+      );
       if (res && res.data.EC === 0 && res.data.DT.id) {
         setTourDetail(res?.data?.DT);
         setProcessTour(res?.data?.DT?.ProcessTour);
@@ -257,7 +265,7 @@ function TourDetail() {
                     {activeCalendar?.remainingSeats == 0 ? (
                       <button
                         onClick={handleModalBookingTour}
-                        className={cx("btnYeuCau",'disable')}
+                        className={cx("btnYeuCau", "disable")}
                         disabled={true}
                       >
                         Đặt tour ngay

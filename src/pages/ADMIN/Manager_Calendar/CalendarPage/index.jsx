@@ -36,7 +36,9 @@ function CalendarPage() {
 
   const getTourInformation = async () => {
     if (id) {
-      const res = await TourService.getTour(id);
+      const res = await TourService.getTour(
+        `id=${id}&sortCalendar=DESC&getAll=true`
+      );
 
       if (res && res.data.EC === 0) {
         const cus = res.data.DT.Calendars.map((item) => {
