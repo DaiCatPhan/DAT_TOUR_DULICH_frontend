@@ -83,11 +83,13 @@
 .calendar {
   width: 380px;
   margin-left: 40px;
-}
-
-.calendar .infoCalendar {
   position: sticky;
   top: 0;
+}
+
+.calendar > .infoCalendar {
+  background-color: white;
+  padding: 20px;
 
   .calendarCard {
     padding: 13px 20px;

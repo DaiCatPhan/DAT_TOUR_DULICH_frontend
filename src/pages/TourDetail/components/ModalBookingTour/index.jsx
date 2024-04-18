@@ -30,6 +30,7 @@ function ModalBookingTour(props) {
     numberTicketAdult,
     numberTicketChild,
     totalAmount,
+    getTourById,
   } = props;
   const [formInfo] = Form.useForm();
   tourDetail.key = tourDetail.id;
@@ -143,6 +144,7 @@ function ModalBookingTour(props) {
     const res = await BookingService.createVNP(data);
     if (res && res.data.EC == 0) {
       window.location.href = res.data.DT.url;
+      getTourById();
     }
   };
 
@@ -155,14 +157,13 @@ function ModalBookingTour(props) {
       numberTicketAdult: numberTicketAdult,
     };
     if (voucherSelected) {
-      data.ID_Voucher = voucherSelected?.Voucher?.id; 
+      data.ID_Voucher = voucherSelected?.Voucher?.id;
     }
-
-    console.log("data >>>.", data);
 
     const res = await BookingService.create(data);
     if (res && res.data.EC == 0) {
       setShowModalSucces(true);
+      getTourById();
     } else {
       toast.error(res.data.EM);
     }

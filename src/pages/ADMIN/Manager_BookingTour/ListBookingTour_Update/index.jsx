@@ -21,8 +21,10 @@ import { Link } from "react-router-dom";
 import BookingService from "../../../../services/BookingService";
 import ModalUpdateStatusBooking from "../components/ModalUpdateStatusBooking";
 
+import Funtion from "../../../../components/Functions/function";
+
 function ListBookingTour_Update() {
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
@@ -46,6 +48,7 @@ function ListBookingTour_Update() {
     const res = await BookingService.readAll(
       `page=${current}&limit=${pageSize}&${statusTab}`
     );
+    console.log("res", res);
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.rows.map((item) => ({
         ...item,
@@ -63,13 +66,13 @@ function ListBookingTour_Update() {
 
   const handleStatusBooking = (status) => {
     if (status == "CHỜ XÁC NHẬN") {
-      return <div className={cx("text-primary", "fw_600")}>Chờ xác nhận</div>;
+      return <div className={cx("text-primary", "fw_600")}>CHỜ XÁC NHẬN</div>;
     } else if (status == "ĐÃ DUYỆT") {
-      return <div className={cx("text-success", "fw_600")}>Đã duyệt</div>;
+      return <div className={cx("text-success", "fw_600")}>ĐÃ DUYỆT</div>;
     } else if (status === "CHỜ HỦY") {
-      return <div className={cx("text-warning", "fw_600")}>Chờ hủy</div>;
+      return <div className={cx("text-warning", "fw_600")}>CHỜ HỦY</div>;
     } else if (status === "ĐÃ HỦY") {
-      return <div className={cx("text-danger", "fw_600")}>Đã hủy</div>;
+      return <div className={cx("text-danger", "fw_600")}>ĐÃ HỦY</div>;
     }
   };
 
@@ -83,10 +86,6 @@ function ListBookingTour_Update() {
 
   const onChangeTab = (key) => {
     setStatusTab(key);
-  };
-
-  const handleModalUpdateStatus = async () => {
-    alert("handleModalUpdateStatus");
   };
 
   const columns = [
@@ -141,16 +140,26 @@ function ListBookingTour_Update() {
                 </div>
                 <div className={cx("d-flex   w-50 justify-content-between")}>
                   <div>Người lớn : </div>
-                  <div>x3</div>
-                  <div>2.000.000 vnd</div>
+                  <div>
+                    x <span>{data?.numberTicketAdult}</span>
+                  </div>
+                  <div>
+                    {Funtion.formatNumberWithCommas(data?.Calendar?.priceAdult)}{" "}
+                    vnd
+                  </div>
                 </div>
                 <div className={cx("d-flex   w-50 justify-content-between")}>
                   <div>Trẻ em : </div>
 
                   <div>
-                    <span className={cx("ml_22")}>x3</span>
+                    <span className={cx("ml_22")}>
+                      x <span>{data?.numberTicketChild || 0}</span>
+                    </span>
                   </div>
-                  <div>2.000.000 vnd</div>
+                  <div>
+                    {Funtion.formatNumberWithCommas(data?.Calendar?.priceChild)}{" "}
+                    vnd
+                  </div>
                 </div>
               </div>
             </div>
@@ -165,25 +174,29 @@ function ListBookingTour_Update() {
               <div className={cx("row my-1")}>
                 <div className={cx("col-lg-3")}>Họ và tên</div>
                 <div className={cx("col-lg-3")}>
-                  <b>Phan dai cat</b>
+                  <b>{data?.Customer?.username}</b>
                 </div>
 
                 <div className={cx("col-lg-3")}>Số điện thoại</div>
                 <div className={cx("col-lg-3")}>
-                  <b>0328472724</b>
+                  <b>{data?.Customer?.phone}</b>
                 </div>
               </div>
               <div className={cx("row my-1")}>
                 <div className={cx("col-lg-3")}>Email</div>
                 <div className={cx("col-lg-9")}>
-                  <b>phandaicat12032002@gmail.com</b>
+                  <b>{data?.Customer?.email}</b>
                 </div>
               </div>
             </div>
 
             <div className={cx("evaluate")}>
               <div className={cx("intoMoney")}>
-                Thành tiền: <span>{data?.total_money}</span>
+                {/* Thành tiền: <span>{data?.total_money}</span> */}
+                Thành tiền:{" "}
+                <span>
+                  {Funtion.formatNumberWithCommas(data?.total_money)} VND
+                </span>
               </div>
               <div className={cx("d-flex mt-3")}>
                 <button

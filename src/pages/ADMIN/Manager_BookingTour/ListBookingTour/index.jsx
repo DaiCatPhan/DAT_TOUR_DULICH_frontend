@@ -241,7 +241,7 @@ function ListBookingTour() {
               <div className={cx("intoMoney")}>
                 Thành tiền:{" "}
                 <span>
-                  {Function.formatNumberWithCommas(data?.remaining_money || 0)} VND
+                  {Function.formatNumberWithCommas(data?.total_money || 0)} VND
                 </span>
               </div>
               <div className={cx("d-flex mt-3")}>

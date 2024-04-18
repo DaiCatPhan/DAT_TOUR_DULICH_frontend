@@ -1,6 +1,7 @@
 import className from "classnames/bind";
 import styles from "./OrderBuy.module.scss";
 const cx = className.bind(styles);
+import { useDispatch, useSelector } from "react-redux";
 
 import BookingService from "../../../services/BookingService";
 
@@ -17,6 +18,8 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 
 function OrderBuy() {
+  const user = useSelector((state) => state.account.user);
+
   const [listBookingTour, setListBookingTour] = useState([]);
   const [tab, setTab] = useState("");
 
@@ -44,7 +47,7 @@ function OrderBuy() {
     setDataModalEvalBooking(data);
   };
   const getListBookingTour = async () => {
-    const res = await BookingService.read(`ID_Customer=2&${tab}`);
+    const res = await BookingService.read(`ID_Customer=${user?.id}&${tab}`);
     if (res && res.data.EC == 0) {
       const cus = res.data.DT.rows.map((item) => {
         return {
@@ -178,7 +181,7 @@ function OrderBuy() {
                 <Link to={`/tours/${data?.Calendar?.ID_Tour}`}>
                   <button className={cx("btn_booking")}>Đặt tour lại</button>{" "}
                 </Link>
-                <div> {EvaluateButton(data)}</div> 
+                <div> {EvaluateButton(data)}</div>
                 {/* <button
                   className={cx("btn_eval")}
                   onClick={() => handleModalEvalBooking(data)}

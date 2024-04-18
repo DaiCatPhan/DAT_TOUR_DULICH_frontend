@@ -347,6 +347,7 @@ function TourDetail() {
         numberTicketAdult={numberTicketAdult}
         numberTicketChild={numberTicketChild}
         totalAmount={totalAmount}
+        getTourById={getTourById}
       />
     </div>
   );
