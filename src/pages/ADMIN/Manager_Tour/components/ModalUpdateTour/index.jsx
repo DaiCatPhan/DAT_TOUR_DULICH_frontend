@@ -46,7 +46,6 @@ function ModalUpdateTour(props) {
 
   const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
   const [category_ADDRESS_TOUR, setCategory_ADDRESS_TOUR] = useState([]);
-  console.log("category_TYPE_TOUR", category_TYPE_TOUR);
   const typeTour = category_TYPE_TOUR;
 
   const uploadButton = (

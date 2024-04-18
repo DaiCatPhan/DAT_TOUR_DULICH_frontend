@@ -5,6 +5,7 @@ import { Space, Button, Table, Tag, Modal, Input, Form } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { IconEdit, IconPencilMinus, IconTrash } from "@tabler/icons-react";
 import { IconList } from "@tabler/icons-react";
+import { Select } from "antd";
 
 import ModalUpdateTour from "../components/ModalUpdateTour";
 import ModalDeleteTour from "../components/ModalDeleteTour";
@@ -15,11 +16,28 @@ import { Link } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 
+import CategoryService from "../../../../services/CategoryService";
+
 function ListTour() {
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listTour, setListTour] = useState([]);
+
+  const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
+  const typeTour = category_TYPE_TOUR;
+
+  const getCategorys = async () => {
+    try {
+      const TYPE_TOUR = await CategoryService.readAllCategory("type=TYPE_TOUR");
+
+      if (TYPE_TOUR && TYPE_TOUR.data.EC == 0) {
+        setCategory_TYPE_TOUR(TYPE_TOUR.data.DT.categories);
+      }
+    } catch (error) {
+      console.log("error >>", error);
+    }
+  };
 
   // modal update tour , delete tour , update processTour
   const [isShowModalUpdateTour, setIsShowModalUpdateTour] = useState(false);
@@ -60,6 +78,7 @@ function ListTour() {
   };
 
   useEffect(() => {
+    getCategorys();
     getListTours();
   }, [current, pageSize]);
 
@@ -296,7 +315,7 @@ function ListTour() {
       },
     },
   ];
-
+   
   return (
     <div className={cx("border")}>
       <div className={cx("title", "border d-flex align-items-center")}>
@@ -327,7 +346,15 @@ function ListTour() {
               </div>
               <div className={cx("col-lg-3")}>
                 <Form.Item label="Thể loại" name="type">
-                  <Input />
+                  <Select placeholder="Chọn chủ đề ">
+                    {typeTour?.map((item) => {
+                      return (
+                        <Select.Option value={item?.value} key={item?.id}>
+                          {item?.value}
+                        </Select.Option>
+                      );
+                    })}
+                  </Select>
                 </Form.Item>
               </div>
               <div className={cx("col-lg-3 ")}>

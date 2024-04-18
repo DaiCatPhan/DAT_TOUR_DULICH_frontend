@@ -21,11 +21,6 @@ function ModalUPdateProcessTour(props) {
     dataModalUpdateProcessTour,
   } = props;
 
-  console.log(
-    "dataModalUpdateProcessTour >>>>>>>..",
-    dataModalUpdateProcessTour
-  );
-
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [processTour_TEXT, setProcessTour_TEXT] = useState("");
   const [processTour_HTML, setProcessTour_HTML] = useState("");
