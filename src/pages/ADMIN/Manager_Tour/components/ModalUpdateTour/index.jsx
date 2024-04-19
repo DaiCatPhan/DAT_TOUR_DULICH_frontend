@@ -56,7 +56,7 @@ function ModalUpdateTour(props) {
       }}
       type="button"
     >
-      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      {loading ? <LoadingOutlined /> : <PlusOutlined />} 
       <div
         style={{
           marginTop: 8,
@@ -124,10 +124,7 @@ function ModalUpdateTour(props) {
   const onFinish = async (values) => {
     const data = values;
     data.id = dataModalUpdateTour?.id;
-    data.duration = `${values.duration_am} ngày ${values.duration_pm} đêm`;
-
     const res = await TourService.updateTour(data);
-
     if (res && res.data.EC === 0) {
       toast.success("Tạo tour thành công ");
       getListTours();
@@ -290,7 +287,7 @@ function ModalUpdateTour(props) {
                   <Form.Item
                     className={cx("w-50")}
                     label="Tổng thời gian ngày"
-                    name="duration_am"
+                    name="numbeOfDay"
                     rules={[
                       {
                         required: true,
@@ -310,7 +307,7 @@ function ModalUpdateTour(props) {
                   <Form.Item
                     className={cx("w-50  ")}
                     label="Tổng thời gian đêm"
-                    name="duration_pm"
+                    name="numberOfNight"
                     rules={[
                       {
                         required: true,

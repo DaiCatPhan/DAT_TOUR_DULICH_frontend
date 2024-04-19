@@ -14,7 +14,18 @@ import moment from "moment";
 
 function CardSearch(props) {
   const { item } = props;
-  const { name, image, priceAdult, id, duration, vehicle, Calendars } = item;
+  const {
+    name,
+    image,
+    priceAdult,
+    id,
+    numbeOfDay,
+    numberOfNight,
+    vehicle,
+    Calendars,
+  } = item;
+
+  console.log("item ", item);
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
       return <IconBus />;
@@ -50,7 +61,9 @@ function CardSearch(props) {
                     <div>
                       <IconClockHour10 className={cx("color_616161")} />
                     </div>
-                    <div className={cx("mx-2", "color_616161")}>{duration}</div>
+                    <div className={cx("mx-2", "color_616161")}>
+                      {numbeOfDay} ngày {numberOfNight} đêm
+                    </div>
                   </div>
                   <div className={cx("color_616161")}>
                     Phương tiện : {handleIconVehicle(vehicle)}
@@ -58,17 +71,16 @@ function CardSearch(props) {
                 </div>
               </div>
             </div>
-            <div className={cx("col-lg ")}>
-              <div className={cx("  text-center")}>
-                <div className={cx("text-black")}>
-                  Khởi hành:
-                  {moment(Calendars[0]?.startDay).format("DD-MM-YYYY")}
-                </div>
-                <h4 className={cx("price")}>
-                  {funtions?.formatNumberWithCommas(priceAdult || 0)}
-                  <span>VND</span>
-                </h4>
+            <div className={cx("col-lg border")}>
+              <div className={cx("d-flex justify-content-between")}>
+                <div>Khởi hành:</div>
+                <div>{moment(Calendars[0]?.startDay).format("DD-MM-YYYY")}</div>
               </div>
+
+              <h4 className={cx("price")}>
+                {funtions?.formatNumberWithCommas(priceAdult || 0)}
+                <span>VND</span>
+              </h4>
             </div>
           </div>
         </div>

@@ -30,7 +30,6 @@ function ListTour() {
   const getCategorys = async () => {
     try {
       const TYPE_TOUR = await CategoryService.readAllCategory("type=TYPE_TOUR");
-
       if (TYPE_TOUR && TYPE_TOUR.data.EC == 0) {
         setCategory_TYPE_TOUR(TYPE_TOUR.data.DT.categories);
       }
@@ -258,6 +257,18 @@ function ListTour() {
       key: "type",
       ...getColumnSearchProps("type"),
     },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => {
+        return status == "1" ? (
+          <div>Hoạt động</div>
+        ) : (
+          <div>Không hoạt động</div>
+        );
+      },
+    },
 
     {
       title: "Chương trình tour",
@@ -315,7 +326,7 @@ function ListTour() {
       },
     },
   ];
-   
+
   return (
     <div className={cx("border")}>
       <div className={cx("title", "border d-flex align-items-center")}>

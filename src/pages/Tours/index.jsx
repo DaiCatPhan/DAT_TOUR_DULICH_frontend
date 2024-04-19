@@ -35,42 +35,42 @@ function Tours() {
   const getTours = async () => {
     try {
       const tourMienBac = await TourService.getTours(
-        "type=Tour Du Lịch Miền Bắc"
+        "type=Tour Du Lịch Miền Bắc&status=1"
       );
       const tourMienTrung = await TourService.getTours(
-        "type=Tour Du Lịch Miền Trung"
+        "type=Tour Du Lịch Miền Trung&status=1"
       );
       const tourMienNam = await TourService.getTours(
-        "type=Tour Du Lịch Miền Nam"
+        "type=Tour Du Lịch Miền Nam&status=1"
       );
 
       const tourDuLichHanhHuong = await TourService.getTours(
-        "type=Tour Du Lịch Hành Hương"
+        "type=Tour Du Lịch Hành Hương&status=1"
       );
 
       const tourDuLichDongTayBac = await TourService.getTours(
-        "type=Tour Du Lịch Đông Tây Bắc"
+        "type=Tour Du Lịch Đông Tây Bắc&status=1"
       );
 
-      console.log("tourDuLichDongTayBac", tourDuLichDongTayBac);
-
       const tourNoiDiaCaoCap = await TourService.getTours(
-        "type=Tour Nội Địa Cao Cấp"
+        "type=Tour Nội Địa Cao Cấp&status=1"
       );
 
       const tourTraiNghiemDiaPhuong = await TourService.getTours(
-        "type=Tour Trải Nghiệm Địa Phương"
+        "type=Tour Trải Nghiệm Địa Phương&status=1"
       );
 
       const tourDuLichTayNguyen = await TourService.getTours(
-        "type=Tour Du Lịch Tây Nguyên"
+        "type=Tour Du Lịch Tây Nguyên&status=1"
       );
 
       const tourViVuCuoiTuan = await TourService.getTours(
-        "type=Tour Vi Vu Cuối Tuần"
+        "type=Tour Vi Vu Cuối Tuần&status=1"
       );
 
-      const tourThamHiem = await TourService.getTours("type=Tour Thám Hiểm");
+      const tourThamHiem = await TourService.getTours(
+        "type=Tour Thám Hiểm&status=1"
+      );
 
       const res = await TourService.getTours();
 

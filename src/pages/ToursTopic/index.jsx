@@ -3,7 +3,7 @@ import styles from "./ToursTopic.module.scss";
 const cx = className.bind(styles);
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-
+import queryString from "query-string";
 import moment from "moment";
 
 import CardSearch from "../../components/CardSearch";
@@ -12,7 +12,6 @@ import data from "../../components/Data/data";
 import TourService from "../../services/TourService";
 import CategoryService from "../../services/CategoryService";
 import { useLocation } from "react-router-dom";
-
 
 import {
   IconClockHour10,
@@ -30,32 +29,32 @@ import { Menu } from "antd";
 import { Button, Checkbox, Form, Input, DatePicker } from "antd";
 import { useEffect, useState } from "react";
 
+import FilterCondition from "./components/filterCondition/filterCondition";
+
 function ToursTopic() {
-  
   const [tours, setTours] = useState([]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const [nameParam, setNameParam] = useState("");
-  const [typeParam, setTypeParam] = useState("");
+
   const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
   const [category_ADDRESS_TOUR, setCategory_ADDRESS_TOUR] = useState([]);
 
- 
+  const nameParam = searchParams.get("name");
+  const typeParam = searchParams.get("type");
+  const startDayParam = searchParams.get("startDay");
+  const endDayParam = searchParams.get("endDay");
 
   // Gọi API lấy dữ liệu
   const getTours = async () => {
     try {
-      let condition = "";
-      if (nameParam) {
-        condition = `name=${nameParam}`;
-      }
-
-      if (typeParam) {
-        condition = `type=${typeParam}`;
-      }
-
-      const res = await TourService.getTours(condition);
-
+      const params = new URLSearchParams(window.location.search);
+      const paramsObj = Array.from(params.keys()).reduce(
+        (acc, val) => ({ ...acc, [val]: params.get(val) }),
+        {}
+      );
+      const stringified = queryString.stringify(paramsObj);
+      const res = await TourService.getTours(stringified);
+      console.log("res", res);
       if (res && res.data.EC === 0) {
         setTours(res?.data?.DT);
       }
@@ -84,8 +83,6 @@ function ToursTopic() {
   useEffect(() => {
     getTours();
     getCategorys();
-    setNameParam(searchParams.get("name"));
-    setTypeParam(searchParams.get("type"));
   }, [nameParam, typeParam]);
 
   function getItem(label, key, icon, children, type) {
@@ -134,15 +131,7 @@ function ToursTopic() {
             <div className={cx("formSearch")}>
               <div className={cx("mx-2 ")}>
                 <div>
-                  <Form.Item
-                    name="name"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: "Please input your username!",
-                    //   },
-                    // ]}
-                  >
+                  <Form.Item name="name">
                     <Input
                       className={cx("inputSearch")}
                       placeholder="Bạn muốn đi đâu ?"
@@ -224,19 +213,23 @@ function ToursTopic() {
               </div>
             </div>
           </div>
-          <div className={cx("col-lg-9  border border-primary")}>
-            <div className={cx("nameTypeTour")}>
-              Du Lịch : {nameParam || typeParam}
-            </div>
+          <div className={cx("col-lg-9")}>
+            <div className={cx("border")}>
+              <div className={cx("nameTypeTour")}>
+                Du Lịch : {nameParam || typeParam}
+              </div>
 
-            <div className={cx("px-3")}>
-              {tours?.tours?.map((item) => {
-                return (
-                  <Link to={`/tours/${item?.id}`}>
-                    <CardSearch key={item.id} item={item} />
-                  </Link>
-                );
-              })}
+              <FilterCondition />
+
+              <div className={cx("px-3")}>
+                {tours?.tours?.map((item) => {
+                  return (
+                    <Link to={`/tours/${item?.id}`}>
+                      <CardSearch key={item.id} item={item} />
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

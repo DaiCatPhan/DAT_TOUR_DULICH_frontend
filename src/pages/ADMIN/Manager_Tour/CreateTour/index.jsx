@@ -38,7 +38,6 @@ import data from "../../../../components/Data/data";
 
 function CreateTour() {
   const [loading, setLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState();
   const [spin, setSpin] = useState(false);
   const [isShowNoticationCreateTour, setIsShowNoticationCreateTour] =
     useState(false);
@@ -47,7 +46,8 @@ function CreateTour() {
   const [formCalendar] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
 
-  const [imageTour, setImageTour] = useState("");
+  const [imageTour, setImageTour] = useState(null);
+
   const [processTour_TEXT, setProcessTour_TEXT] = useState("");
   const [processTour_HTML, setProcessTour_HTML] = useState("");
 
@@ -56,7 +56,6 @@ function CreateTour() {
 
   const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
   const [category_ADDRESS_TOUR, setCategory_ADDRESS_TOUR] = useState([]);
-
 
   const typeTour = category_TYPE_TOUR;
 
@@ -135,7 +134,9 @@ function CreateTour() {
   );
 
   const handleChangeUpload = (info) => {
-    setImageTour(info.file.originFileObj);
+    if (info.file.status !== "uploading") {
+      setImageTour(info.file.originFileObj);
+    }
   };
 
   function handleEditorChange_ProcessTour({ html, text }) {
@@ -149,12 +150,7 @@ function CreateTour() {
     if (checkTourEixt) {
       return;
     }
-
-    const data = values;
-    data.duration = `${values.duration_am} ngày ${values.duration_pm} đêm`;
-
-    const res = await TourService.createTour(data);
-
+    const res = await TourService.createTour(values);
     if (res && res.data.EC === 0) {
       toast.success("Tạo tour thành công ");
       localStorage.setItem("TOUR", JSON.stringify(res.data.DT));
@@ -182,9 +178,10 @@ function CreateTour() {
     formData.append("ID_Tour", id_tour);
 
     setSpin(true);
-    const res = await TourService.uploadImageTour(formData);
+    const res = await TourService.uploadImageTour(formData); 
     if (res && res.data.EC === 0) {
       toast.success("Cập nhật hình ảnh thành công");
+      setImageTour(null);
       getTourInformation();
     } else {
       toast.error(res.data.EM);
@@ -345,10 +342,11 @@ function CreateTour() {
       toast.warning("Bạn chưa tạo tour !!!");
       return;
     }
-    if (!PROCESSTOUR_localStorage) {
-      toast.warning("Bạn chưa tạo chương trình tour !!!");
-      return;
-    }
+    // if (!PROCESSTOUR_localStorage) {
+    //   toast.warning("Bạn chưa tạo chương trình tour !!!");
+    //   return;
+    // }
+
     localStorage.removeItem("TOUR");
     localStorage.removeItem("ID_PROCESS");
     setIsShowNoticationCreateTour(false);
@@ -486,7 +484,7 @@ function CreateTour() {
                 <Form.Item
                   className={cx("w-50")}
                   label="Tổng thời gian ngày"
-                  name="duration_am"
+                  name="numbeOfDay"
                   rules={[
                     {
                       required: true,
@@ -504,9 +502,9 @@ function CreateTour() {
                 <div className={cx("mx-2")}></div>
 
                 <Form.Item
-                  className={cx("w-50  ")}
+                  className={cx("w-50")}
                   label="Tổng thời gian đêm"
-                  name="duration_pm"
+                  name="numberOfNight"
                   rules={[
                     {
                       required: true,
@@ -523,7 +521,7 @@ function CreateTour() {
               </div>
 
               {/* 5 */}
-              <div className={cx("d-flex justify-content-between   ")}>
+              <div className={cx("d-flex justify-content-between")}>
                 <Form.Item
                   className={cx("w-50")}
                   label="Phương tiện"
@@ -585,10 +583,11 @@ function CreateTour() {
                 className="avatar-uploader"
                 onChange={handleChangeUpload}
                 maxCount={1}
+                showUploadList={false}
               >
-                {imageUrl ? (
+                {imageTour ? (
                   <img
-                    src={imageUrl}
+                    src={URL.createObjectURL(imageTour)}
                     alt="avatar"
                     style={{
                       width: "100%",
