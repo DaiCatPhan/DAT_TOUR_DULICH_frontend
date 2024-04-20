@@ -54,7 +54,6 @@ function ToursTopic() {
       );
       const stringified = queryString.stringify(paramsObj);
       const res = await TourService.getTours(stringified);
-      console.log("res", res);
       if (res && res.data.EC === 0) {
         setTours(res?.data?.DT);
       }
@@ -83,7 +82,7 @@ function ToursTopic() {
   useEffect(() => {
     getTours();
     getCategorys();
-  }, [nameParam, typeParam]);
+  }, []);
 
   function getItem(label, key, icon, children, type) {
     return {
@@ -111,6 +110,12 @@ function ToursTopic() {
 
   const onClick = (e) => {
     console.log("click ", e);
+  };
+
+  const onClickFilter = (data) => {
+    const { item, sortKey } = data;
+    const dataQuery = {};
+    console.log("onClickFilter", data);
   };
 
   const onFinish = async (values) => {
@@ -219,7 +224,7 @@ function ToursTopic() {
                 Du Lịch : {nameParam || typeParam}
               </div>
 
-              <FilterCondition />
+              <FilterCondition onClickFilter={onClickFilter} />
 
               <div className={cx("px-3")}>
                 {tours?.tours?.map((item) => {

@@ -7,18 +7,18 @@ import { IconChevronUp, IconChevronDown } from "@tabler/icons-react";
 const sortKeyAr = [
   {
     key: 1,
-    column: "",
-    description: "KHong có sort",
+    label: "bình thường",
+    value: "",
   },
   {
     key: 2,
-    column: "",
-    description: "Sort lên",
+    label: "tăng",
+    value: "ASC",
   },
   {
     key: 3,
-    column: "",
-    description: "Sort xuống",
+    label: "giảm",
+    value: "DESC",
   },
 ];
 
@@ -43,7 +43,7 @@ function ButtonFilter(props) {
     <div
       onClick={() => handleToggleSort()}
       className={cx(
-        "border py-2 px-3 flex-grow-1 text-center d-flex",
+        "border py-2 px-3 flex-grow-1 text-center d-flex justify-content-center",
         "poiter",
         "itemFilterCondition",
         {
@@ -68,3 +68,6 @@ function ButtonFilter(props) {
 }
 
 export default ButtonFilter;
+
+
+

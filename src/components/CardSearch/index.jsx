@@ -25,7 +25,6 @@ function CardSearch(props) {
     Calendars,
   } = item;
 
-  console.log("item ", item);
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
       return <IconBus />;

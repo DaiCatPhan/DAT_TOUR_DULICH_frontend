@@ -1,9 +1,11 @@
 .itemFilterCondition {
   &:hover {
-    background-color: red;
+    background-color: #f1f3f5;
   }
 }
 
 .itemFilterCondition.active {
-  background-color: red;
+  background-color: #f1f3f5;
+  color: #00c1de;
+
 }
