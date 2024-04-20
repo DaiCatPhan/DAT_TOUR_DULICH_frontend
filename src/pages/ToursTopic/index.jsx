@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import FilterCondition from "./components/filterCondition/filterCondition";
 
 function ToursTopic() {
+  const navigate = useNavigate();
   const [tours, setTours] = useState([]);
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -112,10 +113,23 @@ function ToursTopic() {
     console.log("click ", e);
   };
 
-  const onClickFilter = (data) => {
+  const onClickFilter = async (data) => {
     const { item, sortKey } = data;
-    const dataQuery = {};
-    console.log("onClickFilter", data);
+    let sortQuery = {};
+    sortQuery[item.value] = true;
+    sortQuery.sortOrder = sortKey.value;
+
+    const params = new URLSearchParams(window.location.search);
+    const paramsObj = Array.from(params.keys()).reduce(
+      (acc, val) => ({ ...acc, [val]: params.get(val) }),
+      {}
+    );
+    paramsObj[item.value] = true;
+    paramsObj.sortOrder = sortKey.value;
+    const stringified = queryString.stringify(paramsObj); 
+
+    navigate(`?${stringified}`);
+    getTours();
   };
 
   const onFinish = async (values) => {

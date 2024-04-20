@@ -13,22 +13,22 @@ function FilterCondition(props) {
     {
       key: "1",
       label: "Đề xuất",
-      value: "",
+      value: "sortBycreatedAt",
     },
     {
       key: "2",
       label: "Thời lượng tour",
-      value: "",
+      value: "sortByDuration",
     },
     {
       key: "3",
       label: "Ngày khởi hành",
-      value: "startDay",
+      value: "sortByStartDate",
     },
     {
       key: "4",
       label: "Giá tour",
-      value: "priceAdult",
+      value: "sortByPrice",
     },
   ];
 
