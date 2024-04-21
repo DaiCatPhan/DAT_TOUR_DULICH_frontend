@@ -13,7 +13,7 @@ function FilterCondition(props) {
     {
       key: "1",
       label: "Đề xuất",
-      value: "sortBycreatedAt",
+      value: "sortBooking",
     },
     {
       key: "2",

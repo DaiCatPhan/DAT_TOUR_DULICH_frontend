@@ -11,7 +11,7 @@ import data from "../../components/Data/data";
 
 import TourService from "../../services/TourService";
 import CategoryService from "../../services/CategoryService";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom"; 
 
 import {
   IconClockHour10,
@@ -44,6 +44,8 @@ function ToursTopic() {
   const typeParam = searchParams.get("type");
   const startDayParam = searchParams.get("startDay");
   const endDayParam = searchParams.get("endDay");
+
+  console.log('tours',tours);
 
   // Gọi API lấy dữ liệu
   const getTours = async () => {
@@ -129,7 +131,7 @@ function ToursTopic() {
     const stringified = queryString.stringify(paramsObj); 
 
     navigate(`?${stringified}`);
-    getTours();
+    getTours(); 
   };
 
   const onFinish = async (values) => {
@@ -244,8 +246,8 @@ function ToursTopic() {
                 {tours?.tours?.map((item) => {
                   return (
                     <Link to={`/tours/${item?.id}`}>
-                      <CardSearch key={item.id} item={item} />
-                    </Link>
+                      <CardSearch key={item.id} item={item} /> 
+                    </Link> 
                   );
                 })}
               </div>
