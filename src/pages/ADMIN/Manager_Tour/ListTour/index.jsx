@@ -418,8 +418,9 @@ function ListTour() {
       />
       <ModalUPdateProcessTour
         isShowModalUpdateProcessTour={isShowModalUpdateProcessTour}
-        setDataModalUpdateProcessTour={setIsShowModalUpdateProcessTour}
+        setIsShowModalUpdateProcessTour={setIsShowModalUpdateProcessTour}
         dataModalUpdateProcessTour={dataModalUpdateProcessTour}
+        setDataModalUpdateProcessTour={setDataModalUpdateProcessTour}
         getListTours={getListTours}
       />
     </div>

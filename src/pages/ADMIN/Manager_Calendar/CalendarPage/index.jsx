@@ -14,6 +14,7 @@ import {
   Table,
   DatePicker,
   Radio,
+  Tag,
   Upload,
 } from "antd";
 import { InputNumber, message } from "antd";
@@ -133,41 +134,47 @@ function CalendarPage() {
       dataIndex: "numberSeat",
       key: "numberSeat",
     },
-    {
-      title: "Giá",
-      dataIndex: "",
-      key: "priceColumn",
-      render: (Calendar) => {
-        return (
-          <div>
-            <div>
-              Giá người lớn :
-              {Function.formatNumberWithCommas(Calendar?.priceAdult)} vnd
-            </div>
 
-            <div>
-              Giá trẻ em :
-              {Function.formatNumberWithCommas(Calendar?.priceChild)}
-            </div>
-          </div>
-        );
-      },
+    {
+      title: "Giá người lớn",
+      dataIndex: "",
+      key: "",
+      render: (Calendar) => (
+        <div>{Function.formatNumberWithCommas(Calendar?.priceAdult)} vnd</div>
+      ),
     },
 
     {
-      title: "Lịch",
+      title: "Giá trẻ em",
       dataIndex: "",
-      key: "CalendarColumn",
+      key: "",
+      render: (Calendar) => (
+        <div>{Function.formatNumberWithCommas(Calendar?.priceChild)} vnd</div>
+      ),
+    },
 
+    {
+      title: "Ngày khởi hành",
+      dataIndex: "",
+      key: "",
       render: (Calendar) => (
         <div>
-          <div>
-            Ngày khởi hành : {moment(Calendar?.startDay).format("DD-MM-YYYY")}
-          </div>
+          <Tag color="orange">
+            {moment(Calendar?.startDay).format("DD-MM-YYYY")}
+          </Tag>
+        </div>
+      ),
+    },
 
-          <div>
-            Ngày kết thúc : {moment(Calendar?.endDay).format("DD-MM-YYYY")}
-          </div>
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "",
+      key: "",
+      render: (Calendar) => (
+        <div>
+          <Tag color="orange">
+            {moment(Calendar?.endDay).format("DD-MM-YYYY")}
+          </Tag>
         </div>
       ),
     },
@@ -195,20 +202,20 @@ function CalendarPage() {
     <div className={cx("wrapper")}>
       {contextHolder}
       <div className={cx("createCalendar  ")}>
-        <div className={cx("fs-5  ")}>
+        <div className={cx("fs-5")}>
           <h5>
             <b>Tạo lịch</b> : {infoDetailTour?.name || ""}
             <div className={cx("my-4")}></div>
           </h5>
         </div>
-        <div className={cx("row border")}>
-          <div className={cx("col-lg-5 border p-0 vh-50")}>
-            <div className={cx("p-2")}>
+        <div className={cx("border")}>
+          <div className={cx("border p-0 vh-50")}>
+            <div className={cx("px-2")}>
               <Form
                 form={formCalendar}
                 name="form_calendar"
                 labelCol={{
-                  span: 24,
+                  span: 24, 
                 }}
                 wrapperCol={{
                   span: 24,
@@ -216,96 +223,112 @@ function CalendarPage() {
                 onFinish={onFinishCalendar}
                 autoComplete="off"
               >
-                <Form.Item
-                  label="Số chỗ ngồi"
-                  name="numberSeat"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập số chỗ ngồi !",
-                    },
-                  ]}
+                <div
+                  className={cx(
+                    "d-flex justify-content-between align-items-center"
+                  )}
                 >
-                  <InputNumber className={cx("w-100")} />
-                </Form.Item>
+                  <div className={cx("mx-2")}>
+                    <Form.Item
+                      label="Số chỗ ngồi"
+                      name="numberSeat"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập số chỗ ngồi !",
+                        },
+                      ]}
+                    >
+                      <InputNumber className={cx("w-100")} />
+                    </Form.Item>
+                  </div>
 
-                <div className={cx("d-flex justify-content-between")}>
-                  <Form.Item
-                    className={cx("w-50")}
-                    label="Giá tour người lớn"
-                    name="priceAdult"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập giá tour người lớn !",
-                      },
-                    ]}
-                  >
-                    <InputNumber
-                      className={cx("w-100 ")}
-                      formatter={(value) =>
-                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                      }
-                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                      addonAfter="VND"
-                    />
-                  </Form.Item>
+                  <div className={cx("mx-2")}>
+                    <Form.Item
+                      label="Giá tour người lớn"
+                      name="priceAdult"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập giá tour người lớn !",
+                        },
+                      ]}
+                    >
+                      <InputNumber
+                        className={cx("w-100")}
+                        formatter={(value) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                        addonAfter="VND"
+                      />
+                    </Form.Item>
+                  </div>
 
-                  <div className={cx("mx-2")}></div>
+                  <div className={cx("mx-2")}>
+                    <Form.Item
+                      label="Giá tour trẻ em"
+                      name="priceChild"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập giá tour trẻ em!",
+                        },
+                      ]}
+                    >
+                      <InputNumber
+                        className={cx("w-100")}
+                        formatter={(value) =>
+                          `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                        }
+                        parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                        addonAfter="VND"
+                      />
+                    </Form.Item>
+                  </div>
 
-                  <Form.Item
-                    className={cx("w-50")}
-                    label="Giá tour trẻ em"
-                    name="priceChild"
-                    rules={[
-                      {
-                        required: true,
-                        message: "Vui lòng nhập giá tour trẻ em!",
-                      },
-                    ]}
-                  >
-                    <InputNumber
-                      className={cx("w-100 ")}
-                      formatter={(value) =>
-                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                      }
-                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                      addonAfter="VND"
-                    />
-                  </Form.Item>
+                  <div className={cx("mx-2")}>
+                    <Form.Item
+                      className={cx("w-100")}
+                      label="Chọn lịch"
+                      name="calendar"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập lịch cho tour!",
+                        },
+                      ]}
+                    >
+                      <RangePicker
+                        format="DD-MM-YYYY"
+                        onChange={(value, valueString) =>
+                          setTimeDate(valueString)
+                        }
+                      />
+                    </Form.Item>
+                  </div>
+
+                  <div className={cx("mt-3")}>
+                    <Form.Item
+                      wrapperCol={{
+                        offset: 0,
+                        span: 24,
+                      }}
+                    >
+                      <Button
+                        type="primary"
+                        htmlType="submit"
+                        className={cx("mt-4")}
+                      >
+                        Submit
+                      </Button>
+                    </Form.Item>
+                  </div>
                 </div>
-
-                <Form.Item
-                  label="Chọn lịch"
-                  name="calendar"
-                  rules={[
-                    {
-                      required: true,
-                      message: "Vui lòng nhập lịch cho tour!",
-                    },
-                  ]}
-                >
-                  <RangePicker
-                    className={cx("w-100")}
-                    format="DD-MM-YYYY"
-                    onChange={(value, valueString) => setTimeDate(valueString)}
-                  />
-                </Form.Item>
-
-                <Form.Item
-                  wrapperCol={{
-                    offset: 20,
-                    span: 16,
-                  }}
-                >
-                  <Button type="primary" htmlType="submit">
-                    Submit
-                  </Button>
-                </Form.Item>
               </Form>
             </div>
           </div>
-          <div className={cx("col-lg-7 p-0")}>
+          <div>
             <div className={cx("p-2")}>
               <Table
                 dataSource={infoDetailCalendar}

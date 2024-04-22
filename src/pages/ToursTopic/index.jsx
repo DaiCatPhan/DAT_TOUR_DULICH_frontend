@@ -11,7 +11,7 @@ import data from "../../components/Data/data";
 
 import TourService from "../../services/TourService";
 import CategoryService from "../../services/CategoryService";
-import { useLocation } from "react-router-dom"; 
+import { useLocation } from "react-router-dom";
 
 import {
   IconClockHour10,
@@ -45,7 +45,7 @@ function ToursTopic() {
   const startDayParam = searchParams.get("startDay");
   const endDayParam = searchParams.get("endDay");
 
-  console.log('tours',tours);
+  console.log("tours", tours);
 
   // Gọi API lấy dữ liệu
   const getTours = async () => {
@@ -126,18 +126,38 @@ function ToursTopic() {
       (acc, val) => ({ ...acc, [val]: params.get(val) }),
       {}
     );
+    const sortParams = [
+      "sortByStar",
+      "sortBooking",
+      "sortByPrice",
+      "sortByStartDate",
+      "sortByDuration",
+      "sortBycreatedAt",
+      "sortOrder",
+    ];
+
+    sortParams.forEach((param) => {
+      if (paramsObj[param]) {
+        delete paramsObj[param];
+      }
+    });
+
     paramsObj[item.value] = true;
     paramsObj.sortOrder = sortKey.value;
-    const stringified = queryString.stringify(paramsObj); 
+
+    const stringified = queryString.stringify(paramsObj);
 
     navigate(`?${stringified}`);
-    getTours(); 
+    getTours();
   };
 
   const onFinish = async (values) => {
-    const { name, startDay } = values;
+    const { name, startDay, startDayEnd } = values;
     const startDate = startDay?.$d;
-    let condition = `name=${name || ""}&startDay=${startDay}`;
+    const startDateEnd = startDayEnd?.$d;
+    let condition = `name=${name || ""}&startDay=${
+      startDay || ""
+    }&startDayEnd=${startDayEnd || ""}`;
     const res = await TourService.getTours(condition);
     if (res && res.data.EC === 0) {
       setTours(res.data.DT);
@@ -172,10 +192,11 @@ function ToursTopic() {
               </div>
 
               <div className={cx("mx-2")}>
-                <Form.Item>
-                  <Input
+                <Form.Item name="startDayEnd">
+                  <DatePicker
+                    format="DD/MM/YYYY  "
                     className={cx("inputSearch")}
-                    value={"Khởi hành từ Cần Thơ"}
+                    placeholder="Chọn ngày  "
                   />
                 </Form.Item>
               </div>
@@ -246,8 +267,8 @@ function ToursTopic() {
                 {tours?.tours?.map((item) => {
                   return (
                     <Link to={`/tours/${item?.id}`}>
-                      <CardSearch key={item.id} item={item} /> 
-                    </Link> 
+                      <CardSearch key={item.id} item={item} />
+                    </Link>
                   );
                 })}
               </div>

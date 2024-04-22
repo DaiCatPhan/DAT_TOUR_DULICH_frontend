@@ -25,8 +25,6 @@ function CardSearch(props) {
     Calendars,
   } = item;
 
-  // console.log("Calendars>>>>.", Calendars);
-
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
       return <IconBus />;
@@ -72,7 +70,7 @@ function CardSearch(props) {
                 </div>
               </div>
             </div>
-            <div className={cx("col-lg border")}>
+            <div className={cx("col-lg")}>
               <div className={cx("d-flex justify-content-between")}>
                 <div>Khởi hành:</div>
                 <div>

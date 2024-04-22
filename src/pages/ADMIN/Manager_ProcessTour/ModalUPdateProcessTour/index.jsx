@@ -16,9 +16,10 @@ import ProcessService from "../../../../services/ProcessService";
 function ModalUPdateProcessTour(props) {
   const {
     isShowModalUpdateProcessTour,
+    setIsShowModalUpdateProcessTour,
     setDataModalUpdateProcessTour,
-    getListTours,
     dataModalUpdateProcessTour,
+    getListTours,
   } = props;
 
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -29,13 +30,13 @@ function ModalUPdateProcessTour(props) {
 
   useEffect(() => {
     setProcessTour_TEXT(
-      dataModalUpdateProcessTour?.ProcessTour?.descriptionTEXT
+      dataModalUpdateProcessTour?.ProcessTour?.descriptionTEXT || ""
     );
     setProcessTour_HTML(
-      dataModalUpdateProcessTour?.ProcessTour?.descriptionHTML
+      dataModalUpdateProcessTour?.ProcessTour?.descriptionHTML || ""
     );
-    setID_ProcessTour(dataModalUpdateProcessTour?.ProcessTour?.id);
-    setID_Tour(dataModalUpdateProcessTour?.id);
+    setID_ProcessTour(dataModalUpdateProcessTour?.ProcessTour?.id || 0);
+    setID_Tour(dataModalUpdateProcessTour?.id || 0);
   }, [dataModalUpdateProcessTour]);
 
   function handleEditorChange_ProcessTour({ html, text }) {
@@ -57,6 +58,7 @@ function ModalUPdateProcessTour(props) {
 
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
+      handleCancel();
       getListTours();
     } else {
       toast.error(res.data.EM);
@@ -64,15 +66,12 @@ function ModalUPdateProcessTour(props) {
     setConfirmLoading(false);
   };
   const handleCancel = () => {
-    setDataModalUpdateProcessTour(false);
-    setProcessTour_TEXT(
-      dataModalUpdateProcessTour?.ProcessTour?.descriptionTEXT
-    );
-    setProcessTour_HTML(
-      dataModalUpdateProcessTour?.ProcessTour?.descriptionHTML
-    );
-    setID_ProcessTour(dataModalUpdateProcessTour?.ProcessTour?.id);
-    setID_Tour(dataModalUpdateProcessTour?.id);
+    setDataModalUpdateProcessTour({});
+    setIsShowModalUpdateProcessTour(false);  
+    setProcessTour_TEXT("");
+    setProcessTour_HTML("");
+    setID_ProcessTour(0);
+    setID_Tour(0);
   };
   return (
     <div className={cx("wrapper")}>
@@ -86,7 +85,7 @@ function ModalUPdateProcessTour(props) {
         style={{ top: 5 }}
       >
         <div>
-          <div className={cx("row   w-100")}>
+          <div className={cx("row  w-100")}>
             <h5>{dataModalUpdateProcessTour?.name}</h5>
             <MdEditor
               style={{ minHeight: "550px", maxHeight: "750px" }}
