@@ -133,6 +133,26 @@ function ListBookingTour() {
       );
     }
   };
+
+  const onChangeTab = (key) => {
+    setTab(key);
+  };
+
+  const itemsTab = [
+    {
+      key: "status=CHỜ HỦY",
+      label: (
+        <Badge count={numberStatusBooking?.Soluong_ChoHuy || 0} showZero>
+          <div className={cx("px-3")}>YÊU CẦU HỦY TOUR</div>
+        </Badge>
+      ),
+    },
+    {
+      key: "",
+      label: "",
+    },
+  ];
+
   const columns = [
     {
       key: "data",
@@ -254,47 +274,8 @@ function ListBookingTour() {
     },
   ];
 
-  const onChangeTab = (key) => {
-    setTab(key);
-  };
-
-  const itemsTab = [
-    {
-      key: "status=CHỜ XÁC NHẬN",
-      label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoXacNhan || 0} showZero>
-          <div className={cx("px-3")}>CHỜ DUYỆT TOUR</div>
-        </Badge>
-      ),
-    },
-    {
-      key: "status=CHỜ HỦY",
-      label: (
-        <Badge count={numberStatusBooking?.Soluong_ChoHuy || 0} showZero>
-          <div className={cx("px-3")}>YÊU CẦU HỦY TOUR</div>
-        </Badge>
-      ),
-    },
-    {
-      key: "",
-      label: "",
-    },
-    {
-      key: "status=ĐÃ DUYỆT&payment_status=CHƯA THANH TOÁN",
-      label: (
-        <Badge count={numberStatusBooking?.Soluong_ChuaThanhToan || 0} showZero>
-          <div className={cx("px-3")}>ĐƠN HÀNG CHƯA THANH TOÁN</div>
-        </Badge>
-      ),
-    },
-    {
-      key: "",
-      label: "",
-    },
-  ];
-
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx("wrapper")}> 
       <div className={cx("border")}>
         <div
           className={cx(

@@ -215,7 +215,7 @@ function CalendarPage() {
                 form={formCalendar}
                 name="form_calendar"
                 labelCol={{
-                  span: 24, 
+                  span: 24,
                 }}
                 wrapperCol={{
                   span: 24,

@@ -1,5 +1,5 @@
 import className from "classnames/bind";
-import styles from "./ListBookingTour_Update.module.scss";
+import styles from "./ListBookingTour_Cancel.module.scss";
 const cx = className.bind(styles);
 
 import {
@@ -15,7 +15,7 @@ import {
   DatePicker,
   Select,
 } from "antd";
-import { IconList, IconPencilMinus, IconTrash } from "@tabler/icons-react";
+import { IconList } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -25,12 +25,15 @@ import ModalUpdateStatusBooking from "../components/ModalUpdateStatusBooking";
 import Funtion from "../../../../components/Functions/function";
 import moment from "moment";
 
-function ListBookingTour_Update() {
+function ListBookingTour_Cancel() {
   const [pageSize, setPageSize] = useState(10);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
-  const [statusTab, setStatusTab] = useState("payment_status=ĐÃ THANH TOÁN");
+  const [statusTab, setStatusTab] = useState(
+    "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN"
+  );
+  const [numberStatusBooking, setNumberStatusBooking] = useState({});
 
   const [isShowModalUpdateStatusBooking, setIsShowModalUpdateStatusBooking] =
     useState(false);
@@ -52,6 +55,7 @@ function ListBookingTour_Update() {
         ...item,
         key: item.id,
       }));
+      setNumberStatusBooking(res.data.DT.numberStatus);
       setListBookingTour(cus);
       setTotal(res.data.DT.totalRows);
     }
@@ -84,11 +88,19 @@ function ListBookingTour_Update() {
   const itemsTab = [
     {
       key: "payment_status=ĐÃ THANH TOÁN",
-      label: <div className={cx("px-3")}>ĐÃ THANH TOÁN</div>,
+      label: (
+        <Badge count={numberStatusBooking?.Soluong_DaDuyet?.count || 0}>
+          <div className={cx("px-3")}>ĐÃ THANH TOÁN</div>
+        </Badge>
+      ),
     },
     {
       key: "status=ĐÃ HỦY",
-      label: <div className={cx("px-3")}>ĐÃ HỦY</div>,
+      label: (
+        <Badge count={numberStatusBooking?.Soluong_DaHuy?.count || 0}>
+          <div className={cx("px-3")}>ĐÃ HỦY</div>
+        </Badge>
+      ),
     },
     {
       key: "",
@@ -102,24 +114,18 @@ function ListBookingTour_Update() {
 
   const onFinishSearchTour = async (values) => {
     const { idBookingTour, nameTour, dayBookingTour } = values;
-    // Tạo điều kiện tìm kiếm dựa trên tham số đầu vào
-    let searchParams = `page=${current}&limit=${pageSize}&${statusTab}`;
-    if (idBookingTour) {
-      searchParams += `&idBookingTour=${idBookingTour}`;
-    }
-    if (nameTour) {
-      searchParams += `&nameTour=${nameTour}`;
-    }
-    if (dayBookingTour) {
-      searchParams += `&dayBookingTour=${dayBookingTour?.$d}`;
-    }
-    const res = await BookingService.readAll(searchParams);
+    const res = await TourService.getTours(
+      `page=${current}&limit=${pageSize}&id=${id || ""}&name=${
+        name || ""
+      }&type=${type || ""}`
+    );
     if (res && res.data.EC == 0) {
-      let cus = res.data.DT.rows.map((item) => ({
+      let cus = res.data.DT.tours.map((item) => ({
         ...item,
         key: item.id,
       }));
-      setListBookingTour(cus);
+
+      setListTour(cus);
       setTotal(res.data.DT.totalRows);
     }
   };
@@ -166,23 +172,6 @@ function ListBookingTour_Update() {
       title: "trạng thái",
       key: "status",
       render: (data) => <div>{handleStatusPayment(data?.payment_status)}</div>,
-    },
-    {
-      title: "thao tác",
-      key: "Action",
-      render: (record) => {
-        return (
-          <div className={cx("poiter d-flex")}>
-            <div className={cx("m-2")}></div>
-            <IconPencilMinus
-              onClick={() => handleModalUpdateStatusBooking(record)}
-              color="orange"
-              width={20}
-              className={cx("poiter")}
-            />
-          </div>
-        );
-      },
     },
   ];
 
@@ -231,7 +220,7 @@ function ListBookingTour_Update() {
                 </div>
                 <div className={cx("col-lg-3")}>
                   <Form.Item label="Ngày đặt tour" name="dayBookingTour">
-                    <DatePicker className={cx("w-100")} format={"DD-MM-YYYY"} />
+                    <DatePicker className={cx("w-100")} />
                   </Form.Item>
                 </div>
                 <div className={cx("col-lg-3 ")}>
@@ -269,4 +258,4 @@ function ListBookingTour_Update() {
   );
 }
 
-export default ListBookingTour_Update;
+export default ListBookingTour_Cancel;

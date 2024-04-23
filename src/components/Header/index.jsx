@@ -11,9 +11,12 @@ import { doLogoutAction } from "../../redux/account/accountSlide";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Dropdown, Space } from "antd";
+import { Button, Dropdown, Space } from "antd";
+import { Badge } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { IconMessage } from "@tabler/icons-react";
+import { IconMessage, IconBell } from "@tabler/icons-react";
+
+import CardNotification from "./components/CardNotification";
 
 function Header() {
   const dispatch = useDispatch();
@@ -76,9 +79,16 @@ function Header() {
     },
   ];
 
+  const itemsNotification = [
+    {
+      label: <CardNotification />,
+      key: "0",
+    },
+  ];
+
   return (
     <div>
-      <Navbar expand="lg" className="bg-body-tertiary" >
+      <Navbar expand="lg" className="bg-body-tertiary">
         <Container>
           <Navbar.Brand href="/">DU LỊCH</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -100,6 +110,20 @@ function Header() {
                 <div>
                   {isAuthenticated ? (
                     <div className={cx("d-flex")}>
+                      <div className={cx("mx-1", "poiter", "iconMessage")}>
+                        <Dropdown
+                          menu={{
+                            items: itemsNotification,
+                          }}
+                          placement="bottom"
+                          arrow
+                        >
+                          <Badge count={0} showZero size="small">
+                            <IconBell />
+                          </Badge>
+                        </Dropdown>
+                      </div>
+
                       <div className={cx("mx-4", "poiter", "iconMessage")}>
                         <Link to={"/user/message"}>
                           <IconMessage />
@@ -110,7 +134,6 @@ function Header() {
                           menu={{
                             items: itemsDropdown,
                           }}
-                          trigger={["click"]}
                           className={cx("poiter")}
                         >
                           <a onClick={(e) => e.preventDefault()}>
