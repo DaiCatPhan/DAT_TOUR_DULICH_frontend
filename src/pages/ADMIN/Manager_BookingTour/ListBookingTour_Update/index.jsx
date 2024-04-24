@@ -15,7 +15,12 @@ import {
   DatePicker,
   Select,
 } from "antd";
-import { IconList, IconPencilMinus, IconTrash } from "@tabler/icons-react";
+import {
+  IconList,
+  IconPencilMinus,
+  IconRotate,
+  IconTrash,
+} from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -102,6 +107,7 @@ function ListBookingTour_Update() {
 
   const onFinishSearchTour = async (values) => {
     const { idBookingTour, nameTour, dayBookingTour } = values;
+
     // Tạo điều kiện tìm kiếm dựa trên tham số đầu vào
     let searchParams = `page=${current}&limit=${pageSize}&${statusTab}`;
     if (idBookingTour) {
@@ -185,6 +191,8 @@ function ListBookingTour_Update() {
       },
     },
   ];
+  const filterOption = (input, option) =>
+    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
 
   return (
     <div className={cx("wrapper")}>
@@ -203,10 +211,11 @@ function ListBookingTour_Update() {
             />
           </div>
 
-          <div className={cx("d-flex")}>
-            <Link to={"/admin/managerBookingTour/list_update"}>
-              <button className={cx("btn btn-success")}>Danh sách</button>
-            </Link>
+          <div>
+            <IconRotate
+              className={cx("poiter")}
+              onClick={() => getListBookingTour()}
+            />
           </div>
         </div>
 

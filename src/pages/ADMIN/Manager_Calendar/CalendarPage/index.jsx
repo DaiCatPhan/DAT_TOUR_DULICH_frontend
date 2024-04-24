@@ -38,7 +38,7 @@ function CalendarPage() {
   const getTourInformation = async () => {
     if (id) {
       const res = await TourService.getTour(
-        `id=${id}&sortCalendar=DESC&getAll=true`
+        `id=${id}&sortCalendar=ASC&getAll=true`
       );
 
       if (res && res.data.EC === 0) {
@@ -83,7 +83,6 @@ function CalendarPage() {
   };
 
   const onFinishCalendar = async (values) => {
-    console.log(values);
     const id_tour = id;
 
     if (!id_tour) {
@@ -97,11 +96,8 @@ function CalendarPage() {
       numberSeat: values.numberSeat,
       priceAdult: values.priceAdult,
       priceChild: values.priceChild,
-      // startDay: fromDay,
-      // endDay: toDay,
-      startDay: values.calendar[0],
-      endDay: values.calendar[1],
-      status: "0",
+      startDay: moment(values.calendar[0].$d).format("YYYY-MM-DD"),
+      endDay: moment(values.calendar[1].$d).format("YYYY-MM-DD"),
     };
 
     const res = await CalendarService.createCalendar(dataCalendar);
@@ -159,7 +155,7 @@ function CalendarPage() {
       key: "",
       render: (Calendar) => (
         <div>
-          <Tag color="orange">
+          <Tag color="blue">
             {moment(Calendar?.startDay).format("DD-MM-YYYY")}
           </Tag>
         </div>
@@ -172,7 +168,7 @@ function CalendarPage() {
       key: "",
       render: (Calendar) => (
         <div>
-          <Tag color="orange">
+          <Tag color="blue">
             {moment(Calendar?.endDay).format("DD-MM-YYYY")}
           </Tag>
         </div>

@@ -58,8 +58,8 @@ function ModalCreateVoucher(props) {
       nameVoucher: nameVoucher,
       value: value,
       amount: amount,
-      fromDate: date[0],
-      toDate: date[1],
+      fromDate: moment(date[0].$d).format('YYYY-MM-DD'),
+      toDate: moment(date[1].$d).format('YYYY-MM-DD'),
     };
 
     const res = await VoucherService.createVoucher(data);
