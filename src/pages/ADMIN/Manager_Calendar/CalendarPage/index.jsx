@@ -19,9 +19,11 @@ import {
 } from "antd";
 import { InputNumber, message } from "antd";
 const { RangePicker } = DatePicker;
-import { IconBackspace } from "@tabler/icons-react";
+import { IconBackspace, IconChevronsLeft } from "@tabler/icons-react";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { FloatButton } from "antd";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import CalendarService from "../../../../services/CalendarService";
 import { useEffect, useState } from "react";
@@ -38,7 +40,7 @@ function CalendarPage() {
   const getTourInformation = async () => {
     if (id) {
       const res = await TourService.getTour(
-        `id=${id}&sortCalendar=ASC&getAll=true`
+        `id=${id}&sortStartDayCalendar=DESC&getAll=true`
       );
 
       if (res && res.data.EC === 0) {
@@ -197,11 +199,15 @@ function CalendarPage() {
   return (
     <div className={cx("wrapper")}>
       {contextHolder}
-      <div className={cx("createCalendar  ")}>
-        <div className={cx("fs-5")}>
-          <h5>
+      <div className={cx("createCalendar")}>
+        <div className={cx("d-flex align-items-center mb-2")}>
+          <Link to={"/admin/managerTour/list"}>
+            <div className={cx("iconBack")}>
+              <IconChevronsLeft />
+            </div>
+          </Link>
+          <h5 className={cx("mx-2")}>
             <b>Tạo lịch</b> : {infoDetailTour?.name || ""}
-            <div className={cx("my-4")}></div>
           </h5>
         </div>
         <div className={cx("border")}>

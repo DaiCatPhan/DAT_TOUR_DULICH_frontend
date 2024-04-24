@@ -45,7 +45,6 @@ function ToursTopic() {
   const startDayParam = searchParams.get("startDay");
   const endDayParam = searchParams.get("endDay");
 
-  console.log("tours", tours);
 
   // Gọi API lấy dữ liệu
   const getTours = async () => {

@@ -50,7 +50,7 @@
     justify-content: center;
     margin-left: 30px;
 
-    button {
+    .btn {
       border: 1px solid red;
       color: white;
       font-size: 17px;
@@ -58,6 +58,12 @@
       padding: 5px 45px;
       background-color: #ee4d2d;
       border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .btn.active {
+      background-color: #ea8c79;
+      pointer-events: none;
     }
   }
 }

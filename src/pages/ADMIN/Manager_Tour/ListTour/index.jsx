@@ -3,7 +3,12 @@ import styles from "./ListTour.module.scss";
 const cx = className.bind(styles);
 import { Space, Button, Table, Tag, Modal, Input, Form } from "antd";
 import { useEffect, useRef, useState } from "react";
-import { IconEdit, IconPencilMinus, IconTrash } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconPencilMinus,
+  IconReload,
+  IconTrash,
+} from "@tabler/icons-react";
 import { IconList } from "@tabler/icons-react";
 import { Select } from "antd";
 
@@ -329,11 +334,24 @@ function ListTour() {
 
   return (
     <div className={cx("border")}>
-      <div className={cx("title", "border d-flex align-items-center")}>
-        <div>
-          <IconList />
+      <div
+        className={cx(
+          "title",
+          "border d-flex align-items-center justify-content-between"
+        )}
+      >
+        <div className={cx("d-flex align-items-center")}>
+          <div>
+            <IconList />
+          </div>
+          <div className={cx("mx-2")}>Danh sách tour du lịch</div>
         </div>
-        <div className={cx("mx-2")}>Danh sách tour du lịch</div>
+        <div>
+          <IconReload
+            className={cx("poiter", "text-primary")}
+            onClick={() => getListTours()}
+          />
+        </div>
       </div>
 
       <div className={cx("p-4")}>

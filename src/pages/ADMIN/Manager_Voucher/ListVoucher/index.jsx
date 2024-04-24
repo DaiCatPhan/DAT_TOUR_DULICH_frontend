@@ -11,6 +11,7 @@ import { IconList, IconTrash, IconPencilMinus } from "@tabler/icons-react";
 
 import { useEffect, useState } from "react";
 import { Button, Modal, Table, Input, Form, DatePicker } from "antd";
+import { Tabs } from "antd";
 
 import ModalCreateVoucher from "./component/ModalCreateVoucher";
 import ModalDeleteVoucher from "./component/ModalDeleteVoucher";
@@ -20,16 +21,19 @@ import VoucherService from "../../../../services/VoucherService";
 import Function from "../../../../components/Functions/function";
 
 function ListVoucher() {
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listVoucher, setListVoucher] = useState([]);
+  const [tab, setTab] = useState("");
 
   // GOI API LAY LIST TOUR
   const getListVouchers = async () => {
-    const res = await VoucherService.readAllVoucher(
-      `page=${current}&limit=${pageSize}`
-    );
+    let condition = `page=${current}&limit=${pageSize}`;
+    if (tab) {
+      condition += `&${tab}`;
+    }
+    const res = await VoucherService.readAllVoucher(condition);
 
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.vouchers.map((item) => ({
@@ -44,7 +48,7 @@ function ListVoucher() {
 
   useEffect(() => {
     getListVouchers();
-  }, [current, pageSize]);
+  }, [current, pageSize, tab]);
   const [isShowModalUpdateVoucher, setIsShowModalUpdateVoucher] =
     useState(false);
   const [dataModalUpdateVoucher, setDataModalUpdateVoucher] = useState({});
@@ -65,6 +69,28 @@ function ListVoucher() {
   const handleModalCreateVoucher = async (data) => {
     setIsShowModalCreateVoucher(true);
     setDataModalCreateVoucher(data);
+  };
+
+  const onChangeTab = (key) => {
+    setTab(key);
+  };
+
+  const onFinishFormSearch = async (values) => {
+    const { title, createdAt } = values;
+    const date_createdAt = createdAt?.$d;
+    const res = await BlogService.readAllBlog(
+      `title=${title || ""}&createdAt=${date_createdAt || ""}`
+    );
+    console.log("onFinishFormSearch", res);
+    if (res && res.data.EC == 0) {
+      let cus = res.data.DT.blogs.map((item) => ({
+        ...item,
+        key: item.id,
+      }));
+
+      setListBlog(cus);
+      setTotal(res.data.DT.totalRows);
+    }
   };
 
   const columns = [
@@ -95,8 +121,8 @@ function ListVoucher() {
     },
     {
       title: "Số lượng còn lại",
-      dataIndex: "remainAmount",
-      key: "remainAmount",
+      dataIndex: "voucherRemaining",
+      key: "voucherRemaining",
     },
     {
       title: "Ngày bắt đầu",
@@ -140,23 +166,6 @@ function ListVoucher() {
     },
   ];
 
-  const onFinishFormSearch = async (values) => {
-    const { title, createdAt } = values;
-    const date_createdAt = createdAt?.$d;
-    const res = await BlogService.readAllBlog(
-      `title=${title || ""}&createdAt=${date_createdAt || ""}`
-    );
-    console.log("onFinishFormSearch", res);
-    if (res && res.data.EC == 0) {
-      let cus = res.data.DT.blogs.map((item) => ({
-        ...item,
-        key: item.id,
-      }));
-
-      setListBlog(cus);
-      setTotal(res.data.DT.totalRows);
-    }
-  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("border")}>
@@ -183,6 +192,26 @@ function ListVoucher() {
           </div>
         </div>
         <div className={cx("p-3")}>
+          <div>
+            <Tabs
+              defaultActiveKey="1"
+              items={[
+                {
+                  key: "",
+                  label: "Tất cả",
+                },
+                {
+                  key: "expired=true",
+                  label: "Còn hạng sử dụng",
+                },
+                {
+                  key: "expired=false",
+                  label: "Hết hạng sử dụng",
+                },
+              ]}
+              onChange={onChangeTab}
+            />
+          </div>
           <Table dataSource={listVoucher} columns={columns} bordered />
         </div>
       </div>

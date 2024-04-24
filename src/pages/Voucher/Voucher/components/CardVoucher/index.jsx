@@ -6,14 +6,14 @@ import { toast } from "react-toastify";
 import { Button, message, Space } from "antd";
 
 import VoucherService from "../../../../../services/VoucherService";
+import { useState } from "react";
 
 function CardVoucher(props) {
   const [messageApi, contextHolder] = message.useMessage();
-  const { item } = props;
-  const { id, nameVoucher, value, toDate, amount } = item;
+  const { item, active } = props;
+  const { id, nameVoucher, value, toDate, amount, voucherRemaining } = item;
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
-
   const handleSaveVoucher = async () => {
     if (!isAuthenticated) {
       toast.error("Bạn phải đăng nhập để nhận voucher");
@@ -50,7 +50,7 @@ function CardVoucher(props) {
   };
 
   return (
-    <div className={cx("cardVoucher")}> 
+    <div className={cx("cardVoucher")}>
       {contextHolder}
       <div className={cx("bg")}>
         <div className={cx("icon")}>
@@ -71,10 +71,13 @@ function CardVoucher(props) {
 
           <button className={cx("btnVoucher")}>Dành riêng cho bạn</button>
 
-          <div className={cx("dateUse")}>Hạn sử dụng : 12-2-2012</div>
+          <div className={cx("dateUse")}>Hạn sử dụng : 12-2-2012 </div>
+          <div className={cx("dateUse")}>Số lượng: {voucherRemaining || 0}</div>
         </div>
         <div className={cx("btnSave")}>
-          <button onClick={handleSaveVoucher}>Lưu</button>
+          <button className={cx("btn", { active })} onClick={handleSaveVoucher}> 
+            Lưu
+          </button>
         </div>
       </div>
     </div>

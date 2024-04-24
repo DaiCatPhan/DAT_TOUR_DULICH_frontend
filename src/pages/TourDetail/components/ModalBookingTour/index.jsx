@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { useEffect, useMemo, useState } from "react";
+import { IconAsterisk } from "@tabler/icons-react";
 
 import ModalVoucherUser from "../ModalVoucherUser";
 
@@ -46,6 +47,12 @@ function ModalBookingTour(props) {
   const [voucherSelected, setVoucherSelected] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
   const [showModalResult, setShowModalResult] = useState(false);
+
+  const [dataCustomer, setDataCustomer] = useState({
+    username: "",
+    phone: "",
+    email: "",
+  });
 
   const handleModalVoucherUser = (data) => {
     setIsShowModalVoucherUser(true);
@@ -95,39 +102,19 @@ function ModalBookingTour(props) {
       throw new Error("Lỗi khi áp dụng voucher");
     }
   };
+
   var resultAmount = totalAmount;
   if (voucherSelected) {
     resultAmount = applyVoucher(totalAmount, voucherSelected?.Voucher);
   }
 
   useEffect(() => {
-    formInfo.setFieldsValue(user);
+    setDataCustomer({
+      username: user?.username,
+      phone: user?.phone,
+      email: user?.email,
+    });
   }, [user]);
-
-  const onFinishForm = async (values) => {
-    const dataSend = values;
-    dataSend.ID_Customer = user?.id;
-    dataSend.ID_Calendar = activeCalendar?.id;
-    if (voucherSelected) {
-      dataSend.ID_Voucher = voucherSelected?.Voucher?.id;
-    }
-    dataSend.numberTicketAdult = numberTicketAdult;
-    dataSend.numberTicketChild = numberTicketChild;
-    dataSend.payment_method = paymentMethod;
-
-    setConfirmLoading(true);
-    setTimeout(async () => {
-      const res = await BookingService.create(dataSend);
-      console.log("res >>>>>>>>>", res);
-      setConfirmLoading(false);
-      if (res & (res.data.EC == 0)) {
-        setShowModalResult(true);
-        setIsShowModalBookingTour(false);
-      } else {
-        toast.error(res.data.EM);
-      }
-    }, 1000);
-  };
 
   // THANH TOÁN VNPAY
   const handleBookingWithVNPAY = async () => {
@@ -140,8 +127,9 @@ function ModalBookingTour(props) {
     if (voucherSelected) {
       data.ID_Voucher = voucherSelected?.Voucher?.id;
     }
+    data.user = dataCustomer;
 
-    const res = await BookingService.createVNP(data);
+    const res = await BookingService.createVNP(data);  
     if (res && res.data.EC == 0) {
       window.location.href = res.data.DT.url;
       getTourById();
@@ -210,13 +198,11 @@ function ModalBookingTour(props) {
       <Modal
         title="Yêu cầu đặt tour"
         open={isShowModalBookingTour}
-        // onOk={() => {
-        //   formInfo.submit();
-        // }}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         width={1200}
         style={{ top: 15 }}
+        footer={null}
       >
         <div className={cx("p-4")}>
           <div className={cx("border p-3", "session1")}>
@@ -292,106 +278,84 @@ function ModalBookingTour(props) {
           </div>
 
           <div className={cx("border   my-2 px-3", "sesion2")}>
+            <div className={cx("my-2")}>
+              <b>Quí khách vui lòng nhập thông tin liên hệ bên dưới</b>
+            </div>
             <div className={cx("row")}>
               <div className={cx("col-lg-6")}>
-                <div className={cx("my-2")}>
-                  <b>Quí khách vui lòng nhập thông tin liên hệ bên dưới</b>
-                </div>
-
                 <div>
-                  <Form name="basic" form={formInfo} onFinish={onFinishForm}>
-                    <Form.Item
-                      label="Họ và tên"
-                      name="username"
-                      labelCol={{
-                        span: 5,
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập họ và tên",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Số điện thoại"
-                      name="phone"
-                      labelCol={{
-                        span: 5,
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập số điện thoại!",
-                        },
-                      ]}
-                    >
-                      <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                      label="Email"
-                      name="email"
-                      labelCol={{
-                        span: 5,
-                      }}
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập email",
-                        },
-                      ]}
-                    >
-                      <Input className={cx("disabled")} />
-                    </Form.Item>
-                  </Form>
+                  Email{" "}
+                  <IconAsterisk width={10} className={cx("text-danger")} />
                 </div>
+                <Input
+                  disabled
+                  className={cx("disabled")}
+                  value={dataCustomer?.email}
+                />
               </div>
-
               <div className={cx("col-lg-6")}>
                 <div>
-                  <div>Phương thức thanh toán</div>
-                  <div>
-                    <div className={cx("d-flex")}>
-                      <div>
-                        <Button
-                          className={cx(
-                            "d-flex align-items-center justify-content-center"
-                          )}
-                          style={{
-                            borderColor: "#005baa",
-                            color: "#005baa",
-                          }}
-                          onClick={handleBookingWithVNPAY}
-                        >
-                          <div>
-                            <img
-                              src="/src/assets/Payment/img_VNPAY.jpg"
-                              alt="notFound"
-                              width={20}
-                              height={20}
-                            />
-                          </div>
-                          <div className={cx("mx-2")}>VN PAY</div>
-                        </Button>
-                      </div>
+                  Họ và tên{" "}
+                  <IconAsterisk width={10} className={cx("text-danger")} />
+                </div>
 
-                      <div className={cx("mx-5")}>
-                        <Button
-                          style={{
-                            borderColor: "blue",
-                            color: "blue",
-                          }}
-                          onClick={handleBooking}
-                        >
-                          THANH TOÁN TẠI QUẦY
-                        </Button>
-                      </div>
+                <Input
+                  placeholder="Basic usage"
+                  value={dataCustomer?.username}
+                  onChange={(e) =>
+                    setDataCustomer({
+                      ...dataCustomer,
+                      username: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+            <div className={cx("row my-3")}>
+              <div className={cx("col-lg-6")}>
+                <div>
+                  Số điện thoại{" "}
+                  <IconAsterisk width={10} className={cx("text-danger")} />
+                </div>
+
+                <Input
+                  placeholder="Basic usage"
+                  value={dataCustomer?.phone}
+                  onChange={(e) =>
+                    setDataCustomer({
+                      ...dataCustomer,
+                      phone: e.target.value,
+                    })
+                  }
+                />
+              </div>
+              <div className={cx("col-lg-6")}>
+                <div>
+                  Thanh toán{" "}
+                  <IconAsterisk width={10} className={cx("text-danger")} />
+                </div>
+
+                <div>
+                  <Button
+                    className={cx(
+                      "d-flex align-items-center justify-content-center w-100"
+                    )}
+                    style={{
+                      borderColor: "#005baa",
+                      color: "#005baa",
+                    }}
+                    onClick={handleBookingWithVNPAY}
+                  >
+                    <div>
+                      <img
+                        src="/src/assets/Payment/img_VNPAY.jpg"
+                        alt="notFound"
+                        width={20}
+                        height={20}
+                      />
                     </div>
-                  </div>
+                    <div className={cx("mx-2")}>VN PAY</div>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -411,3 +375,16 @@ function ModalBookingTour(props) {
 }
 
 export default ModalBookingTour;
+{
+  /* <div className={cx("mx-5")}>
+                        <Button
+                          style={{
+                            borderColor: "blue",
+                            color: "blue",
+                          }}
+                          onClick={handleBooking}
+                        >
+                          THANH TOÁN TẠI QUẦY
+                        </Button>
+                      </div> */
+}
