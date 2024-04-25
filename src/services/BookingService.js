@@ -28,6 +28,17 @@ const vnpay_return = (data) => {
   return axios.get(`/api/v1/booking/vnpay/vnpay_return?${data}`);
 };
 
+const getListTourFail = (data) => {
+  return axios.get(`/api/v1/booking/readAllFailBooking`);
+};
+
+const cancelCalendarandNotificationBooking = (data) => {
+  return axios.put(
+    `/api/v1/booking/cancelCalendarandNotificationBooking`,
+    data
+  );
+};
+
 export default {
   create,
   read,
@@ -36,4 +47,6 @@ export default {
   createVNP,
   vnpay_return,
   updatePaid,
+  getListTourFail,
+  cancelCalendarandNotificationBooking,
 };

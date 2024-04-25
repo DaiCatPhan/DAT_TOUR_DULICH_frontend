@@ -1,0 +1,15 @@
+.listTour {
+  padding: 5px;
+  .item {
+    border: 1px solid grey;
+    padding: 18px;
+    margin: 10px 0;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+  }
+  .item.active {
+    background-color: rgb(196, 196, 233);
+  }
+}

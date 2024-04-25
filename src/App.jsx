@@ -54,7 +54,7 @@ import ListBlogAdmin from "./pages/ADMIN/Manager_Blog/List_Blog";
 import BlogDetail from "./pages/Blogs/BlogDetail";
 import List_Blog from "./pages/Blogs/List_Blog";
 // == BookingTour==
-import ListBookingTour from "./pages/ADMIN/Manager_BookingTour/ListBookingTour";
+import ListBookingFail from "./pages/ADMIN/Manager_BookingTour/ListBookingFail";
 import ListBookingTour_Update from "./pages/ADMIN/Manager_BookingTour/ListBookingTour_Update";
 import PaymentResult from "./pages/TourDetail/components/PaymentResult";
 // == MESSAGE ==
@@ -259,13 +259,14 @@ function App() {
           element: <ListBlogAdmin />,
         },
         // BOOKINGTOUR
-        {
-          path: "managerBookingTour/list",
-          element: <ListBookingTour />,
-        },
+         
         {
           path: "managerBookingTour/list_update",
           element: <ListBookingTour_Update />,
+        },
+        {
+          path: "managerBookingTour/list_fail",
+          element: <ListBookingFail />,
         },
         // MESSAGE
 
