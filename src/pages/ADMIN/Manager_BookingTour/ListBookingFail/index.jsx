@@ -15,7 +15,7 @@ import ModalCancel from "../components/ModalCancel";
 
 function ListBookingFail() {
   const [listTourFail, setListTourFail] = useState([]);
-  const [listCalendarWithTour, setListCalendarWithTour] = useState([]);
+  const [listCalendarWithTour, setListCalendarWithTour] = useState([]); 
   const [active, setActive] = useState(null);
 
   const [isShowModalCancel, setIsShowModalCancel] = useState(false);
@@ -101,7 +101,7 @@ function ListBookingFail() {
               type="primary"
               danger
               size="small"
-              onClick={() => cancelCalendandNoficationTour(record)}
+              onClick={() => cancelCalendandNoficationTour(record)} 
             >
               Hủy tour và gửi thông báo
             </Button>

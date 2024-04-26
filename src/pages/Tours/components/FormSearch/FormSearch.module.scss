@@ -9,10 +9,12 @@
 .input {
   height: 60px;
   width: 100%;
+  font-size: 15px;
 
-  & input::placeholder {
+  &input::placeholder {
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
+    
   }
 }
 

@@ -118,9 +118,9 @@ function Tours() {
     const ID_Customer = 1;
     const res = await ViewedService.create({ ID_Tour, ID_Customer });
     if (res && res.data.EC === 0) {
-      navigate(`/tours/${data?.id}`);
+      navigate(`/tours/${data?.id}`); 
     } else {
-      navigate(`/tours/${data?.id}`);
+      navigate(`/tours/${data?.id}`); 
     }
   };
 

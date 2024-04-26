@@ -151,7 +151,7 @@ function ToursTopic() {
   };
 
   const onFinish = async (values) => {
-    const { name, startDay, startDayEnd } = values;
+    const { name, startDay, startDayEnd } = values;   
 
     const condition = {};
     if (name) {
@@ -165,7 +165,7 @@ function ToursTopic() {
     }
     const stringified = queryString.stringify(condition);
 
-    navigate(`?${stringified}`);
+    navigate(`?${stringified}`); 
     getTours();
   };
 
@@ -259,7 +259,7 @@ function ToursTopic() {
             <div className={cx("col-lg-9")}>
               <div>
                 <div className={cx("nameTypeTour")}>
-                  Du Lịch : {nameParam || typeParam}
+                  {nameParam || typeParam}
                 </div>
 
                 <FilterCondition onClickFilter={onClickFilter} />

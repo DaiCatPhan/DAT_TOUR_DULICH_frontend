@@ -18,11 +18,16 @@ import { IconMessage, IconBell } from "@tabler/icons-react";
 
 import CardNotification from "./components/CardNotification";
 
+import NotificationService from "../../services/NotificationService";
+import { useEffect, useState } from "react";
+
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+
+  const [listNotification, setListNotification] = useState([]);
 
   const handleLogout = async () => {
     const res = await AuthService.LogoutApi();
@@ -34,6 +39,17 @@ function Header() {
       navigate("/");
     }
   };
+
+  const getListNotification = async () => {
+    const res = await NotificationService.read(`ID_Customer=${user?.id}`);
+    if (res && res.data.EC == 0) {
+      setListNotification(res.data.DT);
+    }
+  };
+
+  useEffect(() => {
+    getListNotification();
+  }, [user]);
 
   const itemsDropdown = [
     {
@@ -79,12 +95,12 @@ function Header() {
     },
   ];
 
-  const itemsNotification = [
-    {
-      label: <CardNotification />,
+  const itemsNotification = listNotification?.rows?.map((item) => {
+    return {
+      label: <CardNotification key={item.id} item={item} />,
       key: "0",
-    },
-  ];
+    };
+  });
 
   return (
     <div>
@@ -117,8 +133,12 @@ function Header() {
                           }}
                           placement="bottom"
                           arrow
+                          trigger={["click"]}
                         >
-                          <Badge count={0} showZero size="small">
+                          <Badge
+                            count={listNotification?.countNoRead || 0}
+                            size="small"
+                          >
                             <IconBell />
                           </Badge>
                         </Dropdown>

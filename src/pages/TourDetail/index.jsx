@@ -57,7 +57,7 @@ function TourDetail() {
   const getTourById = async () => {
     try {
       const res = await TourService.getTour(
-        `id=${id}&sortStartDayCalendar=ASC&numberCalenadar=3&getAll=false`
+        `id=${id}&sortStartDayCalendar=ASC&numberCalenadar=3&getAll=false&statusCalendar=1`
       );
       if (res && res.data.EC === 0 && res.data.DT.id) {
         setTourDetail(res?.data?.DT);

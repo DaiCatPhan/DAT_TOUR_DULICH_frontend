@@ -64,6 +64,10 @@ import Manager_Message from "./pages/ADMIN/Manager_Message/Messages";
 import RevenueTour from "./pages/ADMIN/Manager_Revenue/RevenueTour";
 import RevenueTours from "./pages/ADMIN/Manager_Revenue/RevenueTours";
 import RevenueCancelBooking from "./pages/ADMIN/Manager_Revenue/RevenueCancelBooking";
+
+// == NOTIFICATION ==
+import Notification from "./pages/USER/Notification";
+
 // import moment from "moment";
 // import "moment/dist/locale/vi";
 // moment.locale("vi");
@@ -148,10 +152,7 @@ function App() {
           path: "tours/payment/result",
           element: <PaymentResult />,
         },
-        {
-          path: "user/message",
-          element: <PaymentResult />,
-        },
+
         {
           path: "tours/voucher",
           element: <Voucher />,
@@ -159,13 +160,17 @@ function App() {
       ],
     },
     {
-      path: "/user/message",
+      path: "/user",
       element: <LayoutNotFooter />,
       // errorElement: <NotFound />,
       children: [
         {
-          path: "",
+          path: "message",
           element: <Message />,
+        },
+        {
+          path: "notification/:id",
+          element: <Notification />,
         },
       ],
     },
@@ -259,7 +264,7 @@ function App() {
           element: <ListBlogAdmin />,
         },
         // BOOKINGTOUR
-         
+
         {
           path: "managerBookingTour/list_update",
           element: <ListBookingTour_Update />,

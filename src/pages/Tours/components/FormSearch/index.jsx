@@ -9,22 +9,20 @@ import moment from "moment";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Empty } from "antd";
-
+import queryString from "query-string";
 
 function FormSearch() {
   const [name, setName] = useState("");
   const [startDay, setStartDay] = useState("");
-  const [endDay, setEndDay] = useState("");
+  const [startDayEnd, setStartDayEnd] = useState("");
   const navigate = useNavigate();
 
   const onChangeDatePickerStartDay = (date) => {
-    const value = date?.$d;
-    setStartDay(value);
+    setStartDay(date);
   };
 
   const onChangeDatePickerEndDay = (date) => {
-    const value = date?.$d;
-    setEndDay(value);
+    setStartDayEnd(date);
   };
 
   const onChangeNameTour = (e) => {
@@ -33,13 +31,41 @@ function FormSearch() {
   };
 
   const handleSubmit = async () => {
-    if (!name && !startDay) {
-      toast.warning("Vui lòng nhập nơi mà bạn muốn đến");
-      return;
+    const condition = {};
+    if (name) {
+      condition.name = name;
     }
-    navigate(`/tours/topic?name=${name || ""}&startDay=${startDay}`); 
+
+    if (startDay) {
+      condition.startDay = moment(startDay?.$d).format("YYYY-MM-DD");
+    }
+
+    if (startDayEnd) {
+      condition.startDayEnd = moment(startDayEnd?.$d).format("YYYY-MM-DD");
+    }
+    const stringified = queryString.stringify(condition);
+
+    navigate(`/tours/topic?${stringified}`);
   };
 
+  const onFinish = async (values) => {
+    const { name, startDay, startDayEnd } = values;
+
+    const condition = {};
+    if (name) {
+      condition.name = name;
+    }
+    if (startDay) {
+      condition.startDay = moment(startDay?.$d).format("YYYY-MM-DD");
+    }
+    if (startDayEnd) {
+      condition.startDayEnd = moment(startDayEnd?.$d).format("YYYY-MM-DD");
+    }
+    const stringified = queryString.stringify(condition);
+
+    navigate(`?${stringified}`);
+    getTours();
+  };
   return (
     <div>
       <div className={cx("text-white font-weight-bold")}>
@@ -56,7 +82,7 @@ function FormSearch() {
             onChange={onChangeNameTour}
           />
         </div>
-        <div className={cx("my-3")}></div>
+        <div className={cx("my-3")}></div> 
 
         <div className={cx("d-flex flex-wrap justify-content-between ")}>
           <div>

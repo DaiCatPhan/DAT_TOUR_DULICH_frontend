@@ -27,8 +27,9 @@ function LayoutUser() {
   const items = [
     getItem("Tài khoản của tôi", "sub1", <UserOutlined />, [
       getItem(<Link to="/user">Hồ sơ</Link>, "1"),
-      getItem(<Link to="/user/change-password">Đổi mật khẩu</Link>, "13"),
+      // getItem(<Link to="/user/change-password">Đổi mật khẩu</Link>, "13"),
     ]),
+
     getItem(
       <Link to="/user/order-buy">Đơn mua</Link>,
       "sub2",
