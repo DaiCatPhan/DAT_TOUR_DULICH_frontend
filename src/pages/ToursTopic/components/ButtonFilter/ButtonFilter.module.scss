@@ -1,11 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
 .itemFilterCondition {
+  font-family: Arial, Helvetica, sans-serif;
+
   &:hover {
-    background-color: #f1f3f5;
+    background-color: rgb(97, 97, 97) #616161;
   }
 }
 
 .itemFilterCondition.active {
   background-color: #f1f3f5;
-  color: #00c1de;
-
+  color: rgb(0, 193, 222);
 }

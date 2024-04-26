@@ -50,7 +50,7 @@ function CardSearch(props) {
             <div className={cx("col-lg-8  ")}>
               <div>
                 <h5 className={cx("nameTour")}>{name}</h5>
-                <div className={cx("d-flex justify-content-between")}>
+                <div className={cx("d-flex justify-content-between ")}>
                   <div className={cx("color_616161")}>Mã : {id}</div>
                   <div
                     className={cx(
@@ -71,9 +71,9 @@ function CardSearch(props) {
               </div>
             </div>
             <div className={cx("col-lg")}>
-              <div className={cx("d-flex justify-content-between")}>
+              <div className={cx("d-flex",'textItem')}>
                 <div>Khởi hành:</div>
-                <div>
+                <div className={cx('mx-3')}>
                   {moment(Calendars[0]?.startDay || 0).format("DD-MM-YYYY")}
                 </div>
               </div>

@@ -28,6 +28,7 @@ import {
 import { Menu } from "antd";
 import { Button, Checkbox, Form, Input, DatePicker } from "antd";
 import { useEffect, useState } from "react";
+import { Empty } from "antd";
 
 import FilterCondition from "./components/filterCondition/filterCondition";
 
@@ -44,8 +45,7 @@ function ToursTopic() {
   const typeParam = searchParams.get("type");
   const startDayParam = searchParams.get("startDay");
   const endDayParam = searchParams.get("endDay");
-
-
+  console.log("tours".tours);
   // Gọi API lấy dữ liệu
   const getTours = async () => {
     try {
@@ -152,20 +152,26 @@ function ToursTopic() {
 
   const onFinish = async (values) => {
     const { name, startDay, startDayEnd } = values;
-    const startDate = startDay?.$d;
-    const startDateEnd = startDayEnd?.$d;
-    let condition = `name=${name || ""}&startDay=${
-      startDay || ""
-    }&startDayEnd=${startDayEnd || ""}`;
-    const res = await TourService.getTours(condition);
-    if (res && res.data.EC === 0) {
-      setTours(res.data.DT);
+
+    const condition = {};
+    if (name) {
+      condition.name = name;
     }
+    if (startDay) {
+      condition.startDay = moment(startDay?.$d).format("YYYY-MM-DD");
+    }
+    if (startDayEnd) {
+      condition.startDayEnd = moment(startDayEnd?.$d).format("YYYY-MM-DD");
+    }
+    const stringified = queryString.stringify(condition);
+
+    navigate(`?${stringified}`);
+    getTours();
   };
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("container")}>
+      <div className={cx("container ")}>
         <div>
           <Form name="basic" style={{}} onFinish={onFinish} autoComplete="off">
             <div className={cx("formSearch")}>
@@ -185,7 +191,7 @@ function ToursTopic() {
                   <DatePicker
                     format="DD/MM/YYYY  "
                     className={cx("inputSearch")}
-                    placeholder="Chọn ngày  "
+                    placeholder="Chọn ngày"
                   />
                 </Form.Item>
               </div>
@@ -195,7 +201,7 @@ function ToursTopic() {
                   <DatePicker
                     format="DD/MM/YYYY  "
                     className={cx("inputSearch")}
-                    placeholder="Chọn ngày  "
+                    placeholder="Chọn ngày"
                   />
                 </Form.Item>
               </div>
@@ -214,32 +220,28 @@ function ToursTopic() {
             </div>
           </Form>
         </div>
-        <div className={cx("row m-0 ", "vh-80")}>
-          <div className={cx("col-lg-3 p-0  border border-danger")}>
-            <div className={cx("d-flex justify-content-center my-3")}>
-              <div className={cx("border border-success ", "w-90")}>
-                <div className={cx("text-center py-2 fs-5")}>
-                  Địa điểm HOT trong nước
-                </div>
-                <Menu
-                  onClick={onClick}
-                  style={{
-                    width: 256,
-                  }}
-                  defaultSelectedKeys={[""]}
-                  defaultOpenKeys={["sub1"]}
-                  mode="inline"
-                  items={itemsAddress}
-                  className={cx("w-100")}
-                />
-              </div>
-            </div>
 
-            <div className={cx("d-flex justify-content-center my-3")}>
-              <div className={cx("border border-success ", "w-90")}>
-                <div className={cx("text-center py-2 fs-5")}>
-                  Tours theo chủ đề
+        <div className={cx("my-4")}></div>
+
+        <div>
+          <div className={cx("row")}>
+            <div className={cx("col-lg-3")}>
+              <div className={cx("frame")}>
+                <div className={cx("title")}>Địa điểm HOT trong nước</div>
+                <div>
+                  <Menu
+                    onClick={onClick}
+                    defaultSelectedKeys={[""]}
+                    defaultOpenKeys={["sub1"]}
+                    mode="inline"
+                    items={itemsAddress}
+                  />
                 </div>
+              </div>
+              <div className={cx("my-4")}></div>
+
+              <div className={cx("frame")}>
+                <div className={cx("title")}>Tours theo chủ đề</div>
                 <Menu
                   onClick={onClick}
                   style={{
@@ -253,23 +255,30 @@ function ToursTopic() {
                 />
               </div>
             </div>
-          </div>
-          <div className={cx("col-lg-9")}>
-            <div className={cx("border")}>
-              <div className={cx("nameTypeTour")}>
-                Du Lịch : {nameParam || typeParam}
-              </div>
 
-              <FilterCondition onClickFilter={onClickFilter} />
+            <div className={cx("col-lg-9")}>
+              <div>
+                <div className={cx("nameTypeTour")}>
+                  Du Lịch : {nameParam || typeParam}
+                </div>
 
-              <div className={cx("px-3")}>
-                {tours?.tours?.map((item) => {
-                  return (
-                    <Link to={`/tours/${item?.id}`}>
-                      <CardSearch key={item.id} item={item} />
-                    </Link>
-                  );
-                })}
+                <FilterCondition onClickFilter={onClickFilter} />
+
+                {tours?.tours?.length < 1 ? (
+                  <div className={cx("emptyStyle")}>
+                    <Empty />
+                  </div>
+                ) : (
+                  <div className={cx("px-3")}>
+                    {tours?.tours?.map((item) => {
+                      return (
+                        <Link to={`/tours/${item?.id}`}>
+                          <CardSearch key={item.id} item={item} />
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
             </div>
           </div>

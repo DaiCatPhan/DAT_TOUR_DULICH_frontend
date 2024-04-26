@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 .wrapper {
   background-color: #ecf0f5;
 }
@@ -14,8 +15,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid #ffc107;
-  padding: 10px;
+  padding: 20px 0px 10px 10px;
+  background-color: #d4d8dc;
+  border-radius: 5px;
 
   .inputSearch {
     padding: 20px 100px;
@@ -37,10 +39,28 @@
   }
 }
 
-.nameTypeTour {
-  color: #003c71;
-  font-weight: 640;
-  font-size: 35px;
+.frame {
+  border: 1px solid gray;
+  width: 95%;
+
+  .title {
+    font-size: 20px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: rgb(51, 51, 51);
+    font-weight: 400;
+    text-align: center;
+    padding: 7px 0;
+  }
 }
 
+.nameTypeTour {
+  color: rgb(0, 60, 113);
+  font-weight: 640;
+  font-size: 35px;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
+.emptyStyle {
+  background-color: white;
+  height: 400px;
+}

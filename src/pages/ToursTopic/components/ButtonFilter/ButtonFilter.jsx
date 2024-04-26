@@ -45,7 +45,7 @@ function ButtonFilter(props) {
       className={cx(
         "border py-2 px-3 flex-grow-1 text-center d-flex justify-content-center",
         "poiter",
-        "itemFilterCondition",
+        "itemFilterCondition", 
         {
           active,
         }
