@@ -7,16 +7,24 @@
   width: 370px;
   margin-bottom: 10px;
   padding: 5px;
+
+  .content {
+    color: black;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
 }
 
 .title {
-  white-space: nowrap;
+  color: black;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.content {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.date {
+  color: black;
 }

@@ -14,22 +14,48 @@ function StoreVoucher() {
   const [listVoucherUser, setListVoucherUser] = useState([]);
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  const [formVoucher] = Form.useForm();
 
   const getListVoucherUser = async () => {
-    const res = await CustomerService.read(`id=${user?.id}`);
+    let condition = ``;
+    if (user?.id) {
+      condition += `id=${user?.id}`;
+    }
+    const res = await CustomerService.read(condition);
     if (res && res.data.EC == 0) {
-      setListVoucherUser(res.data.DT.VoucherUsers);
+      setListVoucherUser(res?.data?.DT?.VoucherUsers);
     }
   };
   useEffect(() => {
     getListVoucherUser();
-  }, []);
+  }, [user]);
 
   const onFinish = async (values) => {
-    const data = listVoucherUser?.filter((item) => {
-      return item?.Voucher?.nameVoucher === values.nameVoucher; 
-    });
-    setListVoucherUser(data);
+    const { nameVoucher } = values;
+
+    let condition = ``;
+    if (user?.id) {
+      condition += `id=${user?.id}`;
+    }
+    if (nameVoucher) {
+      condition += `&nameVoucher=${nameVoucher}`;
+    }
+    const res = await CustomerService.read(condition);
+    if (res && res.data.EC == 0) {
+      setListVoucherUser(res?.data?.DT?.VoucherUsers);
+    }
+  };
+
+  const F5_data = async () => {
+    let condition = ``;
+    if (user?.id) {
+      condition += `id=${user?.id}`;
+    }
+    const res = await CustomerService.read(condition);
+    if (res && res.data.EC == 0) {
+      setListVoucherUser(res?.data?.DT?.VoucherUsers);
+      formVoucher.resetFields();
+    }
   };
 
   return (
@@ -38,16 +64,13 @@ function StoreVoucher() {
         <div className={cx("d-flex align-items-center")}>
           <div className={cx("fs-4")}>Kho voucher</div>
           <div className={cx("mx-4", "poiter")}>
-            <IconRefresh
-              className={cx("text-success")}
-              onClick={getListVoucherUser}
-            />
+            <IconRefresh className={cx("text-success")} onClick={F5_data} />
           </div>
         </div>
 
         <div className={cx("formSearchVoucher")}>
           <div className={cx("px-3")}>
-            <Form name="basic" onFinish={onFinish}>
+            <Form name="basic" onFinish={onFinish} form={formVoucher}>
               <div className={cx("d-flex   justify-content-between")}>
                 <Form.Item
                   label="Mã Voucher"

@@ -18,15 +18,17 @@ function CardNotification(props) {
               </div>
             </div>
             <div className={cx("col-lg-3")}>
-              <div>{moment(item?.createdAt).format("DD-MM-YYYY")}</div>
+              <div className={cx("date")}>
+                {moment(item?.createdAt).format("DD-MM-YYYY")}
+              </div>
             </div>
           </div>
 
           <div className={cx("content")}>
-            {item && item?.contentHTML && (
+            {item && item?.contentTEXT && (
               <div
                 dangerouslySetInnerHTML={{
-                  __html: item?.contentHTML,
+                  __html: item?.contentTEXT,
                 }}
                 className={cx("desTour")}
               ></div>

@@ -8,6 +8,8 @@ import { Button, message, Space } from "antd";
 import VoucherService from "../../../../../services/VoucherService";
 import { useState } from "react";
 
+import moment from "moment";
+
 function CardVoucher(props) {
   const [messageApi, contextHolder] = message.useMessage();
   const { item, active } = props;
@@ -71,11 +73,13 @@ function CardVoucher(props) {
 
           <button className={cx("btnVoucher")}>Dành riêng cho bạn</button>
 
-          <div className={cx("dateUse")}>Hạn sử dụng : 12-2-2012 </div>
+          <div className={cx("dateUse")}>
+            Hạn sử dụng : {moment(toDate).format("DD-MM-YYYY")}
+          </div>
           <div className={cx("dateUse")}>Số lượng: {voucherRemaining || 0}</div>
         </div>
         <div className={cx("btnSave")}>
-          <button className={cx("btn", { active })} onClick={handleSaveVoucher}> 
+          <button className={cx("btn", { active })} onClick={handleSaveVoucher}>
             Lưu
           </button>
         </div>

@@ -43,18 +43,19 @@ function Voucher() {
       <div className={cx("container")}>
         <div className={cx("farmVoucher")}>
           <img
-            src="/src/assets/Voucher/3.png"
+            // src="/src/assets/Voucher/3.png"
+            src="https://cdn2.ivivu.com/2024/04/12/17/tour-20240412-2c.png"
             alt="notFound"
             height={450}
             className={cx("w-100")}
           />
 
-          <img
+          {/* <img
             src="/src/assets/Voucher/2.png"
             alt="notFound"
             height={250}
             className={cx("w-100")}
-          />
+          /> */}
 
           <img
             src="/src/assets/Voucher/1.png"

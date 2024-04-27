@@ -55,7 +55,9 @@ function CardStoreVoucher(props) {
           <div className={cx("dateUse")}>Hạn sử dụng : 12-2-2012</div>
         </div>
         <div className={cx("btnSave")}>
-          <button onClick={handleSaveVoucher}>Dùng ngay</button>
+          <button className={cx("btn")} onClick={handleSaveVoucher}>
+            Dùng
+          </button>
         </div>
       </div>
     </div>

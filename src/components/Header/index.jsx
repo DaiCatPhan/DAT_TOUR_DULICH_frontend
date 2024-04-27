@@ -11,7 +11,7 @@ import { doLogoutAction } from "../../redux/account/accountSlide";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 
-import { Button, Dropdown, Space } from "antd";
+import { Button, Dropdown, Space, Tabs, Popover } from "antd";
 import { Badge } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { IconMessage, IconBell } from "@tabler/icons-react";
@@ -28,6 +28,7 @@ function Header() {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
   const [listNotification, setListNotification] = useState([]);
+  const [tabNotification, setTabNotification] = useState("status=0");
 
   const handleLogout = async () => {
     const res = await AuthService.LogoutApi();
@@ -41,7 +42,9 @@ function Header() {
   };
 
   const getListNotification = async () => {
-    const res = await NotificationService.read(`ID_Customer=${user?.id}`);
+    const res = await NotificationService.read(
+      `ID_Customer=${user?.id}&read=${tabNotification}`
+    );
     if (res && res.data.EC == 0) {
       setListNotification(res.data.DT);
     }
@@ -49,7 +52,7 @@ function Header() {
 
   useEffect(() => {
     getListNotification();
-  }, [user]);
+  }, [user, tabNotification]);
 
   const itemsDropdown = [
     {
@@ -95,12 +98,32 @@ function Header() {
     },
   ];
 
-  const itemsNotification = listNotification?.rows?.map((item) => {
-    return {
-      label: <CardNotification key={item.id} item={item} />,
-      key: "0",
-    };
-  });
+  const onChangeTabNotifition = (key) => {
+    setTabNotification(key);
+  };
+
+  const itemsNotification = (
+    <div>
+      <Tabs
+        defaultActiveKey="status=0"
+        items={[
+          {
+            key: "status=0",
+            label: "Tất cả",
+          },
+          {
+            key: "status=1",
+            label: "Chưa đọc",
+          },
+        ]}
+        onChange={onChangeTabNotifition}
+      />
+
+      {listNotification?.rows?.map((item) => {
+        return <CardNotification key={item.id} item={item} />;
+      })}
+    </div>
+  );
 
   return (
     <div>
@@ -127,21 +150,14 @@ function Header() {
                   {isAuthenticated ? (
                     <div className={cx("d-flex")}>
                       <div className={cx("mx-1", "poiter", "iconMessage")}>
-                        <Dropdown
-                          menu={{
-                            items: itemsNotification,
-                          }}
-                          placement="bottom"
-                          arrow
-                          trigger={["click"]}
-                        >
+                        <Popover content={itemsNotification} trigger="click">
                           <Badge
                             count={listNotification?.countNoRead || 0}
                             size="small"
                           >
                             <IconBell />
                           </Badge>
-                        </Dropdown>
+                        </Popover>
                       </div>
 
                       <div className={cx("mx-4", "poiter", "iconMessage")}>
