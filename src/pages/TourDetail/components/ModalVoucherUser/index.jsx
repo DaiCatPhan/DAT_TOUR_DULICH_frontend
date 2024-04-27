@@ -66,7 +66,7 @@ function ModalVoucherUser(props) {
             <div className={cx("farmVoucher")}>
               <div>
                 <div>
-                  Số lượng có hại , chỉ áp dụng cho người dùng và đơn hàng thỏa
+                  Số lượng có hạn , chỉ áp dụng cho người dùng và tour thỏa
                   mãn điều kiện chương trình
                 </div>
                 <div className={cx("row")}>

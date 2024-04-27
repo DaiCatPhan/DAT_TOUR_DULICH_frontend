@@ -1,15 +1,27 @@
 .listTour {
-  padding: 5px;
   .item {
-    border: 1px solid grey;
-    padding: 18px;
+    border: 1px solid rgb(229, 225, 225);
+    padding: 10px;
     margin: 10px 0;
     cursor: pointer;
     border-radius: 5px;
     display: flex;
     align-items: center;
+    font-weight: 400;
+
   }
   .item.active {
-    background-color: rgb(196, 196, 233);
+    // background-color: rgb(196, 196, 233);
+    border: 1px solid #003c71;
+    color: #003c71;
+    font-weight: 500;
   }
+
+  .title {
+    color: #003c71;
+  }
+}
+
+.color_26bed6 {
+  color: #26bed6;
 }

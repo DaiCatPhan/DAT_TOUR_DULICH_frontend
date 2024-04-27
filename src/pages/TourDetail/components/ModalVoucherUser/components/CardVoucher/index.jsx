@@ -10,8 +10,6 @@ function CardVoucher(props) {
   const { Voucher } = item;
   const { id, nameVoucher, value, toDate, amount } = Voucher;
 
-  console.log("item >>>>", item);
-
   const handleSaveVoucher = async () => {
     handleSelectVoucher(item);
   };

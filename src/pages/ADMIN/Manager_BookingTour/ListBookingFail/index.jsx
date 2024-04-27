@@ -15,7 +15,7 @@ import ModalCancel from "../components/ModalCancel";
 
 function ListBookingFail() {
   const [listTourFail, setListTourFail] = useState([]);
-  const [listCalendarWithTour, setListCalendarWithTour] = useState([]); 
+  const [listCalendarWithTour, setListCalendarWithTour] = useState([]);
   const [active, setActive] = useState(null);
 
   const [isShowModalCancel, setIsShowModalCancel] = useState(false);
@@ -51,7 +51,8 @@ function ListBookingFail() {
       dataSend
     );
     if (res && res.data.EC === 0) {
-      toast.success("Hủy lịch và gửi thông báo đến khách hàng thành công");
+      toast.success(res.data.EM);
+      getListTourFail();
     }
   };
 
@@ -101,7 +102,7 @@ function ListBookingFail() {
               type="primary"
               danger
               size="small"
-              onClick={() => cancelCalendandNoficationTour(record)} 
+              onClick={() => cancelCalendandNoficationTour(record)}
             >
               Hủy tour và gửi thông báo
             </Button>
@@ -115,23 +116,27 @@ function ListBookingFail() {
       <div className={cx("row")}>
         <div className={cx("col-lg-4")}>
           <div className={cx("border", "listTour")}>
-            <div>DANH SACH TOUR KHÔNG ĐỦ NGƯỜI ĐẶT</div>
+            <h5 className={cx("border p-1", "title")}>
+              DANH SACH TOUR KHÔNG ĐỦ NGƯỜI ĐẶT
+            </h5>
 
-            {listTourFail?.map((item) => {
-              return (
-                <div
-                  key={item?.id}
-                  className={cx("item", { active: active == item.id })}
-                  onClick={() => handleClickTourFail(item)}
-                >
-                  {item?.name}
-                </div>
-              );
-            })}
+            <div className={cx("px-2")}>
+              {listTourFail?.map((item) => {
+                return (
+                  <div
+                    key={item?.id}
+                    className={cx("item", { active: active == item.id })}
+                    onClick={() => handleClickTourFail(item)}
+                  >
+                    {item?.name}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
         <div className={cx("col-lg-8")}>
-          <div> TABLE</div>
+          <h5 className={cx("py-2", "title")}> BẢNG LỊCH </h5>
           <Table
             dataSource={listCalendarWithTour?.calendarFail}
             columns={columns}

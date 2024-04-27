@@ -1,5 +1,5 @@
 .cardVoucher {
-  border: 1px solid red;
+  border: 1px solid #003c71;
   width: 450px;
   height: 120px;
   display: flex;
@@ -11,7 +11,7 @@
   .bg {
     width: 120px;
     height: 120px;
-    background-color: #ee4d2d;
+    background-color: #003c71;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,11 +31,11 @@
     }
 
     .btnVoucher {
-      border: 1px solid red;
-      color: red;
+      border: 1px solid #003c71;
+      color: #003c71;
       font-size: 13px;
       background-color: transparent;
-      width: 95%;
+      width: 85%;
     }
 
     .dateUse {
@@ -51,13 +51,13 @@
     margin-left: 30px;
 
     button {
-      border: 1px solid red;
       color: white;
       font-size: 17px;
       font-weight: 600;
       padding: 5px 45px;
-      background-color: #ee4d2d;
+      background-color: #003c71;
       border-radius: 10px;
+      cursor: pointer;
     }
   }
 }

@@ -105,15 +105,18 @@ function ModalCancel(props) {
               <b>{moment(dataModalCancel?.endDay).format("DD-MM-YYYY")}</b>
             </div>
           </div>
-
-          <div>
-            <MdEditor
-              style={{ height: "500px" }}
-              renderHTML={(text) => mdParser.render(text)}
-              onChange={handleReason}
-              value={reason_TEXT}
-            />
-          </div>
+          {dataModalCancel?.booking?.count == 0 ? (
+            <div></div>
+          ) : (
+            <div>
+              <MdEditor
+                style={{ height: "500px" }}
+                renderHTML={(text) => mdParser.render(text)}
+                onChange={handleReason}
+                value={reason_TEXT}
+              />
+            </div>
+          )}
         </div>
       </Modal>
     </div>

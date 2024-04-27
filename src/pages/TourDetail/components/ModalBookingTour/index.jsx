@@ -129,7 +129,8 @@ function ModalBookingTour(props) {
     }
     data.user = dataCustomer;
 
-    const res = await BookingService.createVNP(data);  
+    const res = await BookingService.createVNP(data);
+    console.log("res , ", res);
     if (res && res.data.EC == 0) {
       window.location.href = res.data.DT.url;
       getTourById();
@@ -375,16 +376,3 @@ function ModalBookingTour(props) {
 }
 
 export default ModalBookingTour;
-{
-  /* <div className={cx("mx-5")}>
-                        <Button
-                          style={{
-                            borderColor: "blue",
-                            color: "blue",
-                          }}
-                          onClick={handleBooking}
-                        >
-                          THANH TOÁN TẠI QUẦY
-                        </Button>
-                      </div> */
-}

@@ -50,7 +50,7 @@ function ListBookingTour_Update() {
   // GOI API LAY LIST TOUR
   const getListBookingTour = async () => {
     const res = await BookingService.readAll(
-      `page=${current}&limit=${pageSize}&${statusTab}`
+      `page=${current}&limit=${pageSize}&${statusTab}&sortcreatedAt=DESC`
     );
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.rows.map((item) => ({
