@@ -26,6 +26,7 @@ import { Link } from "react-router-dom";
 
 import BookingService from "../../../../services/BookingService";
 import ModalUpdateStatusBooking from "../components/ModalUpdateStatusBooking";
+import ModalReasonCancel from "../components/ModalReasonCancel";
 
 import Funtion from "../../../../components/Functions/function";
 import moment from "moment";
@@ -35,16 +36,24 @@ function ListBookingTour_Update() {
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
-  const [statusTab, setStatusTab] = useState("payment_status=ĐÃ THANH TOÁN");
+  const [statusTab, setStatusTab] = useState(
+    "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN"
+  );
 
   const [isShowModalUpdateStatusBooking, setIsShowModalUpdateStatusBooking] =
     useState(false);
   const [dataModalUpdateStatusBooking, setDataModalUpdateStatusBooking] =
     useState({});
+  const [isShowModalReasonCancel, setIsShowModalReasonCancel] = useState(false);
+  const [dataModalReasonCancel, setDataModalReasonCancel] = useState({});
 
   const handleModalUpdateStatusBooking = (data) => {
     setIsShowModalUpdateStatusBooking(true);
     setDataModalUpdateStatusBooking(data);
+  };
+  const handleModalReasonCancel = (data) => {
+    setIsShowModalReasonCancel(true);
+    setDataModalReasonCancel(data);
   };
 
   // GOI API LAY LIST TOUR
@@ -80,21 +89,24 @@ function ListBookingTour_Update() {
 
   const handleStatusPayment = (status) => {
     if (status == "ĐÃ THANH TOÁN") {
-      return <Tag color="blue">ĐÃ THANH TOÁN</Tag>;
+      return <Tag color="green">ĐÃ THANH TOÁN</Tag>;
     } else if (status == "CHƯA THANH TOÁN") {
-      return <Tag color="red">CHƯA THANH TOÁN</Tag>;
+      return <Tag color="blue">CHƯA THANH TOÁN</Tag>;
+    } else if (status == "HOÀN TIỀN") {
+      return <Tag color="red">HOÀN TIỀN</Tag>;
     }
   };
 
   const itemsTab = [
     {
-      key: "payment_status=ĐÃ THANH TOÁN",
+      key: "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN",
       label: <div className={cx("px-3")}>ĐÃ THANH TOÁN</div>,
     },
     {
       key: "status=ĐÃ HỦY",
-      label: <div className={cx("px-3")}>ĐÃ HỦY</div>,
+      label: <div className={cx("px-3")}>HỦY TOUR</div>,
     },
+
     {
       key: "",
       label: "",
@@ -135,13 +147,13 @@ function ListBookingTour_Update() {
       title: "Mã đặc tour",
       key: "id",
       render: (data) => <div>{data?.id}</div>,
-      width: 100,
+      width: 80,
     },
     {
       title: "Tour",
       key: "nameTour",
       render: (data) => <div>{data?.Calendar?.Tour?.name}</div>,
-      width: 400,
+      width: 300,
     },
     {
       title: "khách hàng",
@@ -168,11 +180,19 @@ function ListBookingTour_Update() {
         </div>
       ),
     },
+
+    {
+      title: "trạng thái",
+      key: "status",
+      render: (data) => <div>{handleStatusBooking(data?.status)}</div>,
+    },
+
     {
       title: "trạng thái",
       key: "status",
       render: (data) => <div>{handleStatusPayment(data?.payment_status)}</div>,
     },
+
     {
       title: "thao tác",
       key: "Action",
@@ -191,8 +211,90 @@ function ListBookingTour_Update() {
       },
     },
   ];
-  const filterOption = (input, option) =>
-    (option?.label ?? "").toLowerCase().includes(input.toLowerCase());
+
+  const columnsTabCancelTour = [
+    {
+      title: "Mã đặc tour",
+      key: "id",
+      render: (data) => <div>{data?.id}</div>,
+      width: 80,
+    },
+    {
+      title: "Tour",
+      key: "nameTour",
+      render: (data) => <div>{data?.Calendar?.Tour?.name}</div>,
+      width: 300,
+    },
+    {
+      title: "khách hàng",
+      key: "customer",
+      render: (data) => (
+        <div className={cx('text-primary','poiter')} onClick={() => handleModalReasonCancel(data)}>
+          {data?.Customer?.email}
+        </div>
+      ),
+    },
+    {
+      title: "lịch khởi hành",
+      key: "calendar",
+      render: (data) => (
+        <div className={cx("d-flex   ")}>
+          <div>{moment(data?.Calendar?.startDay).format("DD-MM-YYYY")}</div>
+          <div className={cx("mx-2")}>/</div>
+          <div>{moment(data?.Calendar?.endDay).format("DD-MM-YYYY")}</div>
+        </div>
+      ),
+    },
+    {
+      title: "ngày đặt tour",
+      key: "calendar",
+      render: (data) => (
+        <div>
+          <div>{moment(data?.createdAt).format("DD-MM-YYYY")}</div>
+        </div>
+      ),
+    },
+
+    {
+      title: "ngày hủy tour",
+      key: "calendar",
+      render: (data) => (
+        <div>
+          <div>{moment(data?.date_cancel_booking).format("DD-MM-YYYY")}</div>
+        </div>
+      ),
+    },
+
+    {
+      title: "trạng thái",
+      key: "status",
+      render: (data) => <div>{handleStatusBooking(data?.status)}</div>,
+    },
+
+    {
+      title: "trạng thái",
+      key: "status",
+      render: (data) => <div>{handleStatusPayment(data?.payment_status)}</div>,
+    },
+
+    {
+      title: "thao tác",
+      key: "Action",
+      render: (record) => {
+        return (
+          <div className={cx("poiter d-flex")}>
+            <div className={cx("m-2")}></div>
+            <IconPencilMinus
+              onClick={() => handleModalUpdateStatusBooking(record)}
+              color="orange"
+              width={20}
+              className={cx("poiter")}
+            />
+          </div>
+        );
+      },
+    },
+  ];
 
   return (
     <div className={cx("wrapper")}>
@@ -219,7 +321,7 @@ function ListBookingTour_Update() {
           </div>
         </div>
 
-        <div className={cx("px-3")}>
+        <div className={cx("px-3 my-3")}>
           <div>
             <Form
               name="basic"
@@ -263,7 +365,15 @@ function ListBookingTour_Update() {
 
         <div className={cx("px-3")}>
           <div>
-            <Table dataSource={listBookingTour} columns={columns} bordered />
+            {statusTab == "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN" ? (
+              <Table dataSource={listBookingTour} columns={columns} bordered />
+            ) : (
+              <Table
+                dataSource={listBookingTour}
+                columns={columnsTabCancelTour}
+                bordered
+              />
+            )}
           </div>
         </div>
       </div>
@@ -272,6 +382,14 @@ function ListBookingTour_Update() {
         setIsShowModalUpdateStatusBooking={setIsShowModalUpdateStatusBooking}
         dataModalUpdateStatusBooking={dataModalUpdateStatusBooking}
         setDataModalUpdateStatusBooking={setDataModalUpdateStatusBooking}
+        getListBookingTour={getListBookingTour}
+      />
+
+      <ModalReasonCancel
+        isShowModalReasonCancel={isShowModalReasonCancel}
+        setIsShowModalReasonCancel={setIsShowModalReasonCancel}
+        dataModalReasonCancel={dataModalReasonCancel}
+        setDataModalReasonCancel={setDataModalReasonCancel}
         getListBookingTour={getListBookingTour}
       />
     </div>

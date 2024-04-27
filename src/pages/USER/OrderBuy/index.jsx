@@ -65,21 +65,39 @@ function OrderBuy() {
 
   const handleStatusBooking = (status) => {
     if (status == "CHỜ XÁC NHẬN") {
-      return <div className={cx("text-primary", "fw_600")}>CHỜ XÁC NHẬN</div>;
+      return (
+        <Tag color="blue" className={cx("text-primary", "fw_600")}>
+          CHỜ XÁC NHẬN
+        </Tag>
+      );
     } else if (status == "ĐÃ DUYỆT") {
-      return <div className={cx("text-success", "fw_600")}>ĐÃ DUYỆT</div>;
+      return (
+        <Tag color="green" className={cx("text-success", "fw_600")}>
+          ĐÃ DUYỆT
+        </Tag>
+      );
     } else if (status === "CHỜ HỦY") {
-      return <div className={cx("text-warning", "fw_600")}>CHỜ HỦY</div>;
+      return (
+        <Tag color="blue" className={cx("text-warning", "fw_600")}>
+          CHỜ HỦY
+        </Tag>
+      );
     } else if (status === "ĐÃ HỦY") {
-      return <div className={cx("text-danger", "fw_600")}>ĐÃ HỦY</div>;
+      return (
+        <Tag color="red" className={cx("text-danger", "fw_600")}>
+          ĐÃ HỦY
+        </Tag>
+      );
     }
   };
 
   const handleStatusPayment = (status) => {
     if (status == "ĐÃ THANH TOÁN") {
-      return <div className={cx("text-success", "fw_600")}>ĐÃ THANH TOÁN</div>;
+      return <Tag color="green">ĐÃ THANH TOÁN</Tag>;
     } else if (status == "CHƯA THANH TOÁN") {
-      return <div className={cx("text-danger", "fw_600")}>CHƯA THANH TOÁN</div>;
+      return <Tag color="blue">CHƯA THANH TOÁN</Tag>;
+    } else if (status == "HOÀN TIỀN") {
+      return <Tag color="red">HOÀN TIỀN</Tag>;
     }
   };
 
@@ -204,18 +222,18 @@ function OrderBuy() {
       key: "",
       label: "TẤT CẢ",
     },
-    {
-      key: "status=CHỜ XÁC NHẬN",
-      label: "CHỜ XÁC NHẬN",
-    },
-    {
-      key: "status=ĐÃ DUYỆT",
-      label: "ĐÃ DUYỆT",
-    },
-    {
-      key: "status=CHỜ HỦY",
-      label: "CHỜ  HỦY",
-    },
+    // {
+    //   key: "status=CHỜ XÁC NHẬN",
+    //   label: "CHỜ XÁC NHẬN",
+    // },
+    // {
+    //   key: "status=ĐÃ DUYỆT",
+    //   label: "ĐÃ DUYỆT",
+    // },
+    // {
+    //   key: "status=CHỜ HỦY",
+    //   label: "CHỜ  HỦY",
+    // },
     {
       key: "status=ĐÃ HỦY",
       label: "ĐÃ HỦY",
@@ -236,7 +254,7 @@ function OrderBuy() {
 
     return (
       <div>
-        {showCancelButton && data.status != "CHỜ HỦY" ? (
+        {showCancelButton && data.status != "ĐÃ HỦY" ? (
           <Tag
             className={cx("poiter")}
             color="#f50"

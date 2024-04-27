@@ -151,6 +151,7 @@ function List_Category() {
                         <Option value="ROLE">ROLE</Option>
                         <Option value="STATUS_ACTIVITY">STATUS_ACTIVITY</Option>
                         <Option value="STATUS_BOOKING">STATUS_BOOKING</Option>
+                        <Option value="STATUS_PAYMENT">STATUS_PAYMENT</Option>
                       </Select>
                     </Form.Item>
                   </div>
@@ -218,6 +219,9 @@ function List_Category() {
                             </Option>
                             <Option value="STATUS_BOOKING">
                               STATUS_BOOKING
+                            </Option>
+                            <Option value="STATUS_PAYMENT">
+                              STATUS_PAYMENT
                             </Option>
                           </Select>
                         </Form.Item>
