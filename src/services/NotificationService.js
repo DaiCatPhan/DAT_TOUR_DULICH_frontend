@@ -12,4 +12,8 @@ const readID = (data) => {
   return axios.get(`/api/v1/notification/readID?${data}`);
 };
 
-export default { create, read, readID };
+const update = (data) => {
+  return axios.put(`/api/v1/notification/update`, data);
+};
+
+export default { create, read, readID, update };

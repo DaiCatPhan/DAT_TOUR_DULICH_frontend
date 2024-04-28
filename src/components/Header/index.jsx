@@ -15,6 +15,7 @@ import { Button, Dropdown, Space, Tabs, Popover } from "antd";
 import { Badge } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { IconMessage, IconBell } from "@tabler/icons-react";
+import { Empty } from "antd";
 
 import CardNotification from "./components/CardNotification";
 
@@ -28,7 +29,7 @@ function Header() {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
   const [listNotification, setListNotification] = useState([]);
-  const [tabNotification, setTabNotification] = useState("status=0");
+  const [tabNotification, setTabNotification] = useState("");
 
   const handleLogout = async () => {
     const res = await AuthService.LogoutApi();
@@ -42,9 +43,14 @@ function Header() {
   };
 
   const getListNotification = async () => {
-    const res = await NotificationService.read(
-      `ID_Customer=${user?.id}&read=${tabNotification}`
-    );
+    let condition = ``;
+    if (user?.id) {
+      condition += `ID_Customer=${user?.id}`;
+    }
+    if (tabNotification) {
+      condition += `&${tabNotification}`;
+    }
+    const res = await NotificationService.read(condition);
     if (res && res.data.EC == 0) {
       setListNotification(res.data.DT);
     }
@@ -102,26 +108,46 @@ function Header() {
     setTabNotification(key);
   };
 
+  const handleUpdateNotification = async (data) => {
+    const res = await NotificationService.update({
+      ID_Notification: data.id,
+      read: 1,
+    });
+  };
+
   const itemsNotification = (
     <div>
       <Tabs
-        defaultActiveKey="status=0"
+        defaultActiveKey=""
         items={[
           {
-            key: "status=0",
+            key: "",
             label: "Tất cả",
           },
           {
-            key: "status=1",
+            key: "read=0",
             label: "Chưa đọc",
+          },
+          {
+            key: "",
+            label: "",
           },
         ]}
         onChange={onChangeTabNotifition}
       />
-
-      {listNotification?.rows?.map((item) => {
-        return <CardNotification key={item.id} item={item} />;
-      })}
+      {listNotification?.rows?.length <= 0 ? (
+        <Empty />
+      ) : (
+        listNotification?.rows?.map((item) => {
+          return (
+            <CardNotification
+              key={item.id}
+              item={item}
+              handleUpdateNotification={handleUpdateNotification}
+            />
+          );
+        })
+      )}
     </div>
   );
 

@@ -15,8 +15,8 @@ import ModalVoucherUser from "../ModalVoucherUser";
 
 import qs from "qs";
 import { useSearchParams, useParams } from "react-router-dom";
-
 import BookingService from "../../../../services/BookingService";
+import Function from "../../../../components/Functions/function";
 
 function ModalBookingTour(props) {
   const [searchParams] = useSearchParams();
@@ -205,10 +205,10 @@ function ModalBookingTour(props) {
         style={{ top: 15 }}
         footer={null}
       >
-        <div className={cx("p-4")}>
+        <div className={cx("color_003c71")}>
           <div className={cx("border p-3", "session1")}>
-            <div className={cx("d-flex justify-content-between ")}>
-              <div>
+            <div className={cx("row")}>
+              <div className={cx("col-lg-2  ")}>
                 <img
                   src={tourDetail?.image}
                   alt="notFound"
@@ -216,15 +216,20 @@ function ModalBookingTour(props) {
                 />
               </div>
 
-              <div>{tourDetail?.name}</div>
+              <div className={cx("col-lg-4")}>
+                <div className={cx("name")} x>
+                  {tourDetail?.name}
+                </div>
+                <div>ngày khởi hành </div>
+              </div>
 
-              <div>
+              <div className={cx("col-lg-2")}>
                 <div className={cx("row")}>
                   <div className={cx("col-lg-8")}>Người lớn</div>
                   <div className={cx("col-lg-2")}>
                     <div className={cx("mx-2 d-flex")}>
                       <span>x</span>
-                      <span>{numberTicketChild}</span>
+                      <span className={cx("mx-1")}>{numberTicketAdult}</span>
                     </div>
                   </div>
                 </div>
@@ -234,32 +239,41 @@ function ModalBookingTour(props) {
                   <div className={cx("col-lg-2")}>
                     <div className={cx("mx-2 d-flex text-bold")}>
                       <span>x</span>
-                      <span>{numberTicketAdult}</span>
+                      <span className={cx("mx-1")}>{numberTicketChild}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <div>
-                <div>{activeCalendar?.priceAdult} VND</div>
-                <div>{activeCalendar?.priceChild} VND</div>
+              <div className={cx("col-lg-2")}>
+                <div>
+                  {Function.formatNumberWithCommas(activeCalendar?.priceAdult)}
+                  <span className={cx("mx-2")}> VND</span>
+                </div>
+                <div>
+                  {Function.formatNumberWithCommas(activeCalendar?.priceChild)}
+                  <span className={cx("mx-2")}> VND</span>
+                </div>
               </div>
 
-              <div>
-                <div className={cx("titleCount")}>Tổng cộng</div>
-                <div>{totalAmount} VND</div>
+              <div className={cx("col-lg-2", "contentCount")}>
+                <div className={cx("item")}>Tổng cộng</div>
+                <div className={cx("item")}>
+                  {Function.formatNumberWithCommas(totalAmount)}
+                  <span className={cx("mx-2")}> VND</span>
+                </div>
               </div>
             </div>
 
             <div className={cx("d-flex justify-content-between mt-3")}>
               <div className={cx("d-flex ")}>
-                <div>Easier</div>
+                <div>Voucher</div>
 
                 <div
                   onClick={handleModalVoucherUser}
                   className={cx("poiter text-primary mx-5")}
                 >
-                  Chọn hoặc nhập mã
+                  Chọn mã voucher
                 </div>
                 <div>
                   Mã Voucher :{" "}
@@ -271,8 +285,12 @@ function ModalBookingTour(props) {
                   "d-flex align-items-center   w-50 justify-content-end"
                 )}
               >
-                <div className={cx("mx-5")}>
-                  Tổng thanh toán : {resultAmount} VND
+                <div className={cx("mx-5", "totalMoney")}>
+                  <div className={cx("item")}> Tổng thanh toán :</div>
+                  <div className={cx("item")}>
+                    {Function.formatNumberWithCommas(resultAmount)}
+                  </div>
+                  <div className={cx("item")}>VND</div>
                 </div>
               </div>
             </div>

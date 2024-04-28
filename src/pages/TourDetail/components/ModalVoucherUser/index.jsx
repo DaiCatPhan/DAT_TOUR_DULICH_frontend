@@ -44,6 +44,7 @@ function ModalVoucherUser(props) {
   const handleCancel = () => {
     setIsShowModalVoucherUser(false);
     setDataModalVoucherUser({});
+    setVoucherSelected("");
   };
 
   const handleSelectVoucher = (data) => {
@@ -66,8 +67,8 @@ function ModalVoucherUser(props) {
             <div className={cx("farmVoucher")}>
               <div>
                 <div>
-                  Số lượng có hạn , chỉ áp dụng cho người dùng và tour thỏa
-                  mãn điều kiện chương trình
+                  Số lượng có hạn , chỉ áp dụng cho người dùng và tour thỏa mãn
+                  điều kiện chương trình
                 </div>
                 <div className={cx("row")}>
                   {listVoucher?.map((item) => {

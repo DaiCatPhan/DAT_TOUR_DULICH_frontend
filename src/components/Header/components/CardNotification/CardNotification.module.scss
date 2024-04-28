@@ -1,4 +1,7 @@
 .wrapper {
+  &:hover {
+    background-color: rgb(247, 242, 242);
+  }
 }
 
 .card {

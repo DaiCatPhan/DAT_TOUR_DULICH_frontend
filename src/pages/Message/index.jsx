@@ -8,11 +8,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { Button, Input } from "antd";
 const { TextArea } = Input;
-import { FloatButton } from "antd";
-import {
-  CustomerServiceOutlined,
-  QuestionCircleOutlined,
-} from "@ant-design/icons";
+
+import { IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
 
 import MessageService from "../../services/MessageService";
 import moment from "moment";
@@ -22,6 +19,9 @@ const socket = io.connect("http://localhost:3000", {
 });
 
 function Message() {
+  const user = useSelector((state) => state.account.user);
+  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+
   const ID_User = localStorage.getItem("ID_User");
   //Room State
   const [room, setRoom] = useState();
@@ -35,21 +35,18 @@ function Message() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [listMessage]);
 
+  const joinRoom = () => {
+    setShowRoom(!showRoom);
+    if (ID_User !== "") {
+      socket.emit("join_room", { ID_User: ID_User });
+    }
+  };
+
   const getListRoomOfUser = async () => {
     const res = await MessageService.listRoomOfUser(`userOne=${ID_User}`);
     if (res && res.data.EC == 0) {
       setListMessage(res.data.DT[0]);
-    }
-  };
-
-  useEffect(() => {
-    getListRoomOfUser();
-  }, []);
-
-  const joinRoom = () => {
-    setShowRoom(!showRoom);
-    if (ID_User !== "") {
-      socket.emit("join_room", { ID_User });
+      joinRoom();
     }
   };
 
@@ -74,9 +71,12 @@ function Message() {
       socket.emit("send_message", { text, room: +room, ID_User: ID_User });
       setText("");
       getListRoomOfUser();
-      handleScrollMessage();
     }
   };
+
+  useEffect(() => {
+    getListRoomOfUser();
+  }, []);
 
   useEffect(() => {
     // Lắng nghe sự kiện "room_created" từ máy chủ
@@ -85,7 +85,7 @@ function Message() {
     });
 
     socket.on("receive_message", async (data) => {
-      const ID_User = localStorage.getItem("ID_User");
+      const ID_User = user?.id;
       const res = await MessageService.listRoomOfUser(`userOne=${ID_User}`);
       if (res && res.data.EC == 0) {
         setListMessage(res.data.DT[0]);
@@ -95,123 +95,102 @@ function Message() {
     });
   }, [socket]);
 
-  function handleScrollMessage() {
-    var messageContainer = document.getElementById("message-container");
-    messageContainer.scrollTop = messageContainer.scrollHeight + 100000000;
-  }
-
   return (
     <div className={cx("wrapper")}>
       <div className={cx("frame")}>
-        <div className={cx("row", "vh_80")}>
-          <div className={cx("col-lg-4 border")}>
-            <div onClick={joinRoom} className={cx("listCard")}>
-              <div className={cx("my-2")}>
-                <b>Vui lòng chọn phòng chát này để tham gia</b>
+        <div className={cx("vh_80")}>
+          <div className={cx("formMessage")}>
+            
+            <div className={cx("headerContact")}>
+              <div className={cx("circle")}>AD</div>
+              <div className={cx("mx-2")}>
+                Chat với <b>admin@mail.com</b>
               </div>
-              <div className={cx("cardMessage")}>
-                <div className={cx("circle")}>ad</div>
-                <div className={cx("mx-3")}>admin@gmail.com</div>
-              </div>
+            </div>
+
+            <div className={cx("list")}>
+              {listMessage?.messageData?.map((item) => {
+                if (item?.Customer?.email != "admin@gmail.com") {
+                  return (
+                    <div
+                      className={cx("d-flex justify-content-end")}
+                      ref={messagesEndRef}
+                    >
+                      <div
+                        key={item.id}
+                        className={cx(
+                          "chat_message",
+                          "d-flex align-items-center"
+                        )}
+                      >
+                        <div className={cx("time")}>
+                          {moment(item?.createdAt).format("HH:mm")}
+                        </div>
+
+                        <div className={cx("content", "sent")}>
+                          {item?.text}
+                        </div>
+
+                        <div className={cx("image")}>
+                          <img
+                            src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
+                            alt="notFound"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                } else {
+                  return (
+                    <div className={cx("d-flex justify-content-start")}>
+                      <div
+                        key={item.id}
+                        className={cx(
+                          "chat_message",
+                          "d-flex align-items-center"
+                        )}
+                      >
+                        <div className={cx("image")}>
+                          <img
+                            src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
+                            alt="notFound"
+                          />
+                        </div>
+
+                        <div className={cx("content", "received")}>
+                          {item?.text}
+                        </div>
+
+                        <div className={cx("time")}>
+                          {moment(item?.createdAt).format("HH:mm")}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }
+              })}
+            </div>
+
+            <div className={cx("frame_TextArea")}>
+              <IconCirclePlus className={cx("mx-1", "b2b3b4")} />
+              <Input
+                value={text}
+                placeholder="Nhập tin nhắn ở đây...."
+                onChange={(event) => {
+                  setText(event.target.value);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    sendMessage();
+                  }
+                }}
+              />
+
+              <button onClick={sendMessage}>
+                <IconArrowRight />
+              </button>
             </div>
           </div>
-
-          {showRoom ? (
-            <div className={cx("col-lg-8 border")}>
-              <div className={cx("d-flex justify-content-center")}>
-                <div className={cx("formMessage")}>
-                  <div className={cx("headerContact")}>
-                    Chat với <b>admin@mail.com</b>
-                  </div>
-
-                  <div
-                    className={cx("list", "border", "ScrollStyle", "p-3")}
-                    id="message-container"
-                  >
-                    {listMessage?.messageData?.map((item) => {
-                      if (item?.Customer?.email != "admin@gmail.com") {
-                        return (
-                          <div className={cx("d-flex justify-content-end")} ref={messagesEndRef}>
-                            <div
-                              key={item.id}
-                              className={cx(
-                                "chat_message",
-                                "d-flex align-items-center"
-                              )}
-                            >
-                              <div className={cx("time")}>
-                                {moment(item?.createdAt).format("HH:mm")}
-                              </div>
-                              <div className={cx("mx-2", "sent")}>
-                                {item?.text}
-                              </div>
-
-                              <div>
-                                <img
-                                  src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                                  alt="notFound"
-                                  width={30}
-                                  height={30}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      } else {
-                        return (
-                          <div className={cx("d-flex justify-content-start")}>
-                            <div
-                              key={item.id}
-                              className={cx(
-                                "d-flex align-items-center",
-                                "chat_message"
-                              )}
-                            >
-                              <div>
-                                <img
-                                  src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                                  alt="notFound"
-                                  width={30}
-                                  height={30}
-                                />
-                              </div>
-
-                              <div className={cx("mx-2", "received")}>
-                                {item?.text}
-                              </div>
-                              <div className={cx("time")}>
-                                {moment(item?.createdAt).format("HH:mm")}
-                              </div>
-                            </div>
-                          </div>
-                        );
-                      }
-                    })}
-                  </div>
-                  <div className={cx("frame_TextArea")}>
-                    <TextArea
-                      className={cx("border")}
-                      value={text}
-                      rows={2}
-                      onChange={(event) => {
-                        setText(event.target.value);
-                      }}
-                    />
-
-                    <Button
-                      type="primary"
-                      onClick={sendMessage}
-                      className={cx("mx-2")}
-                    >
-                      Gửi
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div></div>
-          )}
         </div>
       </div>
     </div>
@@ -219,4 +198,3 @@ function Message() {
 }
 
 export default Message;
- 

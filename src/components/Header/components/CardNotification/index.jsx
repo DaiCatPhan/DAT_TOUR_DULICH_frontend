@@ -1,15 +1,20 @@
 import className from "classnames/bind";
 import styles from "./CardNotification.module.scss";
 const cx = className.bind(styles);
-
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 import { Link } from "react-router-dom";
 
 function CardNotification(props) {
-  const { item } = props;
+  const navigate = useNavigate();
+  const { item, handleUpdateNotification } = props;
+  const hanleOnlick = () => {
+    navigate(`/user/notification/${item?.id}`);
+    handleUpdateNotification(item);
+  };
   return (
     <div className={cx("wrapper")}>
-      <Link to={`/user/notification/${item?.id}`}>
+      <div onClick={hanleOnlick} className={cx("poiter")}>
         <div className={cx("card")}>
           <div className={cx("row")}>
             <div className={cx("col-lg-9")}>
@@ -35,7 +40,7 @@ function CardNotification(props) {
             )}
           </div>
         </div>
-      </Link>
+      </div>
     </div>
   );
 }

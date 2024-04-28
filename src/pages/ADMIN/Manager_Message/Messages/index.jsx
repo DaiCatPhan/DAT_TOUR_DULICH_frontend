@@ -9,6 +9,7 @@ const { TextArea } = Input;
 import moment from "moment";
 
 import { io } from "socket.io-client";
+import { IconArrowRight, IconCirclePlus, IconUser } from "@tabler/icons-react";
 const socket = io.connect("http://localhost:3000", {
   transports: ["websocket"],
 });
@@ -21,6 +22,7 @@ function Messages() {
   const [test, setTest] = useState("");
   const [userOne, setUserOne] = useState();
   const [showHeaderRoom, setShowHeaderRoom] = useState("");
+  const [keyActive, setKeyActive] = useState("");
 
   const messagesEndRef = useRef(null);
   useEffect(() => {
@@ -42,7 +44,8 @@ function Messages() {
   };
 
   const handleRoomMessageUser = async (data) => {
-    console.log("test >>>>>>", data);
+    console.log("data >>>>>>", data);
+    setKeyActive(data.id);
     socket.emit("join_room_admin", { room: data?.id });
     setShowHeaderRoom(data.userOneData.username);
     getListRoomOfUser(data?.userOne);
@@ -89,121 +92,122 @@ function Messages() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("frame")}>
-        <div className={cx("row", "vh_80")}>
-          <div className={cx("col-lg-4 border")}>
-            <div className={cx("listCard")}>
-              <div className={cx("my-2")}>
+        <div className={cx("row")}>
+          <div className={cx("col-lg-3 p-0", "border_b2b3b4")}>
+            <div className={cx("listUser")}>
+              <div className={cx("title")}>
                 <b>Vui lòng chọn phòng chát để tham gia</b>
               </div>
-              {listMessages?.map((item) => {
-                return (
-                  <div
-                    key={item.id}
-                    className={cx("cardMessage")}
-                    onClick={() => handleRoomMessageUser(item)}
-                  >
-                    <div className={cx("circle")}>user</div>
-                    <div className={cx("mx-3")}>
-                      {item?.userOneData?.username}
+
+              <div className={cx("mx-2")}>
+                {listMessages?.map((item) => {
+                  return (
+                    <div
+                      key={item.id}
+                      className={cx("cardMessage", {
+                        active: item.id == keyActive,
+                      })}
+                      onClick={() => handleRoomMessageUser(item)}
+                    >
+                      <div className={cx("circle")}>
+                        <IconUser color="white" />
+                      </div>
+                      <div className={cx("mx-3", "name")}>
+                        {item?.userOneData?.username}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
+
           {showHeaderRoom ? (
-            <div className={cx("col-lg-8 border")}>
-              <div className={cx("d-flex justify-content-center")}>
-                <div className={cx("formMessage")}>
-                  <div className={cx("headerContact")}>
-                    Chat với <b>{listMessage?.userOneData?.username}</b>
-                  </div>
+            <div className={cx("col-lg-9  p-0", "border_b2b3b4")}>
+              <div className={cx("formMessage")}>
+                <div className={cx("headerContact")}>
+                  Chat với <b className={cx('mx-2')}>{listMessage?.userOneData?.username}</b>
+                </div>
 
-                  <div
-                    className={cx("list", "border", "ScrollStyle")}
-                    id="message-container"
-                  >
-                    {listMessage?.messageData?.map((item) => {
-                      if (item?.Customer?.email != "admin@gmail.com") {
-                        return (
+                <div className={cx("list")}>
+                  {listMessage?.messageData?.map((item) => {
+                    if (item?.Customer?.email != "admin@gmail.com") {
+                      return (
+                        <div
+                          className={cx("d-flex justify-content-start")}
+                          ref={messagesEndRef}
+                        >
                           <div
-                            className={cx("d-flex justify-content-start")}
-                            ref={messagesEndRef}
+                            key={item.id}
+                            className={cx(
+                              "chat_message",
+                              "d-flex align-items-center"
+                            )}
                           >
-                            <div
-                              key={item.id}
-                              className={cx(
-                                "chat_message",
-                                "d-flex align-items-center"
-                              )}
-                            >
-                              <div>
-                                <img
-                                  src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                                  alt="notFound"
-                                  width={30}
-                                  height={30}
-                                />
-                              </div>
+                            <div className={cx("image")}>
+                              <img
+                                src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
+                                alt="notFound"
+                              />
+                            </div>
 
-                              <div className={cx("mx-2", "received")}>
-                                {item?.text}
-                              </div>
+                            <div className={cx("content", "received")}>
+                              {item?.text}
+                            </div>
 
-                              <div className={cx("time")}>
-                                {moment(item?.createdAt).format("HH:mm")}
-                              </div>
+                            <div className={cx("time")}>
+                              {moment(item?.createdAt).format("HH:mm")}
                             </div>
                           </div>
-                        );
-                      } else {
-                        return (
-                          <div className={cx("d-flex justify-content-end")}>
-                            <div
-                              key={item.id}
-                              className={cx(
-                                "d-flex align-items-center",
-                                "chat_message"
-                              )}
-                            >
-                              <div className={cx("time")}>
-                                {moment(item?.createdAt).format("HH:mm")}
-                              </div>
-                              <div className={cx("mx-2", "sent")}>
-                                {item?.text}
-                              </div>
-                              <div>
-                                <img
-                                  src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                                  alt="notFound"
-                                  width={30}
-                                  height={30}
-                                />
-                              </div>
+                        </div>
+                      );
+                    } else {
+                      return (
+                        <div className={cx("d-flex justify-content-end")}>
+                          <div
+                            key={item.id}
+                            className={cx(
+                              "d-flex align-items-center",
+                              "chat_message"
+                            )}
+                          >
+                            <div className={cx("time")}>
+                              {moment(item?.createdAt).format("HH:mm")}
+                            </div>
+                            <div className={cx("content", "sent")}>
+                              {item?.text}
+                            </div>
+                            <div className={cx("image")}>
+                              <img
+                                src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
+                                alt="notFound"
+                              />
                             </div>
                           </div>
-                        );
+                        </div>
+                      );
+                    }
+                  })}
+                </div>
+
+                <div className={cx("frame_TextArea")}>
+                  <IconCirclePlus className={cx("mx-1", "b2b3b4")} />
+                  <Input
+                    value={text}
+                    placeholder="Nhập tin nhắn ở đây...."
+                    onChange={(event) => {
+                      setText(event.target.value);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        sendMessage();
                       }
-                    })}
-                  </div>
-                  <div className={cx("frame_TextArea")}>
-                    <TextArea
-                      className={cx("border")}
-                      value={text}
-                      rows={2}
-                      onChange={(event) => {
-                        setText(event.target.value);
-                      }}
-                    />
+                    }}
+                  />
 
-                    <Button
-                      type="primary"
-                      onClick={sendMessage}
-                      className={cx("mx-2")}
-                    >
-                      Gửi
-                    </Button>
-                  </div>
+                  <button onClick={sendMessage}>
+                    <IconArrowRight />
+                  </button>
                 </div>
               </div>
             </div>
@@ -217,5 +221,3 @@ function Messages() {
 }
 
 export default Messages;
-
-

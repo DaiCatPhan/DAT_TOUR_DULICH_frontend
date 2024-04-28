@@ -1,7 +1,19 @@
 .session1 {
-  .titleCount {
-    font-size: 15px;
-    color: red;
+  .contentCount {
+    font-size: 16px;
+  }
+
+  .name {
+    font-size: 18px;
+    font-weight: 500;
+  }
+
+  .totalMoney {
+    font-size: 22px;
+    display: flex;
+    .item:nth-child(2) {
+      margin: 0 10px;
+    }
   }
 }
 
@@ -22,5 +34,10 @@
   cursor: not-allowed;
 }
 
+.color_003c71 {
+  color: #003c71;
+}
 
-
+.ffbd00 {
+  color: #ffbd00;
+}

@@ -196,7 +196,7 @@ function TourDetail() {
                   <div>
                     <InputNumber
                       min={1}
-                      max={100}
+                      max={activeCalendar?.remainingSeats}
                       defaultValue={1}
                       onChange={handleNumberTicketAdult}
                     />
@@ -219,7 +219,7 @@ function TourDetail() {
                   <div>
                     <InputNumber
                       min={0}
-                      max={100}
+                      max={activeCalendar?.remainingSeats - numberTicketAdult}
                       defaultValue={0}
                       onChange={handleNumberTicketChild}
                     />
