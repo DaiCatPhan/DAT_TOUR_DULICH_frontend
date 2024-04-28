@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button, Input } from "antd";
 const { TextArea } = Input;
 import moment from "moment";
+import { Badge } from "antd";
 
 import { io } from "socket.io-client";
 import { IconArrowRight, IconCirclePlus, IconUser } from "@tabler/icons-react";
@@ -44,11 +45,17 @@ function Messages() {
   };
 
   const handleRoomMessageUser = async (data) => {
-    console.log("data >>>>>>", data);
     setKeyActive(data.id);
     socket.emit("join_room_admin", { room: data?.id });
     setShowHeaderRoom(data.userOneData.username);
     getListRoomOfUser(data?.userOne);
+
+    const res = await MessageService.update({
+      ID_Room: data.id,
+      ID_User: data.userOne,
+    });
+
+    console.log("res", res);
   };
 
   const sendMessage = async () => {
@@ -102,20 +109,26 @@ function Messages() {
               <div className={cx("mx-2")}>
                 {listMessages?.map((item) => {
                   return (
-                    <div
+                    <Badge
+                      count={item?.count}
                       key={item.id}
-                      className={cx("cardMessage", {
-                        active: item.id == keyActive,
-                      })}
-                      onClick={() => handleRoomMessageUser(item)}
+                      className={cx("w-100")}
                     >
-                      <div className={cx("circle")}>
-                        <IconUser color="white" />
+                      <div
+                        key={item.id}
+                        className={cx("cardMessage", {
+                          active: item.id == keyActive,
+                        })}
+                        onClick={() => handleRoomMessageUser(item)}
+                      >
+                        <div className={cx("circle")}>
+                          <IconUser color="white" />
+                        </div>
+                        <div className={cx("mx-3", "name")}>
+                          {item?.userOneData?.username}
+                        </div>
                       </div>
-                      <div className={cx("mx-3", "name")}>
-                        {item?.userOneData?.username}
-                      </div>
-                    </div>
+                    </Badge>
                   );
                 })}
               </div>
@@ -126,7 +139,10 @@ function Messages() {
             <div className={cx("col-lg-9  p-0", "border_b2b3b4")}>
               <div className={cx("formMessage")}>
                 <div className={cx("headerContact")}>
-                  Chat với <b className={cx('mx-2')}>{listMessage?.userOneData?.username}</b>
+                  Chat với{" "}
+                  <b className={cx("mx-2")}>
+                    {listMessage?.userOneData?.username}
+                  </b>
                 </div>
 
                 <div className={cx("list")}>

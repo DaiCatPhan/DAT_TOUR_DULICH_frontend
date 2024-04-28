@@ -20,6 +20,7 @@ import { Empty } from "antd";
 import CardNotification from "./components/CardNotification";
 
 import NotificationService from "../../services/NotificationService";
+import MessageService from "../../services/MessageService";
 import { useEffect, useState } from "react";
 
 function Header() {
@@ -27,9 +28,10 @@ function Header() {
   const navigate = useNavigate();
   const user = useSelector((state) => state.account.user);
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
-
   const [listNotification, setListNotification] = useState([]);
   const [tabNotification, setTabNotification] = useState("");
+  const [countMessage, setCountMessage] = useState("");
+  const [listMessageUser, setListMessageUser] = useState({});
 
   const handleLogout = async () => {
     const res = await AuthService.LogoutApi();
@@ -56,7 +58,17 @@ function Header() {
     }
   };
 
+  const ID_User = localStorage.getItem("ID_User");
+  const getListRoomOfUser = async () => {
+    const res = await MessageService.listRoomOfUser(`userOne=${ID_User}`);
+    if (res && res.data.EC == 0) {
+      setListMessageUser(res.data.DT[0]);
+      setCountMessage(res.data.DT[0]?.count);
+    }
+  };
+
   useEffect(() => {
+    getListRoomOfUser();
     getListNotification();
   }, [user, tabNotification]);
 
@@ -113,6 +125,14 @@ function Header() {
       ID_Notification: data.id,
       read: 1,
     });
+  };
+
+  const handleUpdateMessage = async () => {
+    const data = {
+      ID_Room: listMessageUser.id,
+      ID_User: listMessageUser.userTwo,
+    };
+    const res = await MessageService.update(data);
   };
 
   const itemsNotification = (
@@ -188,7 +208,9 @@ function Header() {
 
                       <div className={cx("mx-4", "poiter", "iconMessage")}>
                         <Link to={"/user/message"}>
-                          <IconMessage />
+                          <Badge count={countMessage} size="small">
+                            <IconMessage onClick={handleUpdateMessage} />
+                          </Badge>
                         </Link>
                       </div>
                       <div>
@@ -234,3 +256,11 @@ function Header() {
 }
 
 export default Header;
+
+// faber_loui43755
+// WCroftoon471
+// ChrisJohns22444
+// fulton_ste12103
+// CharlsonCh12470
+// BlakeFord92347
+// ibrahim_sidiqi1

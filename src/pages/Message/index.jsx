@@ -14,9 +14,11 @@ import { IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
 import MessageService from "../../services/MessageService";
 import moment from "moment";
 
+
+
 const socket = io.connect("http://localhost:3000", {
   transports: ["websocket"],
-});
+}); 
 
 function Message() {
   const user = useSelector((state) => state.account.user);
@@ -26,7 +28,7 @@ function Message() {
   //Room State
   const [room, setRoom] = useState();
   const [text, setText] = useState("");
-  const [listMessage, setListMessage] = useState([]);
+  const [listMessage, setListMessage] = useState({});
   const [showRoom, setShowRoom] = useState(false);
   const [test, setTest] = useState("");
 
