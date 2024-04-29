@@ -13,7 +13,7 @@ import TourService from "../../services/TourService";
 import CommentService from "../../services/CommentService.js";
 import functions from "../../components/Functions/function.js";
 
-import ModalBookingTour from "./components/ModalBookingTour/index.jsx"; 
+import ModalBookingTour from "./components/ModalBookingTour/index.jsx";
 
 import {
   IconClockHour10,
@@ -46,7 +46,11 @@ function TourDetail() {
 
   const [numberTicketAdult, setNumberTicketAdult] = useState(1);
   const [numberTicketChild, setNumberTicketChild] = useState(0);
-
+  console.log(
+    "commentTour?.review?.averageNumberOfStars",
+    commentTour?.review?.numberReview5Star /
+      commentTour?.review?.totalNumberReView
+  );
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
       return <IconBus />;
@@ -85,9 +89,9 @@ function TourDetail() {
   const getCommentTourById = async () => {
     try {
       const res = await CommentService.review(`ID_Tour=${id}`);
-      console.log("resComment", res);
+
       if (res && res.data.EC === 0) {
-        setCommentTour(res.data.DT);
+        setCommentTour(res.data.DT[0]);
       }
     } catch (error) {
       console.log("error", error);
@@ -170,34 +174,86 @@ function TourDetail() {
                 </div>
               </div>
             </div>
-            <div className={cx("border border-dangder", "review")}>
+            {/* REVIEW */}
+            <div className={cx("review")}>
               <div className={cx("row")}>
-                <div className={cx("col-lg-4")}>
-                  <div>4.8</div>
-                  <div>
-                    <Rate defaultValue={5} />
+                <div className={cx("col-lg-6")}>
+                  <div className={cx("item1")}>
+                    <div className={cx("view")}>
+                      <div className={cx("item")}>
+                        {commentTour?.review?.averageNumberOfStars || 0}
+                      </div>
+                      <div className={cx("item")}>
+                        <Rate
+                          value={+commentTour?.review?.averageNumberOfStars}
+                          allowHalf
+                        />
+                      </div>
+                      <div className={cx("item")}>
+                        {commentTour?.review?.totalNumberReView} lượt đánh giá
+                      </div>
+                    </div>
                   </div>
-                  <div>27 review</div>
                 </div>
-                <div className={cx("col-lg-8")}>
-                  <div>
-                    <Progress percent={50} status="active" />
-                  </div>
-                  <div>
-                    <Progress percent={50} status="active" />
-                  </div>
-                  <div>
-                    <Progress percent={50} status="active" />
-                  </div>
-                  <div>
-                    <Progress percent={50} status="active" />
-                  </div>
-                  <div>
-                    <Progress percent={50} status="active" />
+
+                <div className={cx("col-lg-6")}>
+                  <div className={cx("item2")}>
+                    <div>
+                      <Progress
+                        percent={
+                          (commentTour?.review?.numberReview5Star /
+                            commentTour?.review?.totalNumberReView) *
+                          100
+                        }
+                        status="active"
+                      />
+                    </div>
+                    <div>
+                      <Progress
+                        percent={
+                          (commentTour?.review?.numberReview4Star /
+                            commentTour?.review?.totalNumberReView) *
+                          100
+                        }
+                        status="active"
+                      />
+                    </div>
+                    <div>
+                      <Progress
+                        percent={
+                          (commentTour?.review?.numberReview3Star /
+                            commentTour?.review?.totalNumberReView) *
+                          100
+                        }
+                        status="active"
+                      />
+                    </div>
+                    <div>
+                      <Progress
+                        percent={
+                          (commentTour?.review?.numberReview2Star /
+                            commentTour?.review?.totalNumberReView) *
+                          100
+                        }
+                        status="active"
+                      />
+                    </div>
+                    <div>
+                      <Progress
+                        percent={
+                          (commentTour?.review?.numberReview1Star /
+                            commentTour?.review?.totalNumberReView) *
+                          100
+                        }
+                        status="active"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            {/* LIST COMMMENT */}
+            <div className={cx("comments")}></div>
           </div>
 
           {/* CALENDAR */}
