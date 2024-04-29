@@ -67,7 +67,9 @@ import RevenueCancelBooking from "./pages/ADMIN/Manager_Revenue/RevenueCancelBoo
 
 // == NOTIFICATION ==
 import Notification from "./pages/USER/Notification";
- 
+
+// == REVIEW ==
+import ReviewList from "./pages/ADMIN/Manager_Review/List_Review";
 
 // import moment from "moment";
 // import "moment/dist/locale/vi";
@@ -296,6 +298,12 @@ function App() {
         {
           path: "managerRevenue/cancel",
           element: <RevenueCancelBooking />,
+        },
+        // REVIEW
+
+        {
+          path: "managerReview/list",
+          element: <ReviewList />,
         },
       ],
     },

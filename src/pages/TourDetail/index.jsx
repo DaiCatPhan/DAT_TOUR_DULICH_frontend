@@ -35,7 +35,7 @@ function TourDetail() {
   const [activeCalendar, setActiveCalendar] = useState({});
 
   const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
-
+  console.log("commentTour", commentTour);
   const handleModalBookingTour = () => {
     if (!isAuthenticated) {
       toast.error("Vui lòng đăng nhập để đặt tour");
@@ -46,11 +46,7 @@ function TourDetail() {
 
   const [numberTicketAdult, setNumberTicketAdult] = useState(1);
   const [numberTicketChild, setNumberTicketChild] = useState(0);
-  console.log(
-    "commentTour?.review?.averageNumberOfStars",
-    commentTour?.review?.numberReview5Star /
-      commentTour?.review?.totalNumberReView
-  );
+
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
       return <IconBus />;
@@ -198,7 +194,8 @@ function TourDetail() {
 
                 <div className={cx("col-lg-6")}>
                   <div className={cx("item2")}>
-                    <div>
+                    <div className={cx("d-flex")}>
+                      <div className={cx("mx-1")}>5</div>
                       <Progress
                         percent={
                           (commentTour?.review?.numberReview5Star /
@@ -209,51 +206,92 @@ function TourDetail() {
                       />
                     </div>
                     <div>
-                      <Progress
-                        percent={
-                          (commentTour?.review?.numberReview4Star /
-                            commentTour?.review?.totalNumberReView) *
-                          100
-                        }
-                        status="active"
-                      />
+                      <div className={cx("d-flex")}>
+                        <div className={cx("mx-1")}>4</div>
+                        <Progress
+                          percent={
+                            (commentTour?.review?.numberReview4Star /
+                              commentTour?.review?.totalNumberReView) *
+                            100
+                          }
+                          status="active"
+                        />
+                      </div>
                     </div>
+
                     <div>
-                      <Progress
-                        percent={
-                          (commentTour?.review?.numberReview3Star /
-                            commentTour?.review?.totalNumberReView) *
-                          100
-                        }
-                        status="active"
-                      />
+                      <div className={cx("d-flex")}>
+                        <div className={cx("mx-1")}>3</div>
+                        <Progress
+                          percent={
+                            (commentTour?.review?.numberReview3Star /
+                              commentTour?.review?.totalNumberReView) *
+                            100
+                          }
+                          status="active"
+                        />
+                      </div>
                     </div>
+
                     <div>
-                      <Progress
-                        percent={
-                          (commentTour?.review?.numberReview2Star /
-                            commentTour?.review?.totalNumberReView) *
-                          100
-                        }
-                        status="active"
-                      />
+                      <div className={cx("d-flex")}>
+                        <div className={cx("mx-1")}>2</div>
+                        <Progress
+                          percent={
+                            (commentTour?.review?.numberReview2Star /
+                              commentTour?.review?.totalNumberReView) *
+                            100
+                          }
+                          status="active"
+                        />
+                      </div>
                     </div>
+
                     <div>
-                      <Progress
-                        percent={
-                          (commentTour?.review?.numberReview1Star /
-                            commentTour?.review?.totalNumberReView) *
-                          100
-                        }
-                        status="active"
-                      />
+                      <div className={cx("d-flex")}>
+                        <div className={cx("mx-1")}>1</div>
+                        <Progress
+                          percent={
+                            (commentTour?.review?.numberReview1Star /
+                              commentTour?.review?.totalNumberReView) *
+                            100
+                          }
+                          status="active"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             {/* LIST COMMMENT */}
-            <div className={cx("comments")}></div>
+            <div className={cx("comments")}>
+              <div>
+                {commentTour?.commentTour?.map((item) => {
+                  return (
+                    <div className={cx("cardComment")} key={item.id}>
+                      <div>
+                        <div className={cx("name")}>
+                          {item?.Customer?.username}
+                        </div>
+                        <div className={cx("d-flex")}>
+                          <div className={cx("number")}>{item?.star}</div>
+                          <div>
+                            <Rate
+                              allowHalf
+                              disabled
+                              value={item?.star}
+                              className={cx("star")}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className={cx("content")}>{item?.content}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           {/* CALENDAR */}

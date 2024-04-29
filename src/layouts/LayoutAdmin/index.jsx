@@ -9,6 +9,7 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { IconMessage } from "@tabler/icons-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -75,8 +76,19 @@ const items = [
   ]),
 
   getItem("Quản lí tin nhắn", "sub9", <TeamOutlined />, [
-    getItem(<Link to="/admin/managerMessage/messages">Messager</Link>, "8"),
+    getItem(
+      <Link to="/admin/managerMessage/messages">Messager</Link>,
+      "sub9-1"
+    ),
   ]),
+
+  getItem("Quản lí đánh giá", "sub11", <TeamOutlined />, [
+    getItem(
+      <Link to="/admin/managerReview/list">Quản lí Đánh giá</Link>, 
+      "sub11-1"
+    ),
+  ]),
+
   getItem("Thống kê", "sub10", <TeamOutlined />, [
     getItem(
       <Link to="/admin/managerRevenue/tour">Doanh thu tour</Link>,
@@ -109,7 +121,7 @@ function LayoutAdmin() {
       dispatch(doLogoutAction());
       toast.success("Đăng xuất thành công");
       localStorage.setItem("room", "");
-      localStorage.setItem("ID_User", "");
+      localStorage.setItem("ID_User", ""); 
       navigate("/");
     } else {
       toast.error(res.data.EM);

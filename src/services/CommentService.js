@@ -4,10 +4,6 @@ const createComment = (data) => {
   return axios.post("/api/v1/comment/create", data);
 };
 
-const readAll_CMB_Log = (data) => {
-  return axios.get(`/api/v1/comment/readAll_CMB_Log?${data}`);
-};
-
 const updateComment = (data) => {
   return axios.put("/api/v1/comment/update", data);
 };
@@ -22,9 +18,13 @@ const review = (data) => {
   return axios.get(`/api/v1/comment/review?${data}`);
 };
 
+const readAll = (data) => {
+  return axios.get(`/api/v1/comment/readAll?${data}`);
+};
+
 export default {
   createComment,
-  readAll_CMB_Log,
+  readAll,
   updateComment,
   deleteComment,
   review,

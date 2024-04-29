@@ -18,16 +18,7 @@ https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox/FMfcgzGxSlNLJcfLPNTnwlwxcKPq
 Terminal ID / Mã Website (vnp_TmnCode): DEZQRKO8
 Secret Key / Chuỗi bí mật tạo checksum (vnp_HashSecret): GCIHBDTRIXCSJROJOBWAUTZXGTCADNPP
 Url thanh toán môi trường TEST (vnp_Url): https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
-Số thẻ         : 	9704198526191432198
-Tên chủ thẻ    :	NGUYEN VAN A
-Ngày phát hành :    07/15
-Mật khẩu OTP   :    123456  
-
-Anacarinho
-Manu65422637
-semsiri
-jkgljll
-dtekslove
-aliazhar3
-lud94
-saleh77879
+Số thẻ : 9704198526191432198
+Tên chủ thẻ : NGUYEN VAN A
+Ngày phát hành : 07/15
+Mật khẩu OTP : 123456
