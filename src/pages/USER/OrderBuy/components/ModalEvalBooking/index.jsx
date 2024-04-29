@@ -31,8 +31,12 @@ function ModalEvalBooking(props) {
   };
 
   const handleOk = async () => {
-    if (!star && !textAreaValue) {
-      toast.warning("Nhập thiếu dữ liệu !!!");
+    if (!textAreaValue) {
+      toast.warning("Vui lòng điện nội dung đánh giá !!!");
+      return;
+    }
+    if (!star) {
+      toast.warning("Vui lòng đánh sao chất lượng sao  !!!");
       return;
     }
     const data = {
@@ -59,7 +63,6 @@ function ModalEvalBooking(props) {
   return (
     <div className={cx("wrapper")}>
       <Modal
-        title="Title"
         open={isShowModalEvalBooking}
         onOk={handleOk}
         confirmLoading={confirmLoading}

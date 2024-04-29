@@ -222,18 +222,6 @@ function OrderBuy() {
       key: "",
       label: "TẤT CẢ",
     },
-    // {
-    //   key: "status=CHỜ XÁC NHẬN",
-    //   label: "CHỜ XÁC NHẬN",
-    // },
-    // {
-    //   key: "status=ĐÃ DUYỆT",
-    //   label: "ĐÃ DUYỆT",
-    // },
-    // {
-    //   key: "status=CHỜ HỦY",
-    //   label: "CHỜ  HỦY",
-    // },
     {
       key: "status=ĐÃ HỦY",
       label: "ĐÃ HỦY",
@@ -271,25 +259,18 @@ function OrderBuy() {
   //============ CHECK XEM ẨN HIỆN NÚT ĐÁNH GIÁ TOUR  =================
 
   function isAfterFinish(dateInput) {
-    // Ngày hiện tại
     const currentDate = new Date();
-
-    // Sao chép ngày được đưa vào để không ảnh hưởng đến giá trị gốc
     const inputDate = new Date(dateInput);
-
-    // Thêm 3 ngày vào ngày được đưa vào
-    inputDate.setDate(inputDate.getDate() + 3);
-
-    // So sánh ngày hiện tại với ngày sau khi thêm 3 ngày
     return currentDate > inputDate;
   }
 
   function EvaluateButton(data) {
-    const showCancelButton = isAfterFinish(data?.Calendar?.endDay);
+    const showCancelButton = true;
+    // const showCancelButton = isAfterFinish(data?.Calendar?.endDay);
 
     return (
       <div>
-        {showCancelButton && data.status != "CHỜ HỦY" ? (
+        {showCancelButton && data.status != "ĐÃ HỦY" ? (
           <button
             className={cx("btn_eval")}
             onClick={() => handleModalEvalBooking(data)}

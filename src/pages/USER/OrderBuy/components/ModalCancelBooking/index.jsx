@@ -24,15 +24,19 @@ function ModalCancelBooking(props) {
   const [textAreaValue, setTextAreaValue] = useState("");
 
   const handleOk = async () => {
+    if (!textAreaValue) {
+      toast.warning("Vui lòng điền lí do hủy tour !!!");
+      return;
+    }
     const data = {
-      id: dataModalCancelBooking.id, 
+      id: dataModalCancelBooking.id,
       status: "ĐÃ HỦY",
       cancel_booking: "1",
       date_cancel_booking: new Date(),
       reason_cancel_booking: textAreaValue,
     };
 
-    const res = await BookingService.update(data); 
+    const res = await BookingService.createCancelBooking(data);
     if (res && res.data.EC == 0) {
       toast.success("Hủy tour thành công");
       handleCancel();

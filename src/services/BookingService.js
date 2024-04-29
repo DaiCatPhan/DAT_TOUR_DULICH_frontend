@@ -8,6 +8,10 @@ const update = (data) => {
   return axios.put(`/api/v1/booking/update`, data);
 };
 
+const createCancelBooking = (data) => {
+  return axios.put(`/api/v1/booking/createCancelBooking`, data);
+};
+
 const updatePaid = (data) => {
   return axios.put(`/api/v1/booking/updatePaid`, data);
 };
@@ -49,4 +53,5 @@ export default {
   updatePaid,
   getListTourFail,
   cancelCalendarandNotificationBooking,
+  createCancelBooking,
 };

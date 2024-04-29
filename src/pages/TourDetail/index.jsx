@@ -10,9 +10,10 @@ import { InputNumber } from "antd";
 import { useEffect, useMemo, useState } from "react";
 
 import TourService from "../../services/TourService";
+import CommentService from "../../services/CommentService.js";
 import functions from "../../components/Functions/function.js";
 
-import ModalBookingTour from "./components/ModalBookingTour/index.jsx";
+import ModalBookingTour from "./components/ModalBookingTour/index.jsx"; 
 
 import {
   IconClockHour10,
@@ -20,12 +21,15 @@ import {
   IconZeppelin,
   IconShip,
 } from "@tabler/icons-react";
+import { Rate } from "antd";
+import { Progress } from "antd";
 import { useSelector } from "react-redux";
 
 function TourDetail() {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const [tourDetail, setTourDetail] = useState({});
   const [calendarTour, setCalendarTour] = useState([]);
+  const [commentTour, setCommentTour] = useState([]);
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
   const [activeCalendar, setActiveCalendar] = useState({});
@@ -77,8 +81,22 @@ function TourDetail() {
     }
   };
 
+  // Gọi API lấy dữ liệu
+  const getCommentTourById = async () => {
+    try {
+      const res = await CommentService.review(`ID_Tour=${id}`);
+      console.log("resComment", res);
+      if (res && res.data.EC === 0) {
+        setCommentTour(res.data.DT);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   useEffect(() => {
     getTourById();
+    getCommentTourById();
   }, [id]);
 
   const handlActiveBorderCalendar = (item) => {
@@ -149,6 +167,34 @@ function TourDetail() {
                       className={cx("desTour")}
                     ></div>
                   )}
+                </div>
+              </div>
+            </div>
+            <div className={cx("border border-dangder", "review")}>
+              <div className={cx("row")}>
+                <div className={cx("col-lg-4")}>
+                  <div>4.8</div>
+                  <div>
+                    <Rate defaultValue={5} />
+                  </div>
+                  <div>27 review</div>
+                </div>
+                <div className={cx("col-lg-8")}>
+                  <div>
+                    <Progress percent={50} status="active" />
+                  </div>
+                  <div>
+                    <Progress percent={50} status="active" />
+                  </div>
+                  <div>
+                    <Progress percent={50} status="active" />
+                  </div>
+                  <div>
+                    <Progress percent={50} status="active" />
+                  </div>
+                  <div>
+                    <Progress percent={50} status="active" />
+                  </div>
                 </div>
               </div>
             </div>

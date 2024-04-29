@@ -55,7 +55,7 @@ function Messages() {
       ID_User: data.userOne,
     });
 
-    console.log("res", res);
+    getListUserComment();
   };
 
   const sendMessage = async () => {
@@ -83,7 +83,7 @@ function Messages() {
 
   useEffect(() => {
     socket.on("receive_message", async (data) => {
-      console.log("data backend nhan >>> ", data);
+      console.log("data", data);
 
       const res = await MessageService.listRoomOfUser(
         `userOne=${data?.ID_User}`
@@ -93,6 +93,10 @@ function Messages() {
       }
 
       setTest(data.text);
+    });
+
+    socket.on("fetch", async () => {
+      getListUserComment();
     });
   }, [socket]);
 

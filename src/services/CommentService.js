@@ -18,9 +18,14 @@ const deleteComment = (data) => {
   });
 };
 
+const review = (data) => {
+  return axios.get(`/api/v1/comment/review?${data}`);
+};
+
 export default {
   createComment,
   readAll_CMB_Log,
   updateComment,
   deleteComment,
+  review,
 };
