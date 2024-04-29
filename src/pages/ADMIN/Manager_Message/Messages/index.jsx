@@ -72,6 +72,13 @@ function Messages() {
     });
     if (res && res.data.EC === 0) {
       getListRoomOfUser(res.data.DT.exitRoom.userOne);
+
+      await MessageService.update({
+        ID_Room: room,
+        ID_User: res.data.DT.exitRoom.userOne,
+      });
+
+      getListUserComment();
     }
     socket.emit("send_message", { text, room: room, ID_User: ID_User });
     setText("");
