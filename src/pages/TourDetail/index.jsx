@@ -84,10 +84,10 @@ function TourDetail() {
   // Gọi API lấy dữ liệu
   const getCommentTourById = async () => {
     try {
-      const res = await CommentService.review(`ID_Tour=${id}`);
+      const res = await CommentService.review(`ID_Tour=${id}&show=1`);
 
       if (res && res.data.EC === 0) {
-        setCommentTour(res.data.DT[0]);
+        setCommentTour(res.data.DT[0]); 
       }
     } catch (error) {
       console.log("error", error);

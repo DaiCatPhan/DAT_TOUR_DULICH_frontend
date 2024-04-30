@@ -9,11 +9,22 @@ import moment from "moment";
 import { IconEdit } from "@tabler/icons-react";
 import CommentService from "../../../../services/CommentService";
 
+import ModalUpdateReview from "../components/ModalUpdateReview";
+
 function List_Review() {
   const [listAllComment, setListAllComment] = useState([]);
 
+  const [isShowModalUpdateReview, setIsShowModalUpdateReview] = useState(false);
+  const [dataModalUpdateReview, setDataModalUpdateReview] = useState({});
+  const handleModalUpdateReview = (data) => {
+    setIsShowModalUpdateReview(true);
+    setDataModalUpdateReview(data);
+  };
+
   const getListAllComment = async () => {
-    const res = await CommentService.readAll();
+    let condition = "sortcreatedAt=true&sortOrder=DESC";
+
+    const res = await CommentService.readAll(condition);
     if (res && res.data.EC == 0) {
       setListAllComment(res.data.DT);
     }
@@ -33,8 +44,10 @@ function List_Review() {
   const onFinishSearchComment = async (values) => {
     const { star, nameTour, createdAt } = values;
 
-    console.log("values", moment(createdAt?.$d).format("YYYY-MM-DD"));
-    const createdAtCus = moment(createdAt?.$d).format("YYYY-MM-DD");
+    let createdAtCus = "";
+    if (createdAt) {
+      createdAtCus = moment(createdAt?.$d).format("YYYY-MM-DD");
+    }
 
     const res = await CommentService.readAll(
       `star=${star || ""}&nameTour=${nameTour || ""}&createdAt=${
@@ -113,7 +126,11 @@ function List_Review() {
       render: (data) => {
         return (
           <div>
-            <IconEdit color="orange" />
+            <IconEdit
+              className={cx("poiter")}
+              color="orange"
+              onClick={() => handleModalUpdateReview(data)}
+            />
           </div>
         );
       },
@@ -154,7 +171,7 @@ function List_Review() {
 
                 <div className={cx("w-100")}>
                   <Form.Item label="Chọn ngày" name="createdAt">
-                    <DatePicker className={cx("w-100")} />
+                    <DatePicker className={cx("w-100")} format={"DD-MM-YYYY"} />
                   </Form.Item>
                 </div>
                 <div className={cx("mx-2")}></div>
@@ -179,6 +196,14 @@ function List_Review() {
             <Table dataSource={listAllComment} columns={columns} bordered />
           </div>
         </div>
+
+        <ModalUpdateReview
+          isShowModalUpdateReview={isShowModalUpdateReview}
+          setIsShowModalUpdateReview={setIsShowModalUpdateReview}
+          dataModalUpdateReview={dataModalUpdateReview}
+          setDataModalUpdateReview={setDataModalUpdateReview}
+          getListAllComment={getListAllComment}
+        />
       </div>
     </div>
   );
