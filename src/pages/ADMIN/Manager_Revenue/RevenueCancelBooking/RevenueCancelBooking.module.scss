@@ -1,3 +1,21 @@
 .chartLine {
   max-height: 480px;
 }
+
+.border_aab4bd {
+  border: 1px solid #86898b;
+}
+
+.titleHeader {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+
+  .title {
+    font-weight: 600;
+  }
+
+  .item2 {
+    margin-left: 50px;
+  }
+}

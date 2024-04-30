@@ -1,0 +1,23 @@
+.border_blue {
+  border: 1px solid gray;
+}
+.title {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  padding: 8px;
+
+  .text {
+    color: black;
+    font-weight: 500;
+  }
+
+  .icon {
+    margin: 0 20px;
+    color: gray;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}

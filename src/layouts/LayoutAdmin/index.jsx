@@ -9,7 +9,18 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { IconMessage } from "@tabler/icons-react";
+import {
+  IconMessage,
+  IconHome2,
+  IconBrandGoogleAnalytics,
+  IconCategory,
+  IconCurrencyDollar,
+  IconCamera,
+  IconUser,
+  IconGiftCard,
+  IconTextPlus,
+  IconDashboard,
+} from "@tabler/icons-react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -32,23 +43,27 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem(<Link to="/admin">Trang chủ</Link>, "sub1", <PieChartOutlined />),
+  getItem(
+    <Link to="/admin">Trang chủ</Link>,
+    "sub1",
+    <IconHome2 style={{ color: "#666" , width: '20' }} />
+  ),
   getItem(
     <Link to="/admin/dashboard">Tổng quan</Link>,
     "sub2",
-    <DesktopOutlined />
+    <IconDashboard style={{ color: "#666" , width: '20' }} />
   ),
-  getItem("Doanh mục", "sub3", <UserOutlined />, [
+  getItem("Doanh mục", "sub3", <IconCategory style={{ color: "#666" , width: '20' }}  />, [
     getItem(<Link to="/admin/managerCatogory/list">Danh sách</Link>, "sub3-1"),
   ]),
-  getItem("Khách hàng", "sub4", <UserOutlined />, [
+  getItem("Khách hàng", "sub4", <IconUser style={{ color: "#666" , width: '20' }} />, [
     getItem(<Link to="/admin/managerCus/list">Danh sách</Link>, "sub4-1"),
   ]),
-  getItem("Quản lí Tour", "sub5", <TeamOutlined />, [
+  getItem("Quản lí Tour", "sub5", <IconCamera style={{ color: "#666" , width: '20' }} />, [
     getItem(<Link to="/admin/managerTour/list">Danh sách tour</Link>, "sub5-1"),
     getItem(<Link to="/admin/managerTour/create">Tạo tour mới</Link>, "sub5-2"),
   ]),
-  getItem("Quản lí Đặt Tour", "sub6", <TeamOutlined />, [
+  getItem("Quản lí Đặt Tour", "sub6", <IconCurrencyDollar style={{ color: "#666" , width: '20' }} />, [
     getItem(
       <Link to="/admin/managerBookingTour/list_update">
         Danh sách đặt tour
@@ -61,35 +76,35 @@ const items = [
     ),
   ]),
 
-  getItem("Quản lí bài đăng", "sub7", <TeamOutlined />, [
-    getItem(
-      <Link to="/admin/managerBlog/list">Danh sách bài đăng</Link>,
-      "sub7-1"
-    ),
-  ]),
+  // getItem("Quản lí bài đăng", "sub7", <TeamOutlined />, [
+  //   getItem(
+  //     <Link to="/admin/managerBlog/list">Danh sách bài đăng</Link>,
+  //     "sub7-1"
+  //   ),
+  // ]),
 
-  getItem("Quản lí voucher", "sub8", <TeamOutlined />, [
+  getItem("Quản lí voucher", "sub8", <IconGiftCard style={{ color: "#666" , width: '20' }} />, [
     getItem(
       <Link to="/admin/managerVoucher/listVoucher">DS voucher</Link>,
       "sub8-1"
     ),
   ]),
 
-  getItem("Quản lí tin nhắn", "sub9", <TeamOutlined />, [
+  getItem("Quản lí tin nhắn", "sub9", <IconMessage style={{ color: "#666" , width: '20' }} />, [
     getItem(
       <Link to="/admin/managerMessage/messages">Messager</Link>,
       "sub9-1"
     ),
   ]),
 
-  getItem("Quản lí đánh giá", "sub11", <TeamOutlined />, [
+  getItem("Quản lí đánh giá", "sub11", <IconTextPlus style={{ color: "#666" , width: '20' }} />, [
     getItem(
-      <Link to="/admin/managerReview/list">Quản lí Đánh giá</Link>, 
+      <Link to="/admin/managerReview/list">Quản lí Đánh giá</Link>,
       "sub11-1"
     ),
   ]),
 
-  getItem("Thống kê", "sub10", <TeamOutlined />, [
+  getItem("Thống kê", "sub10", <IconBrandGoogleAnalytics style={{ color: "#666" , width: '20' }} />, [
     getItem(
       <Link to="/admin/managerRevenue/tour">Doanh thu tour</Link>,
       "sub10-1"
@@ -121,7 +136,7 @@ function LayoutAdmin() {
       dispatch(doLogoutAction());
       toast.success("Đăng xuất thành công");
       localStorage.setItem("room", "");
-      localStorage.setItem("ID_User", ""); 
+      localStorage.setItem("ID_User", "");
       navigate("/");
     } else {
       toast.error(res.data.EM);
@@ -154,26 +169,23 @@ function LayoutAdmin() {
           minHeight: "100vh",
         }}
       >
-        <Sider
+        {/* <Sider
+          className={cx("bg-white border border-black")}
           collapsible
           collapsed={collapsed}
           onCollapse={(value) => setCollapsed(value)}
         >
           <div className="demo-logo-vertical" />
-          <Menu
-            theme="dark"
-            defaultSelectedKeys={["1"]}
-            mode="inline"
-            items={items}
-          />
-        </Sider>
+          <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
+        </Sider> */}
 
-        <Layout>
+        {/* <Layout>
           <Header
             style={{
               padding: 0,
               background: colorBgContainer,
               border: "1px solid black",
+              width: '100%',
             }}
           >
             <div className={cx("mx-5")}>
@@ -212,14 +224,65 @@ function LayoutAdmin() {
               <Outlet />
             </div>
           </Content>
+        </Layout> */}
 
-          {/* <Footer
-            style={{
-              textAlign: "center",
-            }}
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+            border: "1px solid black",
+            width: "100%",
+          }}
+        >
+          <div className={cx("mx-5")}>
+            <div className={cx("d-flex justify-content-between")}>
+              <div>
+                <b>DU LỊCH MỌI NƠI</b>
+              </div>
+              <div>
+                <Dropdown
+                  menu={{
+                    items: itemsDropdown,
+                  }}
+                  trigger={["click"]}
+                >
+                  <a onClick={(e) => e.preventDefault()}>
+                    <Space>
+                      ADMIN
+                      <DownOutlined />
+                    </Space>
+                  </a>
+                </Dropdown>
+              </div>
+            </div>
+          </div>
+        </Header>
+
+        <Layout>
+          <Sider
+            className={cx("bg-white border border-black")}
+            collapsible
+            collapsed={collapsed}
+            onCollapse={(value) => setCollapsed(value)}
           >
-            DU LỊCH MỌI NƠI
-          </Footer> */}
+            <div className="demo-logo-vertical" />
+            <Menu defaultSelectedKeys={["1"]} mode="inline" items={items} />
+          </Sider>
+
+          <Layout>
+            <Content>
+              <div
+                style={{
+                  padding: 10,
+                  minHeight: 500,
+                  background: colorBgContainer,
+                  borderRadius: borderRadiusLG,
+                }}
+              >
+                <Outlet />
+              </div>
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
     </div>

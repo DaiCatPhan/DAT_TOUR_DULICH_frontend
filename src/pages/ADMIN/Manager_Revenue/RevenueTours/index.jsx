@@ -119,65 +119,69 @@ function RevenueTours() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("border")}>
-        <div className={cx("border p-2")}>
+      <div className={cx("border_black")}>
+        <div className={cx("border_bt_black", "p-2")}>
           <b>Tổng doanh thu</b>
         </div>
-        <div className={cx("d-flex justify-content-between")}>
-          <div>
-            <Tabs
-              defaultActiveKey="1"
-              items={itemsTab}
-              onChange={onChangeTab}
-            />
+
+        <div className={cx("frameContent")}>
+          <div className={cx("d-flex justify-content-between")}>
+            <div>
+              <Tabs
+                defaultActiveKey="1"
+                items={itemsTab}
+                onChange={onChangeTab}
+              />
+            </div>
+
+            <div className={cx("d-flex align-items-center")}>
+              <div className={cx("mx-2")}>Chọn năm</div>
+              <Select
+                defaultValue="2024"
+                style={{ width: 120 }}
+                onChange={handleChangeSelectYearofMonth}
+                options={[
+                  { value: "year=2024", label: "2024" },
+                  { value: "year=2023", label: "2023" },
+                  { value: "year=2022", label: "2022" },
+                  { value: "year=2021", label: "2021" },
+                  { value: "year=2020", label: "2020" },
+                ]}
+              />
+            </div>
           </div>
-          <div className={cx("d-flex align-items-center")}>
-            <div className={cx("mx-2")}>Chọn năm</div>
-            <Select
-              defaultValue="2024"
-              style={{ width: 120 }}
-              onChange={handleChangeSelectYearofMonth}
-              options={[
-                { value: "year=2024", label: "2024" },
-                { value: "year=2023", label: "2023" },
-                { value: "year=2022", label: "2022" },
-                { value: "year=2021", label: "2021" },
-                { value: "year=2020", label: "2020" },
-              ]}
-            />
-          </div>
+
+          <Tabs items={itemsTypeChartTab} onChange={onChangeTypeChartTab} />
+
+          {tab === "Tháng" ? (
+            <div className={cx("px-5")}>
+              <div>
+                <b>{titleMonth}</b>
+              </div>
+
+              <div className={cx("p-5")}>
+                {typeChartTab === "Biểu đồ cột" ? (
+                  <Bar data={dataBarChartMonth} />
+                ) : (
+                  <Line data={dataBarChartMonth} />
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={cx("px-5")}>
+              <div>
+                <b>{titleYear}</b>
+              </div>
+              <div className={cx("p-5")}>
+                {typeChartTab === "Biểu đồ cột" ? (
+                  <Bar data={dataBarChartYear} />
+                ) : (
+                  <Line data={dataBarChartYear} />
+                )}
+              </div>
+            </div>
+          )}
         </div>
-
-        <Tabs items={itemsTypeChartTab} onChange={onChangeTypeChartTab} />
-
-        {tab === "Tháng" ? (
-          <div className={cx("px-5")}>
-            <div>
-              <b>{titleMonth}</b>
-            </div>
-
-            <div className={cx("p-5")}>
-              {typeChartTab === "Biểu đồ cột" ? (
-                <Bar data={dataBarChartMonth} />
-              ) : (
-                <Line data={dataBarChartMonth} />
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className={cx("px-5")}>
-            <div>
-              <b>{titleYear}</b>
-            </div>
-            <div className={cx("p-5")}>
-              {typeChartTab === "Biểu đồ cột" ? (
-                <Bar data={dataBarChartYear} />
-              ) : (
-                <Line data={dataBarChartYear} />
-              )}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -8,20 +8,29 @@
     display: flex;
     align-items: center;
     font-weight: 400;
-
-  }
-  .item.active {
-    // background-color: rgb(196, 196, 233);
+    min-height: 61px;
     border: 1px solid #003c71;
-    color: #003c71;
     font-weight: 500;
   }
-
-  .title {
-    color: #003c71;
+  .item.active {
+    background-color: #003c71;
+    border: 1px solid #003c71;
+    color: white;
+    font-weight: 500;
   }
+}
+
+.title {
+  color: #003c71;
+  border-bottom: 1px solid #26bed6;
+  padding: 5px;
+  text-align: center;
 }
 
 .color_26bed6 {
   color: #26bed6;
+}
+
+.border_26bed6 {
+  border: 1px solid #26bed6;
 }

@@ -41,6 +41,10 @@ function RevenueCancelBooking() {
       key: "Thống kê biểu đồ",
       label: "Thống kê biểu đồ",
     },
+    {
+      key: "",
+      label: "",
+    },
   ];
 
   const today = new Date();
@@ -88,6 +92,20 @@ function RevenueCancelBooking() {
       key: "tour",
       render: (data) => {
         return <div>{data?.Calendar?.Tour?.name}</div>;
+      },
+    },
+    {
+      title: "Lịch",
+      dataIndex: "",
+      key: "",
+      render: (data) => {
+        return (
+          <div className={cx('d-flex')}>
+            <div>{moment(data?.Calendar?.startDay).format("DD-MM-YYYY")}</div>
+            <div className={cx('mx-2')}>/</div>
+            <div>{moment(data?.Calendar?.startDay).format("DD-MM-YYYY")}</div>
+          </div>
+        );
       },
     },
     {
@@ -205,84 +223,89 @@ function RevenueCancelBooking() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("border d-flex   align-items-center  ")}>
-        <div>THỐNG KÊ SỐ ĐƠN HỦY TOUR</div>
-        <div className={cx("mx-5")}>
-          <Tabs
-            defaultActiveKey="Thống kê số liệu"
-            items={itemsTab}
-            onChange={onChangeTab}
-          />
+      <div className={cx("border_aab4bd")}>
+        <div className={cx("titleHeader")}>
+          <div className={cx("title")}>THỐNG KÊ SỐ ĐƠN HỦY TOUR</div>
+          <div className={cx("item2")}>
+            <Tabs
+              defaultActiveKey="Thống kê số liệu"
+              items={itemsTab}
+              onChange={onChangeTab}
+            />
+          </div>
         </div>
-      </div>
 
-      {tab === "Thống kê số liệu" ? (
-        <div className={cx("border  ")}>
-          <div className={cx("d-flex px-4 py-2")}>
-            <div>
+        {tab === "Thống kê số liệu" ? (
+          <div className={cx("border  ")}>
+            <div className={cx("d-flex px-4 py-2")}>
+              <div>
+                <Select
+                  defaultValue="Ngày"
+                  style={{
+                    width: 120,
+                  }}
+                  onChange={handleChangeSelect}
+                  options={optionSelect}
+                />
+              </div>
+              <div className={cx("mx-5")}>{handleShowDatePicker(type)}</div>
+              <div>
+                <Button type="primary" onClick={handleSearch}>
+                  Tìm
+                </Button>
+              </div>
+            </div>
+            <div className={cx("px-4 py-2")}>
+              <b>{title}</b>
+            </div>
+            <div className={cx("p-4")}>
+              <Table bordered dataSource={revenue} columns={columns} />
+            </div>
+          </div>
+        ) : (
+          <div>
+            <div className={cx("d-flex justify-content-end mt-3")}>
               <Select
-                defaultValue="Ngày"
+                defaultValue="2024"
                 style={{
                   width: 120,
                 }}
-                onChange={handleChangeSelect}
-                options={optionSelect}
+                onChange={(value) => {
+                  setYear(value);
+                }}
+                options={[
+                  {
+                    label: "2024",
+                    value: "2024",
+                  },
+                  {
+                    label: "2023",
+                    value: "2023",
+                  },
+                  {
+                    label: "2022",
+                    value: "2022",
+                  },
+                  {
+                    label: "2021",
+                    value: "2021",
+                  },
+                  {
+                    label: "2020",
+                    value: "2020",
+                  },
+                ]}
               />
             </div>
-            <div className={cx("mx-5")}>{handleShowDatePicker(type)}</div>
-            <div>
-              <Button type="primary" onClick={handleSearch}>
-                Tìm
-              </Button>
+            <div className={cx("px-2")}>
+              <Line
+                className={cx("chartLine")}
+                data={dataBarChartCancelMonth}
+              />
             </div>
           </div>
-          <div className={cx("px-4 py-2")}>
-            <b>{title}</b>
-          </div>
-          <div className={cx("p-4")}>
-            <Table bordered dataSource={revenue} columns={columns} />
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div className={cx("d-flex justify-content-end mt-3")}>
-            <Select
-              defaultValue="2024"
-              style={{
-                width: 120,
-              }}
-              onChange={(value) => {
-                setYear(value);
-              }}
-              options={[
-                {
-                  label: "2024",
-                  value: "2024",
-                },
-                {
-                  label: "2023",
-                  value: "2023",
-                },
-                {
-                  label: "2022",
-                  value: "2022",
-                },
-                {
-                  label: "2021",
-                  value: "2021",
-                },
-                {
-                  label: "2020",
-                  value: "2020",
-                },
-              ]}
-            />
-          </div>
-          <div className={cx("px-2")}>
-            <Line className={cx("chartLine")} data={dataBarChartCancelMonth} />
-          </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <ModalChartTour
         isShowModalChartTour={isShowModalChartTour}

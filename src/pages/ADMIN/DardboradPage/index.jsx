@@ -2,6 +2,12 @@ import className from "classnames/bind";
 import styles from "./DashboardPage.module.scss";
 const cx = className.bind(styles);
 
+import {
+  IconArrowNarrowUp,
+  IconBrandGoogleAnalytics,
+  IconCurrencyDollar,
+} from "@tabler/icons-react";
+
 import RevenueService from "../../../services/RevenueService";
 import { useEffect, useState } from "react";
 
@@ -20,19 +26,80 @@ function DashboardPage() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("row")}>
-        <div className={cx("col-lg-4  ")}>
-          <div className={cx("border border-primary p-5")}>
-            <div>TỔNG SỐ TOUR: {listDate.tour}</div>
+        <div className={cx("col-lg-3")}>
+          <div className={cx("card")}>
+            <div className={cx("item1")}>
+              <IconCurrencyDollar style={{ width: "42", height: "42" }} />
+            </div>
+
+            <div className={cx("item2")}>
+              <div>
+                <div className={cx("item2-1")}>
+                  <div>
+                    <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
+                  </div>
+                  <div>Earnings</div>
+                </div>
+                <div className={cx("item2-2")}>22,520</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className={cx("col-lg-4")}>
-          <div className={cx("border border-warning p-5")}>
-            <div>TỔNG SỐ KHÁCH HÀNG : {listDate.user}</div>
+        <div className={cx("col-lg-3")}>
+          <div className={cx("card")}>
+            <div className={cx("item1")}>
+              <IconCurrencyDollar style={{ width: "42", height: "42" }} />
+            </div>
+
+            <div className={cx("item2")}>
+              <div>
+                <div className={cx("item2-1")}>
+                  <div>
+                    <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
+                  </div>
+                  <div>Earnings</div>
+                </div>
+                <div className={cx("item2-2")}>22,520</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div className={cx("col-lg-4")}>
-          <div className={cx("border border-success p-5")}>
-            <div>TỔNG SỐ ĐƠN HÀNG : {listDate.donHang}</div>
+        <div className={cx("col-lg-3")}>
+          <div className={cx("card")}>
+            <div className={cx("item1")}>
+              <IconCurrencyDollar style={{ width: "42", height: "42" }} />
+            </div>
+
+            <div className={cx("item2")}>
+              <div>
+                <div className={cx("item2-1")}>
+                  <div>
+                    <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
+                  </div>
+                  <div>Earnings</div>
+                </div>
+                <div className={cx("item2-2")}>22,520</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className={cx("col-lg-3")}>
+          <div className={cx("card")}>
+            <div className={cx("item1")}>
+              <IconCurrencyDollar style={{ width: "42", height: "42" }} />
+            </div>
+
+            <div className={cx("item2")}>
+              <div>
+                <div className={cx("item2-1")}>
+                  <div>
+                    <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
+                  </div>
+                  <div>Earnings</div>
+                </div>
+                <div className={cx("item2-2")}>22,520</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

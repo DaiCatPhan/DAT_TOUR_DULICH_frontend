@@ -265,8 +265,7 @@ function OrderBuy() {
   }
 
   function EvaluateButton(data) {
-    const showCancelButton = true;
-    // const showCancelButton = isAfterFinish(data?.Calendar?.endDay);
+    const showCancelButton = isAfterFinish(data?.Calendar?.endDay);
 
     return (
       <div>

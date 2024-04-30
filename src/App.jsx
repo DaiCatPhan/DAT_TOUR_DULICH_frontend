@@ -262,10 +262,10 @@ function App() {
         },
 
         // BLOG
-        {
-          path: "managerBlog/list",
-          element: <ListBlogAdmin />,
-        },
+        // {
+        //   path: "managerBlog/list",
+        //   element: <ListBlogAdmin />,
+        // },
         // BOOKINGTOUR
 
         {
