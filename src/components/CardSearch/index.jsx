@@ -71,10 +71,10 @@ function CardSearch(props) {
               </div>
             </div>
             <div className={cx("col-lg")}>
-              <div className={cx("d-flex",'textItem')}>
+              <div className={cx("d-flex", "textItem")}>
                 <div>Khởi hành:</div>
-                <div className={cx('mx-3')}>
-                  {moment(Calendars[0]?.startDay || 0).format("DD-MM-YYYY")}
+                <div className={cx("mx-3")}>
+                  {moment(Calendars[0]?.startDay).format("DD-MM-YYYY")}
                 </div>
               </div>
 

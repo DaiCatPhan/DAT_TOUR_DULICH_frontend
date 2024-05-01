@@ -19,9 +19,10 @@ import {
 } from "antd";
 import { InputNumber, message } from "antd";
 const { RangePicker } = DatePicker;
-import { IconBackspace, IconChevronsLeft } from "@tabler/icons-react";
+import { IconBackspace, IconChevronsLeft, IconEdit } from "@tabler/icons-react";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { FloatButton } from "antd";
+import { Tabs } from "antd";
 
 import { Link, useParams } from "react-router-dom";
 
@@ -35,7 +36,6 @@ function CalendarPage() {
   const [messageApi, contextHolder] = message.useMessage();
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
   const [infoDetailTour, setInfoDetailTour] = useState({});
-  const [timeDate, setTimeDate] = useState("");
 
   const getTourInformation = async () => {
     if (id) {
@@ -53,6 +53,7 @@ function CalendarPage() {
         setInfoDetailCalendar(cus);
         setInfoDetailTour(res.data.DT);
         formCalendar?.setFieldsValue(res.data.DT);
+        formCalendar?.setFieldsValue({ numberMonth: 1 });
       }
     }
   };
@@ -84,14 +85,35 @@ function CalendarPage() {
     }
   };
 
+  const handleUpdateCalendar = async (data) => {
+    const ID_Calendar = data.id;
+    if (ID_Calendar) {
+      const res = await CalendarService.deleteCalendar({
+        id: ID_Calendar,
+        table: "Calendar",
+      });
+
+      if (res && res.data.EC == 0) {
+        messageApi.open({
+          type: "success",
+          content: "Xóa lịch thành công",
+        });
+        getTourInformation();
+      } else {
+        messageApi.open({
+          type: "error",
+          content: "Lỗi không xóa được !!!",
+        });
+      }
+    }
+  };
+
   const onFinishCalendar = async (values) => {
     const id_tour = id;
 
     if (!id_tour) {
       return toast.warning("Vui lòng tạo tour trước !!!");
     }
-
-    const [fromDay, toDay] = timeDate;
 
     const dataCalendar = {
       ID_Tour: +id_tour,
@@ -100,9 +122,10 @@ function CalendarPage() {
       priceChild: values.priceChild,
       startDay: moment(values.calendar[0].$d).format("YYYY-MM-DD"),
       endDay: moment(values.calendar[1].$d).format("YYYY-MM-DD"),
+      numberMonth: values.numberMonth,
     };
 
-    const res = await CalendarService.createCalendar(dataCalendar);
+    const res = await CalendarService.createCalendarWithMonth(dataCalendar);
 
     if (res && res.data.EC === 0) {
       toast.success("Tạo lịch tour thành công");
@@ -183,13 +206,24 @@ function CalendarPage() {
       key: "Action",
       render: (record) => {
         return (
-          <div>
-            <IconBackspace
-              color="red"
-              width={20}
-              className={cx("poiter")}
-              onClick={() => handleDeleteCalendar(record)}
-            />
+          <div className={cx("d-flex")}>
+            <div>
+              <IconBackspace
+                color="red"
+                width={20}
+                className={cx("poiter")}
+                onClick={() => handleDeleteCalendar(record)}
+              />
+            </div>
+            <div className={cx("mx-2")}></div>
+            <div>
+              <IconEdit
+                color="orange"
+                width={20}
+                className={cx("poiter")}
+                onClick={() => handleUpdateCalendar(record)}
+              />
+            </div>
           </div>
         );
       },
@@ -301,12 +335,22 @@ function CalendarPage() {
                         },
                       ]}
                     >
-                      <RangePicker
-                        format="DD-MM-YYYY"
-                        onChange={(value, valueString) =>
-                          setTimeDate(valueString)
-                        }
-                      />
+                      <RangePicker format="DD-MM-YYYY" />
+                    </Form.Item>
+                  </div>
+
+                  <div className={cx("mx-2")}>
+                    <Form.Item
+                      label="Số tuần"
+                      name="numberMonth"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Vui lòng nhập số chỗ tuần !",
+                        },
+                      ]}
+                    >
+                      <InputNumber className={cx("w-100")} />
                     </Form.Item>
                   </div>
 
