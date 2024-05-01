@@ -28,6 +28,8 @@ function RegisterPage() {
     if (res && res.data.EC === 0) {
       toast.success("Đăng ký tài khoản thành công ");
       navigate("/login");
+    } else {
+      toast.error(res.data.EM);
     }
   };
 
@@ -38,7 +40,7 @@ function RegisterPage() {
           "d-flex justify-content-center align-items-center vh-100  "
         )}
       >
-        <div className={cx("row border bg-white", "frameLogin")}>
+        <div className={cx("row border border-primary bg-white", "frameLogin")}>
           <div className={cx("col-lg-4   p-0 ")}>
             <div className={cx("bgLogin")}></div>
           </div>
@@ -132,7 +134,7 @@ function RegisterPage() {
                     ]}
                   >
                     <Input
-                      prefix={<IconPhone color="grey" />} 
+                      prefix={<IconPhone color="grey" />}
                       placeholder="Số điện thoại"
                     />
                   </Form.Item>

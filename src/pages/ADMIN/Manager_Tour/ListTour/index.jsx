@@ -313,12 +313,12 @@ function ListTour() {
       render: (record) => {
         return (
           <div className={cx("poiter d-flex")}>
-            <IconTrash
+            {/* <IconTrash
               onClick={() => handleModalDeleteTour(record)}
               color="red"
               width={20}
               className={cx("poiter")}
-            />
+            /> */}
             <div className={cx("m-2")}></div>
             <IconPencilMinus
               onClick={() => handleModalUpdateTour(record)}

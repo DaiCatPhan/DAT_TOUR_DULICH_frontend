@@ -16,11 +16,12 @@ import ProcessService from "../../../../services/ProcessService";
 function ModalUPdateProcessTour(props) {
   const {
     isShowModalUpdateProcessTour,
-    setIsShowModalUpdateProcessTour,
+    setIsShowModalUpdateProcessTour, 
     setDataModalUpdateProcessTour,
     dataModalUpdateProcessTour,
     getListTours,
   } = props;
+
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [processTour_TEXT, setProcessTour_TEXT] = useState("");
@@ -67,7 +68,7 @@ function ModalUPdateProcessTour(props) {
   };
   const handleCancel = () => {
     setDataModalUpdateProcessTour({});
-    setIsShowModalUpdateProcessTour(false);  
+    setIsShowModalUpdateProcessTour(false);
     setProcessTour_TEXT("");
     setProcessTour_HTML("");
     setID_ProcessTour(0);

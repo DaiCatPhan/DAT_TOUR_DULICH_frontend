@@ -28,7 +28,7 @@ function Tours() {
   const [toursDuLichTayNguyen, setToursDuLichTayNguyen] = useState([]);
   const [toursViVuCuoiTuan, setToursViVuCuoiTuan] = useState([]);
   const [toursThamHiem, setToursThamHiem] = useState([]);
-  const [toursViewed, setToursViewed] = useState([]);
+  const [toursViewed, setToursViewed] = useState([]); 
   const navigate = useNavigate();
 
   // Gọi API lấy dữ liệu
@@ -96,6 +96,7 @@ function Tours() {
     try {
       const ID_Customer = user?.id;
       const res = await ViewedService.readAll(`ID_Customer=${ID_Customer}`);
+      console.log("getToursViewded", res);
 
       if (res && res.data.EC === 0) {
         setToursViewed(res?.data?.DT);
@@ -115,12 +116,12 @@ function Tours() {
   const handleClickTour = async (data) => {
     // Goi API them vào bảng tour đã xem
     const ID_Tour = data?.id;
-    const ID_Customer = 1;
+    const ID_Customer = user?.id;
     const res = await ViewedService.create({ ID_Tour, ID_Customer });
     if (res && res.data.EC === 0) {
-      navigate(`/tours/${data?.id}`); 
+      navigate(`/tours/${data?.id}`);
     } else {
-      navigate(`/tours/${data?.id}`); 
+      navigate(`/tours/${data?.id}`);
     }
   };
 

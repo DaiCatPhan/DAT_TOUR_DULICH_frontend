@@ -30,12 +30,22 @@ import CalendarService from "../../../../services/CalendarService";
 import { useEffect, useState } from "react";
 import TourService from "../../../../services/TourService";
 
+import ModalUpdateCalendar from "../components/ModalUpdateCalendar";
+
 function CalendarPage() {
   let { id } = useParams();
   const [formCalendar] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const [infoDetailCalendar, setInfoDetailCalendar] = useState([]);
   const [infoDetailTour, setInfoDetailTour] = useState({});
+
+  const [isShowModalUpdateCalendar, setIsShowModalUpdateCalendar] =
+    useState(false);
+  const [dataModalUpdateCalendar, setDataModalUpdateCalendar] = useState({});
+  const handleModalUpdateCalendar = (data) => {
+    setIsShowModalUpdateCalendar(true);
+    setDataModalUpdateCalendar(data);
+  };
 
   const getTourInformation = async () => {
     if (id) {
@@ -44,7 +54,7 @@ function CalendarPage() {
       );
 
       if (res && res.data.EC === 0) {
-        const cus = res.data.DT.Calendars.map((item) => {
+        const cus = res.data.DT.Calendars.map((item) => { 
           return {
             ...item,
             key: item.id,
@@ -54,6 +64,7 @@ function CalendarPage() {
         setInfoDetailTour(res.data.DT);
         formCalendar?.setFieldsValue(res.data.DT);
         formCalendar?.setFieldsValue({ numberMonth: 1 });
+        formCalendar?.setFieldsValue({ numberSeat: 50 });
       }
     }
   };
@@ -66,43 +77,19 @@ function CalendarPage() {
     const ID_Calendar = data.id;
     if (ID_Calendar) {
       const res = await CalendarService.deleteCalendar({
-        id: ID_Calendar,
-        table: "Calendar",
+        ID_Calendar: ID_Calendar,
       });
 
       if (res && res.data.EC == 0) {
         messageApi.open({
           type: "success",
-          content: "Xóa lịch thành công",
+          content: `${res.data.EM}`,
         });
         getTourInformation();
       } else {
         messageApi.open({
           type: "error",
-          content: "Lỗi không xóa được !!!",
-        });
-      }
-    }
-  };
-
-  const handleUpdateCalendar = async (data) => {
-    const ID_Calendar = data.id;
-    if (ID_Calendar) {
-      const res = await CalendarService.deleteCalendar({
-        id: ID_Calendar,
-        table: "Calendar",
-      });
-
-      if (res && res.data.EC == 0) {
-        messageApi.open({
-          type: "success",
-          content: "Xóa lịch thành công",
-        });
-        getTourInformation();
-      } else {
-        messageApi.open({
-          type: "error",
-          content: "Lỗi không xóa được !!!",
+          content: `${res.data.EM}`,
         });
       }
     }
@@ -136,14 +123,16 @@ function CalendarPage() {
     }
   };
 
+  const handleStatusCalendar = (status) => {
+    if (status == "1") {
+      return <Tag color="green">Hoạt động</Tag>;
+    } else if (status == "0") {
+      return <Tag color="red">Không hoạt động</Tag>;
+    }
+  };
+
   // COLUMN CALENDAR
   const columnsTableCalendar = [
-    {
-      title: "Mã tour",
-      dataIndex: "ID_Tour",
-      key: "ID_Tour",
-    },
-
     {
       title: "Mã lịch",
       dataIndex: "id",
@@ -201,6 +190,27 @@ function CalendarPage() {
     },
 
     {
+      title: "Số đơn đặt",
+      dataIndex: "",
+      key: "",
+      render: (data) => <div>{data?.booking?.numberBill || 0}</div>,
+    },
+
+    {
+      title: "Số lượt đặt",
+      dataIndex: "",
+      key: "",
+      render: (data) => <div>{data?.booking?.numberTicket || 0}</div>,
+    },
+
+    {
+      title: "Trạng thái lịch",
+      dataIndex: "",
+      key: "",
+      render: (data) => <div>{handleStatusCalendar(data?.status)}</div>,
+    },
+
+    {
       title: "Action",
 
       key: "Action",
@@ -221,7 +231,7 @@ function CalendarPage() {
                 color="orange"
                 width={20}
                 className={cx("poiter")}
-                onClick={() => handleUpdateCalendar(record)}
+                onClick={() => handleModalUpdateCalendar(record)}
               />
             </div>
           </div>
@@ -366,7 +376,7 @@ function CalendarPage() {
                         htmlType="submit"
                         className={cx("mt-4")}
                       >
-                        Submit
+                        Cập nhật
                       </Button>
                     </Form.Item>
                   </div>
@@ -385,6 +395,14 @@ function CalendarPage() {
           </div>
         </div>
       </div>
+
+      <ModalUpdateCalendar
+        isShowModalUpdateCalendar={isShowModalUpdateCalendar}
+        setIsShowModalUpdateCalendar={setIsShowModalUpdateCalendar}
+        dataModalUpdateCalendar={dataModalUpdateCalendar}
+        setDataModalUpdateCalendar={setDataModalUpdateCalendar}
+        getTourInformation={getTourInformation}
+      />
     </div>
   );
 }

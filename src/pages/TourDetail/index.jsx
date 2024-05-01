@@ -87,7 +87,7 @@ function TourDetail() {
       const res = await CommentService.review(`ID_Tour=${id}&show=1`);
 
       if (res && res.data.EC === 0) {
-        setCommentTour(res.data.DT[0]); 
+        setCommentTour(res.data.DT[0]);
       }
     } catch (error) {
       console.log("error", error);
@@ -128,7 +128,7 @@ function TourDetail() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("container border")}>
+      <div className={cx("container")}>
         <div className={cx("nameTour")}>{tourDetail?.name}</div>
         <div className={cx("row ")}>
           {/* PROCESSTOUR */}
@@ -144,16 +144,24 @@ function TourDetail() {
 
                   <div
                     className={cx(
-                      "border d-flex justify-content-between py-2 mb-3",
-                      "bge3e7ed"
+                      "bg-white  d-flex justify-content-between py-2 mb-3",
+                      "bd_f79321"
                     )}
                   >
-                    <div className={cx("mx-5")}>
-                      <IconClockHour10 className={cx("mb-2")} /> 5 Ngày 4 Đêm
+                    <div className={cx("mx-5 d-flex")}>
+                      <div>
+                        <IconClockHour10 className={cx("mb-2")} />
+                      </div>
+                      <div className={cx("mx-1")}>
+                        {tourDetail?.numbeOfDay}
+                        <span className={cx("mx-1")}>ngày</span>
+                        {tourDetail?.numberOfNight} <span>đêm</span>
+                      </div>
                     </div>
-                    <div className={cx("mx-5")}>
+                    <div>
                       Phương tiện : {handleIconVehicle(tourDetail?.vehicle)}
                     </div>
+                    <div className={cx("mx-5")}>MÃ TOUR : {tourDetail?.id}</div>
                   </div>
                 </div>
 
