@@ -29,6 +29,8 @@ function ModalEditCustomer(props) {
     getListCustomers,
   } = props;
 
+  console.log("dataModalUpdateCustomer", dataModalUpdateCustomer);
+
   const [categoryRole, setCategoryRole] = useState([]);
   const [categoryActivity, setCategoryActivity] = useState([]);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -81,7 +83,6 @@ function ModalEditCustomer(props) {
         style={{ top: 10 }}
         title="Cập nhật thông tin khách hàng "
         open={isShowModalUpdateCustomer}
-        // open={true}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         width={1000}
@@ -182,13 +183,8 @@ function ModalEditCustomer(props) {
                   ]}
                 >
                   <Select>
-                    {statusActivity?.map((item) => {
-                      return (
-                        <Select.Option key={item?.id}>
-                          {item?.value}
-                        </Select.Option>
-                      );
-                    })}
+                    <Select.Option value={"1"}>Hoạt động</Select.Option>
+                    <Select.Option value={"0"}>Không hoạt động</Select.Option>
                   </Select>
                 </Form.Item>
 

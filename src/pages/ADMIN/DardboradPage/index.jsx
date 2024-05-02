@@ -28,7 +28,7 @@ function DashboardPage() {
       <div className={cx("row")}>
         <div className={cx("col-lg-3")}>
           <div className={cx("card")}>
-            <div className={cx("item1")}>
+            <div className={cx("item1", "bg_background_167ee6")}>
               <IconCurrencyDollar style={{ width: "42", height: "42" }} />
             </div>
 
@@ -38,7 +38,7 @@ function DashboardPage() {
                   <div>
                     <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
                   </div>
-                  <div>Earnings</div>
+                  <div>Doanh thu</div>
                 </div>
                 <div className={cx("item2-2")}>22,520</div>
               </div>
@@ -47,7 +47,7 @@ function DashboardPage() {
         </div>
         <div className={cx("col-lg-3")}>
           <div className={cx("card")}>
-            <div className={cx("item1")}>
+            <div className={cx("item1", "bg_background_4caf50")}>
               <IconCurrencyDollar style={{ width: "42", height: "42" }} />
             </div>
 
@@ -57,7 +57,7 @@ function DashboardPage() {
                   <div>
                     <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
                   </div>
-                  <div>Earnings</div>
+                  <div>Khách hàng</div>
                 </div>
                 <div className={cx("item2-2")}>22,520</div>
               </div>
@@ -66,7 +66,7 @@ function DashboardPage() {
         </div>
         <div className={cx("col-lg-3")}>
           <div className={cx("card")}>
-            <div className={cx("item1")}>
+            <div className={cx("item1", "bg_background_4c5caf")}>
               <IconCurrencyDollar style={{ width: "42", height: "42" }} />
             </div>
 
@@ -76,7 +76,7 @@ function DashboardPage() {
                   <div>
                     <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
                   </div>
-                  <div>Earnings</div>
+                  <div>Tour</div>
                 </div>
                 <div className={cx("item2-2")}>22,520</div>
               </div>
@@ -85,7 +85,7 @@ function DashboardPage() {
         </div>
         <div className={cx("col-lg-3")}>
           <div className={cx("card")}>
-            <div className={cx("item1")}>
+            <div className={cx("item1", "bg_background_da0c4d")}>
               <IconCurrencyDollar style={{ width: "42", height: "42" }} />
             </div>
 
@@ -95,7 +95,7 @@ function DashboardPage() {
                   <div>
                     <IconArrowNarrowUp style={{ width: "20", height: "17" }} />
                   </div>
-                  <div>Earnings</div>
+                  <div>Đơn hàng</div>
                 </div>
                 <div className={cx("item2-2")}>22,520</div>
               </div>

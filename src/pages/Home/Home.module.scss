@@ -93,3 +93,53 @@
     border-top-left-radius: 40%;
   }
 }
+
+.tourPopolar {
+  .title {
+    color: #212529;
+    font-weight: 500;
+    margin-bottom: 40px;
+    margin-top: 50px;
+  }
+  .cardTour {
+    width: 310px;
+    height: 450px;
+    border: 1px solid rgb(235, 230, 226);
+    border-radius: 10px;
+    cursor: pointer;
+
+    .image {
+      overflow: hidden;
+      img {
+        height: 310px;
+        width: 100%;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        transition: transform 0.7s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
+    }
+
+    .content {
+      padding: 5px;
+      height: 140px;
+      color: black;
+
+      .duration {
+      }
+
+      .numberBooking {
+      }
+
+      .name {
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+    }
+  }
+}

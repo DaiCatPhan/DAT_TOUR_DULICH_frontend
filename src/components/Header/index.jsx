@@ -187,7 +187,7 @@ function Header() {
               <div className={cx("d-flex ")}>
                 <Nav.Link href="/tours">TOURS</Nav.Link>
                 <Nav.Link href="/tours/topic">CHỦ ĐỀ</Nav.Link>
-                <Nav.Link href="/tours/blogs">TIN TỨC</Nav.Link>
+                {/* <Nav.Link href="/tours/blogs">TIN TỨC</Nav.Link> */}
                 <Nav.Link href="/tours/voucher">VOUCHER</Nav.Link>
               </div>
 
@@ -222,7 +222,7 @@ function Header() {
                         >
                           <a onClick={(e) => e.preventDefault()}>
                             <Space>
-                              Welcome to {user?.username || ""}
+                              {user?.username || ""}
                               <DownOutlined />
                             </Space>
                           </a>

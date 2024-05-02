@@ -179,18 +179,13 @@ function ModalCreateCustomer(props) {
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng chọn quyền !",
+                      message: "Vui lòng chọn trạng thái !",
                     },
                   ]}
                 >
                   <Select>
-                    {statusActivity?.map((item) => {
-                      return (
-                        <Select.Option key={item?.id}>
-                          {item?.value}
-                        </Select.Option>
-                      );
-                    })}
+                    <Select.Option value={"1"}>Hoạt động</Select.Option>
+                    <Select.Option value={"0"}>Không hoạt động</Select.Option>
                   </Select>
                 </Form.Item>
 

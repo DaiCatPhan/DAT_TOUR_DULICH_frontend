@@ -8,6 +8,18 @@ import {
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import {
+  IconMessage,
+  IconHome2,
+  IconBrandGoogleAnalytics,
+  IconCategory,
+  IconCurrencyDollar,
+  IconCamera,
+  IconUser,
+  IconGiftCard,
+  IconTextPlus,
+  IconDashboard,
+} from "@tabler/icons-react";
 
 import { Menu } from "antd";
 
@@ -25,29 +37,30 @@ function LayoutUser() {
     };
   }
   const items = [
-    getItem("Tài khoản của tôi", "sub1", <UserOutlined />, [
-      getItem(<Link to="/user">Hồ sơ</Link>, "1"),
-      // getItem(<Link to="/user/change-password">Đổi mật khẩu</Link>, "13"),
-    ]),
+    getItem(
+      <Link to="/user">Hồ sơ</Link>,
+      "sub1",
+      <IconUser style={{ color: "#666", width: "20" }} />
+    ),
 
     getItem(
       <Link to="/user/order-buy">Đơn mua</Link>,
       "sub2",
-      <UserOutlined />
+      <IconCurrencyDollar style={{ color: "#666", width: "20" }} />
     ),
     getItem(
       <Link to="/user/voucher">Kho voucher</Link>,
       "sub3",
-      <UserOutlined />
+      <IconGiftCard style={{ color: "#666", width: "20" }} />
     ),
   ];
   return (
     <div className={cx("wrapper")}>
       <Header />
       <div className={cx("container")}>
-        <div className={cx("row border p-4")}>
-          <div className={cx("col-lg-3 border border-success")}>
-            <div className={cx("d-flex justify-content-center")}>
+        <div className={cx("row  p-4")}>
+          <div className={cx("col-lg-3", "border_blue")}>
+            <div className={cx("d-flex justify-content-center ")}>
               <Menu
                 style={{
                   width: 256,
@@ -56,10 +69,11 @@ function LayoutUser() {
                 defaultOpenKeys={["sub1"]}
                 mode="inline"
                 items={items}
+                className={cx("my-4")}
               />
             </div>
           </div>
-          <div className={cx("col-lg-9 border border-danger")}>
+          <div className={cx("col-lg-9", "border_blue")}>
             <Outlet />
           </div>
         </div>

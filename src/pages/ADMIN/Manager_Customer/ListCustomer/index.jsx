@@ -18,7 +18,7 @@ import ModalDeleteCustomer from "../ModalDeleteCustomer";
 import ModalCreateCustomer from "../ModalCreateCustomer";
 
 function ListCustomer() {
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(10);
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listCustomer, setListCustomer] = useState([]);
@@ -53,8 +53,6 @@ function ListCustomer() {
   const getListCustomers = async () => {
     try {
       const res = await CustomerService.readAll(`role=${role}`);
-      console.log("res", res);
-
       if (res && res.data.EC === 0) {
         let cus = res.data.DT.users.map((item) => ({
           ...item,
@@ -71,6 +69,14 @@ function ListCustomer() {
   useEffect(() => {
     getListCustomers();
   }, [role]);
+
+  const handleStatusCustomer = (data) => {
+    if (data == "1") {
+      return <Tag color="#108ee9">Hoạt động</Tag>;
+    } else if (data == "0") {
+      return <Tag color="#f50">Không hoạt động</Tag>;
+    }
+  };
 
   const columns = [
     {
@@ -93,6 +99,31 @@ function ListCustomer() {
       title: "Số điện thoại",
       dataIndex: "phone",
       key: "phone",
+    },
+    {
+      title: "Số lượt đánh giá",
+      dataIndex: "",
+      key: "",
+      render: (data) => {
+        return <Tag color="#87d068">{data?.review}</Tag>;
+      },
+    },
+    {
+      title: "Số hóa đơn",
+      dataIndex: "",
+      key: "",
+      render: (data) => {
+        return <Tag color="#87d068">{data?.booking}</Tag>;
+      },
+    },
+
+    {
+      title: "Trạng thái",
+      dataIndex: "",
+      key: "",
+      render: (data) => {
+        return <div>{handleStatusCustomer(data?.status)}</div>;
+      },
     },
 
     {
@@ -149,9 +180,6 @@ function ListCustomer() {
     }
   };
 
-  const handleExportExcel = async () => {
-    alert("Xuat Excel");
-  };
   const itemsTab = [
     {
       key: "khách hàng",
@@ -179,12 +207,6 @@ function ListCustomer() {
         </div>
 
         <div>
-          <button
-            onClick={handleExportExcel}
-            className={cx("btn btn-warning text-white mx-1")}
-          >
-            Xuất excel
-          </button>
           <button
             onClick={handleModalCreateCustomer}
             className={cx("btn btn-success mx-1")}

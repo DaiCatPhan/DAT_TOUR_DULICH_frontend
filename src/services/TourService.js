@@ -16,8 +16,19 @@ const getTours = (data) => {
   return axios.get(`/api/v1/tour/readAll?${data}`);
 };
 
+const readAllMostPopular = (data) => {
+  return axios.get(`/api/v1/tour/readAllMostPopular?${data}`);
+};
+
 const uploadImageTour = (data) => {
   return axios.patch("/api/v1/tour/uploadImageTour", data);
 };
 
-export default { createTour, uploadImageTour, getTour, getTours, updateTour };
+export default {
+  readAllMostPopular,
+  createTour,
+  uploadImageTour,
+  getTour,
+  getTours,
+  updateTour,
+};
