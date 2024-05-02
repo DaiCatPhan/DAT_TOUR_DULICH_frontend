@@ -76,15 +76,34 @@ function Header() {
     {
       label: (
         <div>
-          <Link to="/user">Tải khoản của tôi</Link>
+          <a className={cx("text-black")} href="/user">
+            Tải khoản của tôi
+          </a>
         </div>
       ),
-      key: "0",
+      key: "/user",
     },
     {
-      label: <a href="https://www.aliyun.com">2nd menu item</a>,
-      key: "1",
+      label: (
+        <div>
+          <a className={cx("text-black")} href="/user/order-buy">
+            Tour đã đặt
+          </a>
+        </div>
+      ),
+      key: "/user/order-buy",
     },
+    {
+      label: (
+        <div>
+          <a className={cx("text-black")} href="/user/voucher">
+            Voucher của tôi
+          </a>
+        </div>
+      ),
+      key: "/user/voucher",
+    },
+
     {
       type: "divider",
     },

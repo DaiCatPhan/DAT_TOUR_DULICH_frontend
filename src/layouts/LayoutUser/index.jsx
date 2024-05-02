@@ -27,6 +27,8 @@ import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 function LayoutUser() {
+  const urlCurrent = window.location.pathname;
+
   function getItem(label, key, icon, children, type) {
     return {
       key,
@@ -39,18 +41,18 @@ function LayoutUser() {
   const items = [
     getItem(
       <Link to="/user">Hồ sơ</Link>,
-      "sub1",
+      "/user",
       <IconUser style={{ color: "#666", width: "20" }} />
     ),
 
     getItem(
       <Link to="/user/order-buy">Đơn mua</Link>,
-      "sub2",
+      "/user/order-buy",
       <IconCurrencyDollar style={{ color: "#666", width: "20" }} />
     ),
     getItem(
       <Link to="/user/voucher">Kho voucher</Link>,
-      "sub3",
+      "/user/voucher",
       <IconGiftCard style={{ color: "#666", width: "20" }} />
     ),
   ];
@@ -65,7 +67,7 @@ function LayoutUser() {
                 style={{
                   width: 256,
                 }}
-                defaultSelectedKeys={["1"]}
+                defaultSelectedKeys={[urlCurrent]}
                 defaultOpenKeys={["sub1"]}
                 mode="inline"
                 items={items}

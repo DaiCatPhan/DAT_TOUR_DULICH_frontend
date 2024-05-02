@@ -15,7 +15,7 @@ import { Tabs } from "antd";
 
 import ModalCreateVoucher from "./component/ModalCreateVoucher";
 import ModalDeleteVoucher from "./component/ModalDeleteVoucher";
-import ModalUpdateVoucher from "./component/ModalUpdateVoucher";
+import ModalUpdateVoucher from "./component/ModalUpdateVoucher"; 
 
 import VoucherService from "../../../../services/VoucherService";
 import Function from "../../../../components/Functions/function";

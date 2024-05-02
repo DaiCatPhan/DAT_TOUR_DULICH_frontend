@@ -171,11 +171,8 @@ function Messages() {
                               "d-flex align-items-center"
                             )}
                           >
-                            <div className={cx("image")}>
-                              <img
-                                src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                                alt="notFound"
-                              />
+                            <div className={cx("circleCustomer")}>
+                              <IconUser />
                             </div>
 
                             <div className={cx("content", "received")}>
@@ -204,12 +201,7 @@ function Messages() {
                             <div className={cx("content", "sent")}>
                               {item?.text}
                             </div>
-                            <div className={cx("image")}>
-                              <img
-                                src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                                alt="notFound"
-                              />
-                            </div>
+                            <div className={cx("circleAD")}>AD</div>
                           </div>
                         </div>
                       );

@@ -40,23 +40,8 @@ function Voucher() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("container")}>
+      <div className={cx("container p-5")}>
         <div className={cx("farmVoucher")}>
-          <img
-            // src="/src/assets/Voucher/3.png"
-            src="https://cdn2.ivivu.com/2024/04/12/17/tour-20240412-2c.png"
-            alt="notFound"
-            height={450}
-            className={cx("w-100")}
-          />
-
-          {/* <img
-            src="/src/assets/Voucher/2.png"
-            alt="notFound"
-            height={250}
-            className={cx("w-100")}
-          /> */}
-
           <img
             src="/src/assets/Voucher/1.png"
             alt="notFound"
@@ -66,22 +51,7 @@ function Voucher() {
 
           <div>
             <div className={cx("row")}>
-              {/* {listVoucher?.map((item) => {
-                return (
-                  <div key={item?.id} className={cx("col-lg-6")}>
-                    <div
-                      className={cx(
-                        "my-2 d-flex justify-content-center border"
-                      )}
-                    >
-                      <CardVoucher item={item} className={cx("w-100")} /> 
-                    </div>
-                  </div>
-                );
-              })} */}
-
               {listVoucher?.map((item) => {
-                // Kiểm tra xem voucher của người dùng có trong danh sách voucher chung không
                 const isUserVoucher = listVoucherUser.some(
                   (userVoucher) => userVoucher.ID_Voucher === item.id
                 );
@@ -92,7 +62,6 @@ function Voucher() {
                         "my-2 d-flex justify-content-center border"
                       )}
                     >
-                      {/* Truyền props active = true nếu voucher của người dùng trùng với danh sách voucher chung */}
                       <CardVoucher
                         item={item}
                         active={isUserVoucher}

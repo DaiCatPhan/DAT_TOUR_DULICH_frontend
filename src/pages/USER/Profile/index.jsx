@@ -18,10 +18,9 @@ function Profile() {
   const [formInfo] = Form.useForm();
   const getProfile = async () => {
     const res = await CustomerService.read(`id=${user?.id}`);
-    console.log("res", res);
     if (res && res.data.EC == 0) {
       setInfo(res.data.DT);
-      formInfo.setFieldsValue(res.data.DT); 
+      formInfo.setFieldsValue(res.data.DT);
     }
   };
   useEffect(() => {

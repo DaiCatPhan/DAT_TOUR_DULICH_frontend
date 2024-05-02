@@ -58,8 +58,8 @@ function ModalCreateVoucher(props) {
       nameVoucher: nameVoucher,
       value: value,
       amount: amount,
-      fromDate: moment(date[0].$d).format('YYYY-MM-DD'),
-      toDate: moment(date[1].$d).format('YYYY-MM-DD'),
+      fromDate: moment(date[0].$d).format("YYYY-MM-DD"),
+      toDate: moment(date[1].$d).format("YYYY-MM-DD"),
     };
 
     const res = await VoucherService.createVoucher(data);
@@ -107,8 +107,8 @@ function ModalCreateVoucher(props) {
                       placeholder="Kiểu voucher"
                       onChange={(value) => setTypeVoucher(value)}
                     >
-                      <Option value="percent">percent</Option>
-                      <Option value="money">money</Option>
+                      <Option value="percent">%</Option>
+                      <Option value="money">VND</Option>
                     </Select>
                   </Form.Item>
                 </div>

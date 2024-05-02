@@ -53,7 +53,7 @@ const items = [
     "sub2",
     <IconDashboard style={{ color: "#666" , width: '20' }} />
   ),
-  getItem("Doanh mục", "sub3", <IconCategory style={{ color: "#666" , width: '20' }}  />, [
+  getItem("Doanh mục", "sub3", <IconCategory style={{ color: "#666" , width: '20' }}  />, [ 
     getItem(<Link to="/admin/managerCatogory/list">Danh sách</Link>, "sub3-1"),
   ]),
   getItem("Khách hàng", "sub4", <IconUser style={{ color: "#666" , width: '20' }} />, [

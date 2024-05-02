@@ -94,8 +94,8 @@ function ModalUpdateVoucher(props) {
                     ]}
                   >
                     <Select placeholder="Kiểu voucher">
-                      <Option value="percent">percent</Option>
-                      <Option value="money">money</Option>
+                      <Option value="percent">%</Option>
+                      <Option value="money">VND</Option>
                     </Select>
                   </Form.Item>
                 </div>

@@ -9,16 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button, Input } from "antd";
 const { TextArea } = Input;
 
-import { IconArrowRight, IconCirclePlus } from "@tabler/icons-react";
+import { IconArrowRight, IconCirclePlus, IconUser } from "@tabler/icons-react";
 
 import MessageService from "../../services/MessageService";
 import moment from "moment";
 
-
-
 const socket = io.connect("http://localhost:3000", {
   transports: ["websocket"],
-}); 
+});
 
 function Message() {
   const user = useSelector((state) => state.account.user);
@@ -102,7 +100,6 @@ function Message() {
       <div className={cx("frame")}>
         <div className={cx("vh_80")}>
           <div className={cx("formMessage")}>
-            
             <div className={cx("headerContact")}>
               <div className={cx("circle")}>AD</div>
               <div className={cx("mx-2")}>
@@ -133,11 +130,8 @@ function Message() {
                           {item?.text}
                         </div>
 
-                        <div className={cx("image")}>
-                          <img
-                            src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                            alt="notFound"
-                          />
+                        <div className={cx("circleCus")}>
+                          <IconUser />
                         </div>
                       </div>
                     </div>
@@ -152,12 +146,7 @@ function Message() {
                           "d-flex align-items-center"
                         )}
                       >
-                        <div className={cx("image")}>
-                          <img
-                            src="https://www.bootdey.com/img/Content/avatar/avatar5.png"
-                            alt="notFound"
-                          />
-                        </div>
+                        <div className={cx("circle")}>AD</div>
 
                         <div className={cx("content", "received")}>
                           {item?.text}

@@ -9,7 +9,7 @@ import VoucherService from "../../../../../services/VoucherService";
 import { useState } from "react";
 
 import moment from "moment";
-
+ 
 function CardVoucher(props) {
   const [messageApi, contextHolder] = message.useMessage();
   const { item, active } = props;
