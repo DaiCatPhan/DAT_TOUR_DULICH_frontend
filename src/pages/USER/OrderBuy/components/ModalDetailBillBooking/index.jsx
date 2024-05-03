@@ -19,7 +19,8 @@ function ModalDetailBillBooking(props) {
     setDataModalDetailBillBooking,
     getListBookingTour,
   } = props;
-  const { Calendar, Customer } = dataModalDetailBillBooking;
+  const { Calendar, Customer, Voucher } = dataModalDetailBillBooking;
+  console.log("dataModalDetailBillBooking", dataModalDetailBillBooking);
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -141,7 +142,7 @@ function ModalDetailBillBooking(props) {
               </div>
             </div>
             <div className={cx("row my-1")}>
-              <div className={cx("col-lg-3")}>Email</div>
+              <div className={cx("col-lg-3")}>Email</div> 
               <div className={cx("col-lg my-2")}>
                 <b>{Customer?.email}</b>
               </div>
@@ -150,7 +151,12 @@ function ModalDetailBillBooking(props) {
           <div className={cx("my-2")}></div>
           <div className={cx("ss4")}>
             <div className={cx("row  my-2")}>
-              <div className={cx("col-lg-6")}> </div>
+              <div className={cx("col-lg-6")}>
+                <div className={cx("d-flex fw-bold")}>
+                  <div>Mã Voucher : </div>
+                  <div className={cx("mx-1")}>{Voucher?.nameVoucher}</div>
+                </div>
+              </div>
 
               <div className={cx("col-lg-6")}>
                 <div className={cx("d-flex")}>

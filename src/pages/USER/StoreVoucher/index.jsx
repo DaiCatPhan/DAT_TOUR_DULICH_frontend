@@ -16,7 +16,7 @@ function StoreVoucher() {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const [formVoucher] = Form.useForm();
 
-  const getListVoucherUser = async () => {
+  const getListVoucherUser = async () => { 
     let condition = ``;
     if (user?.id) {
       condition += `id=${user?.id}`;
@@ -100,7 +100,7 @@ function StoreVoucher() {
             {listVoucherUser?.map((item) => {
               return (
                 <div key={item?.id} className={cx("col-lg-6")}>
-                  <div className={cx(" my-2 d-flex justify-content-center")}>
+                  <div className={cx(" my-2 d-flex justify-content-center")}> 
                     <CardStoreVoucher item={item} />
                   </div>
                 </div>

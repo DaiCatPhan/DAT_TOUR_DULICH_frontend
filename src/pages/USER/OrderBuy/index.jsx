@@ -197,19 +197,33 @@ function OrderBuy() {
             </div>
           </div>
 
-          <div className={cx("d-flex justify-content-end", "bgcolor_FFFEFB")}>
-            <div></div>
+          <div>
             <div className={cx("evaluate")}>
-              <div className={cx("intoMoney")}>
-                <span>Thành tiền: </span>
-                <span>
-                  {Function.formatNumberWithCommas(data?.total_money)}
-                </span>
-                <span className={cx("mx-1")}>VND</span>
+              <div
+                className={cx(
+                  "d-flex align-items-center justify-content-between "
+                )}
+              >
+                {data?.Voucher?.nameVoucher ? (
+                  <div className={cx("fw-bold mx-3")}>
+                    Mã voucher: {data?.Voucher?.nameVoucher}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+
+                <div className={cx("intoMoney")}>
+                  <span>Thành tiền: </span>
+                  <span>
+                    {Function.formatNumberWithCommas(data?.total_money)}
+                  </span>
+                  <span className={cx("mx-1")}>VND</span>
+                </div>
               </div>
-              <div className={cx("d-flex mt-3")}>
+
+              <div className={cx("d-flex mt-3   justify-content-end")}>
                 <Link to={`/tours/${data?.Calendar?.ID_Tour}`}>
-                  <button className={cx("btn_booking")}>Đặt tour lại</button>{" "}
+                  <button className={cx("btn_booking")}>Đặt tour lại</button>
                 </Link>
                 <div> {EvaluateButton(data)}</div>
               </div>

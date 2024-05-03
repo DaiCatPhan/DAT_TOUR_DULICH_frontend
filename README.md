@@ -26,5 +26,4 @@ Tên chủ thẻ : NGUYEN VAN A
 Ngày phát hành : 07/15
 Mật khẩu OTP : 123456
 
-nguyenvanb@gmail.com
-Nguyễn Văn B
+ 

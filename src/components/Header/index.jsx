@@ -207,7 +207,7 @@ function Header() {
                 <Nav.Link href="/tours">TOURS</Nav.Link>
                 <Nav.Link href="/tours/topic">CHỦ ĐỀ</Nav.Link>
                 {/* <Nav.Link href="/tours/blogs">TIN TỨC</Nav.Link> */}
-                <Nav.Link href="/tours/voucher">VOUCHER</Nav.Link>
+                <Nav.Link href="/tours/voucher">KHUYẾN MÃI</Nav.Link>
               </div>
 
               <div>

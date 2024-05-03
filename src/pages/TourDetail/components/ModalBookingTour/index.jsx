@@ -134,6 +134,8 @@ function ModalBookingTour(props) {
     if (res && res.data.EC == 0) {
       window.location.href = res.data.DT.url;
       getTourById();
+    } else {
+      toast.error(res.data.EM); 
     }
   };
 
