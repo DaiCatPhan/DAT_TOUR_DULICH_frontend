@@ -35,7 +35,7 @@ function TourDetail() {
   const [activeCalendar, setActiveCalendar] = useState({});
 
   const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
-  console.log("commentTour", commentTour);
+
   const handleModalBookingTour = () => {
     if (!isAuthenticated) {
       toast.error("Vui lòng đăng nhập để đặt tour");

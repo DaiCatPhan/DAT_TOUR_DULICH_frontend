@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
+import { PDFViewer } from "@react-pdf/renderer";
 
 import AuthService from "./services/AuthService";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,12 +71,6 @@ import Notification from "./pages/USER/Notification";
 
 // == REVIEW ==
 import ReviewList from "./pages/ADMIN/Manager_Review/List_Review";
-
-// import moment from "moment";
-// import "moment/dist/locale/vi";
-// moment.locale("vi");
-
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const Layout = () => {
   return (
@@ -177,6 +172,7 @@ function App() {
         },
       ],
     },
+
     // USER
     {
       path: "/user",

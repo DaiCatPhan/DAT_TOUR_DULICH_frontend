@@ -146,7 +146,7 @@ function OrderBuy() {
             </div>
             <div className={cx("contentCard")}>
               <div className={cx("name")}>
-                {data?.Calendar?.Tour?.name || ""}
+                <div>{data?.Calendar?.Tour?.name || ""}</div>
               </div>
               <div className={cx("d-flex")}>
                 <div>Khởi hành : </div>
@@ -161,7 +161,10 @@ function OrderBuy() {
               <div className={cx("d-flex")}>
                 <div>Người lớn : </div>
                 <div className={cx("mx-5")}>
-                  x <span>{data?.numberTicketAdult}</span>
+                  <span>x</span>
+                  <span className={cx("fw-bold mx-1")}>
+                    {data?.numberTicketAdult}
+                  </span>
                 </div>
                 <div className={cx("mx-5")}>
                   {Function.formatNumberWithCommas(data?.Calendar?.priceAdult)}{" "}
@@ -173,17 +176,22 @@ function OrderBuy() {
                 <div className={cx("mx-2")}></div>
                 <div className={cx("mx-1")}></div>
                 <div className={cx("mx-5")}>
-                  x <span>{data?.numberTicketChild || 0}</span>
+                  <span>x</span>
+                  <span className={cx("fw-bold mx-1")}>
+                    {data?.numberTicketChild || 0}
+                  </span>
                 </div>
                 <div className={cx("mx-5")}>
-                  {Function.formatNumberWithCommas(data?.Calendar?.priceChild)}{" "}
+                  {Function.formatNumberWithCommas(data?.Calendar?.priceChild)}
                   VND
                 </div>
               </div>
-              <div className={cx("d-flex")}>
-                <div>Ngày đặt : </div>
-                <div className={cx("mx-5")}>
-                  {moment(data?.createdAt).format("DD-MM-YYYY")}
+              <div className={cx("d-flex   justify-content-between")}>
+                <div className={cx("d-flex")}>
+                  <div>Ngày đặt : </div>
+                  <div className={cx("mx-2")}>
+                    {moment(data?.createdAt).format("DD-MM-YYYY")}
+                  </div>
                 </div>
               </div>
             </div>
@@ -193,19 +201,17 @@ function OrderBuy() {
             <div></div>
             <div className={cx("evaluate")}>
               <div className={cx("intoMoney")}>
-                Thành tiền: <span>{data?.total_money}</span>
+                <span>Thành tiền: </span>
+                <span>
+                  {Function.formatNumberWithCommas(data?.total_money)}
+                </span>
+                <span className={cx("mx-1")}>VND</span>
               </div>
               <div className={cx("d-flex mt-3")}>
                 <Link to={`/tours/${data?.Calendar?.ID_Tour}`}>
                   <button className={cx("btn_booking")}>Đặt tour lại</button>{" "}
                 </Link>
                 <div> {EvaluateButton(data)}</div>
-                {/* <button
-                  className={cx("btn_eval")}
-                  onClick={() => handleModalEvalBooking(data)}
-                >
-                  Đánh giá
-                </button> */}
               </div>
             </div>
           </div>
