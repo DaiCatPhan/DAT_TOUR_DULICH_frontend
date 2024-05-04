@@ -54,7 +54,7 @@ function CalendarPage() {
       );
 
       if (res && res.data.EC === 0) {
-        const cus = res.data.DT.Calendars.map((item) => { 
+        const cus = res.data.DT.Calendars.map((item) => {
           return {
             ...item,
             key: item.id,
@@ -254,6 +254,7 @@ function CalendarPage() {
             <b>Tạo lịch</b> : {infoDetailTour?.name || ""}
           </h5>
         </div>
+        <div>Mã tour: {infoDetailTour?.id}</div>
         <div className={cx("border")}>
           <div className={cx("border p-0 vh-50")}>
             <div className={cx("px-2")}>

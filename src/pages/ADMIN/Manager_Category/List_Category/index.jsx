@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 function List_Category() {
   const [messageApi, contextHolder] = message.useMessage();
-  const [listCategory, setListCategory] = useState([]);
+  const [listCategory, setListCategory] = useState([]); 
   const [formCategory] = Form.useForm();
 
   const columns = [

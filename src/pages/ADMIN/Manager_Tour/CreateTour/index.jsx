@@ -13,6 +13,7 @@ import {
   Radio,
   Upload,
   Result,
+  Tag,
 } from "antd";
 import { InputNumber, message } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -35,6 +36,7 @@ import CalendarService from "../../../../services/CalendarService";
 import CategoryService from "../../../../services/CategoryService";
 
 import data from "../../../../components/Data/data";
+import Function from "../../../../components/Functions/function";
 
 function CreateTour() {
   const [loading, setLoading] = useState(false);
@@ -65,8 +67,7 @@ function CreateTour() {
       const TOUR_localStorage = JSON.parse(localStorage.getItem("TOUR"));
 
       if (TOUR_localStorage && TOUR_localStorage.id) {
-        const res = await TourService.getTour(TOUR_localStorage.id);
-
+        const res = await TourService.getTour(`id=${TOUR_localStorage.id}`);
         if (res && res.data.EC === 0 && res.data.DT.id) {
           let resCopy = res.data.DT;
           resCopy.key = resCopy.id;
@@ -74,6 +75,8 @@ function CreateTour() {
           setInfoDetailTour(resCopy);
           setInfoDetailCalendar(res.data.DT.Calendars);
           formCalendar.setFieldsValue(res.data.DT);
+          formCalendar?.setFieldsValue({ numberMonth: 1 });
+          formCalendar?.setFieldsValue({ numberSeat: 50 });
         }
       } else {
         // Nếu không có id, không thực hiện gọi API
@@ -154,6 +157,7 @@ function CreateTour() {
     if (res && res.data.EC === 0) {
       toast.success("Tạo tour thành công ");
       localStorage.setItem("TOUR", JSON.stringify(res.data.DT));
+      getTourInformation();
       setIsShowNoticationCreateTour(true);
     } else {
       toast.error(res.data.EM);
@@ -178,7 +182,7 @@ function CreateTour() {
     formData.append("ID_Tour", id_tour);
 
     setSpin(true);
-    const res = await TourService.uploadImageTour(formData); 
+    const res = await TourService.uploadImageTour(formData);
     if (res && res.data.EC === 0) {
       toast.success("Cập nhật hình ảnh thành công");
       setImageTour(null);
@@ -233,8 +237,9 @@ function CreateTour() {
       numberSeat: values.numberSeat,
       priceAdult: values.priceAdult,
       priceChild: values.priceChild,
-      startDay: values.calendar[0].$d,
-      endDay: values.calendar[1].$d,
+      startDay: moment(values.calendar[0].$d).format("YYYY-MM-DD"),
+      endDay: moment(values.calendar[1].$d).format("YYYY-MM-DD"),
+      numberMonth: values.numberMonth,
     };
 
     const res = await CalendarService.createCalendar(dataCalendar);
@@ -248,11 +253,10 @@ function CreateTour() {
   };
 
   const handleDeleteCalendar = async (data) => {
-    const ID_Calendar = data.id;
+    const ID_Calendar = data?.id;
     if (ID_Calendar) {
       const res = await CalendarService.deleteCalendar({
-        id: ID_Calendar,
-        table: "Calendar",
+        ID_Calendar: ID_Calendar,
       });
 
       if (res && res.data.EC == 0) {
@@ -264,18 +268,25 @@ function CreateTour() {
       } else {
         messageApi.open({
           type: "error",
-          content: "Lỗi không xóa được !!!",
+          content: `${res.data.EM}`,
         });
       }
     }
   };
 
   // COLUMN CALENDAR
+  const handleStatusCalendar = (status) => {
+    if (status == "1") {
+      return <Tag color="green">Hoạt động</Tag>;
+    } else if (status == "0") {
+      return <Tag color="red">Không hoạt động</Tag>;
+    }
+  };
   const columnsTableCalendar = [
     {
-      title: "Mã tour",
-      dataIndex: "ID_Tour",
-      key: "ID_Tour",
+      title: "Mã lịch",
+      dataIndex: "id",
+      key: "id",
     },
 
     {
@@ -284,35 +295,54 @@ function CreateTour() {
       key: "numberSeat",
     },
     {
-      title: "Giá",
+      title: "Giá người lớn",
       dataIndex: "",
-      key: "priceColumn",
-      render: (Calendar) => {
-        return (
-          <div>
-            <div>Giá người lớn : {Calendar?.priceAdult}</div>
-            <div>Giá trẻ em : {Calendar?.priceChild}</div>
-          </div>
-        );
-      },
+      key: "",
+      render: (Calendar) => (
+        <div>{Function.formatNumberWithCommas(Calendar?.priceAdult)} vnd</div>
+      ),
     },
 
     {
-      title: "Lịch",
+      title: "Giá trẻ em",
       dataIndex: "",
-      key: "CalendarColumn",
+      key: "",
+      render: (Calendar) => (
+        <div>{Function.formatNumberWithCommas(Calendar?.priceChild)} vnd</div>
+      ),
+    },
 
+    {
+      title: "Ngày khởi hành",
+      dataIndex: "",
+      key: "",
       render: (Calendar) => (
         <div>
-          <div>
-            Ngày khởi hành : {moment(Calendar?.startDay).format("DD-MM-YYYY")}
-          </div>
-
-          <div>
-            Ngày kết thúc : {moment(Calendar?.endDay).format("DD-MM-YYYY")}
-          </div>
+          <Tag color="blue">
+            {moment(Calendar?.startDay).format("DD-MM-YYYY")}
+          </Tag>
         </div>
       ),
+    },
+
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "",
+      key: "",
+      render: (Calendar) => (
+        <div>
+          <Tag color="blue">
+            {moment(Calendar?.endDay).format("DD-MM-YYYY")}
+          </Tag>
+        </div>
+      ),
+    },
+
+    {
+      title: "Trạng thái lịch",
+      dataIndex: "",
+      key: "",
+      render: (data) => <div>{handleStatusCalendar(data?.status)}</div>,
     },
 
     {
@@ -727,6 +757,21 @@ function CreateTour() {
                 >
                   <RangePicker className={cx("w-100")} format="DD/MM/YYYY  " />
                 </Form.Item>
+
+                <div className={cx("my-2")}>
+                  <Form.Item
+                    label="Số tuần"
+                    name="numberMonth"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Vui lòng nhập số chỗ tuần !",
+                      },
+                    ]}
+                  >
+                    <InputNumber className={cx("w-100")} />
+                  </Form.Item>
+                </div>
 
                 <Form.Item
                   wrapperCol={{

@@ -317,7 +317,7 @@ function ModalUpdateTour(props) {
                   >
                     <InputNumber
                       className={cx("w-100")}
-                      min={1}
+                      min={0}
                       placeholder="Nhập tổng thời gian đêm"
                     />
                   </Form.Item>

@@ -28,7 +28,7 @@ function Tours() {
   const [toursDuLichTayNguyen, setToursDuLichTayNguyen] = useState([]);
   const [toursViVuCuoiTuan, setToursViVuCuoiTuan] = useState([]);
   const [toursThamHiem, setToursThamHiem] = useState([]);
-  const [toursViewed, setToursViewed] = useState([]); 
+  const [toursViewed, setToursViewed] = useState([]);
   const navigate = useNavigate();
 
   // Gọi API lấy dữ liệu
@@ -209,7 +209,7 @@ function Tours() {
       </div>
 
       {/* Tour Du Lịch Hành Hương */}
-      <div className={cx("bg-white border  py-4")}>
+      {/* <div className={cx("bg-white border  py-4")}>
         <div className={cx("listTour")}>
           <div className={cx("text")}>
             <h5 className={cx("topicTour")}>Tour Du Lịch Hành Hương</h5>
@@ -239,10 +239,10 @@ function Tours() {
             </Link>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Tour Du Lịch Tây Bắc */}
-      <div className={cx("bg-grey border py-4")}>
+      {/* <div className={cx("bg-grey border py-4")}>
         <div className={cx("listTour")}>
           <div className={cx("text")}>
             <h5 className={cx("topicTour")}>Tour Du Lịch Tây Bắc</h5>
@@ -252,6 +252,39 @@ function Tours() {
           </div>
           <div className={cx("row m-auto  ")}>
             {toursDuLichDongTayBac?.tours?.slice(0, 6).map((item) => {
+              return (
+                <div
+                  key={item.id}
+                  onClick={() => handleClickTour(item)}
+                  className={cx(
+                    "col-lg-4 d-flex justify-content-center mb-3",
+                    "poiter"
+                  )}
+                >
+                  <CardTour item={item} />
+                </div>
+              );
+            })}
+          </div>
+          <div className={cx("text-center   pb-3")}>
+            <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+              <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+            </Link>
+          </div>
+        </div>
+      </div> */}
+
+      {/* Tour Du Lịch Miền Nam */}
+      <div className={cx("bg-grey border py-4")}>
+        <div className={cx("listTour")}>
+          <div className={cx("text")}>
+            <h5 className={cx("topicTour")}>Tour Du Lịch Miền Nam</h5>
+            <p className={cx("spanTopic")}>
+              Hành Trình Tâm Linh , Cầu Nguyện An Lành
+            </p>
+          </div>
+          <div className={cx("row m-auto  ")}>
+            {toursMienNam?.tours?.slice(0, 6).map((item) => {
               return (
                 <div
                   key={item.id}

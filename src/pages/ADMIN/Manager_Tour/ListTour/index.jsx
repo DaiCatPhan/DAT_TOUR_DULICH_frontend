@@ -349,7 +349,10 @@ function ListTour() {
         <div>
           <IconReload
             className={cx("poiter", "text-primary")}
-            onClick={() => getListTours()}
+            onClick={() => {
+              setCurrent(1);
+              getListTours();
+            }}
           />
         </div>
       </div>
