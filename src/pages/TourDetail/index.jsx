@@ -185,7 +185,9 @@ function TourDetail() {
                   <div className={cx("item1")}>
                     <div className={cx("view")}>
                       <div className={cx("item")}>
-                        {commentTour?.review?.averageNumberOfStars || 0}
+                        {commentTour?.review?.averageNumberOfStars?.toFixed(
+                          1
+                        ) || 0}
                       </div>
                       <div className={cx("item")}>
                         <Rate
@@ -206,9 +208,10 @@ function TourDetail() {
                       <div className={cx("mx-1")}>5</div>
                       <Progress
                         percent={
-                          (commentTour?.review?.numberReview5Star /
-                            commentTour?.review?.totalNumberReView) *
-                          100
+                          (
+                            commentTour?.review?.numberReview5Star /
+                            commentTour?.review?.totalNumberReView
+                          )?.toFixed(2) * 100
                         }
                         status="active"
                       />
@@ -218,9 +221,10 @@ function TourDetail() {
                         <div className={cx("mx-1")}>4</div>
                         <Progress
                           percent={
-                            (commentTour?.review?.numberReview4Star /
-                              commentTour?.review?.totalNumberReView) *
-                            100
+                            (
+                              commentTour?.review?.numberReview4Star /
+                              commentTour?.review?.totalNumberReView
+                            )?.toFixed(2) * 100
                           }
                           status="active"
                         />
@@ -232,9 +236,10 @@ function TourDetail() {
                         <div className={cx("mx-1")}>3</div>
                         <Progress
                           percent={
-                            (commentTour?.review?.numberReview3Star /
-                              commentTour?.review?.totalNumberReView) *
-                            100
+                            (
+                              commentTour?.review?.numberReview3Star /
+                              commentTour?.review?.totalNumberReView
+                            )?.toFixed(2) * 100
                           }
                           status="active"
                         />
@@ -246,9 +251,10 @@ function TourDetail() {
                         <div className={cx("mx-1")}>2</div>
                         <Progress
                           percent={
-                            (commentTour?.review?.numberReview2Star /
-                              commentTour?.review?.totalNumberReView) *
-                            100
+                            (
+                              commentTour?.review?.numberReview2Star /
+                              commentTour?.review?.totalNumberReView
+                            )?.toFixed(2) * 100
                           }
                           status="active"
                         />
@@ -260,9 +266,10 @@ function TourDetail() {
                         <div className={cx("mx-1")}>1</div>
                         <Progress
                           percent={
-                            (commentTour?.review?.numberReview1Star /
-                              commentTour?.review?.totalNumberReView) *
-                            100
+                            (
+                              commentTour?.review?.numberReview1Star /
+                              commentTour?.review?.totalNumberReView
+                            )?.toFixed(2) * 100
                           }
                           status="active"
                         />
