@@ -28,6 +28,7 @@ function ListTour() {
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listTour, setListTour] = useState([]);
+  const [formTour] = Form.useForm();
 
   const [category_TYPE_TOUR, setCategory_TYPE_TOUR] = useState([]);
   const typeTour = category_TYPE_TOUR;
@@ -69,7 +70,9 @@ function ListTour() {
 
   // GOI API LAY LIST TOUR
   const getListTours = async () => {
-    const res = await TourService.getTours(`page=${current}&limit=${pageSize}`);
+    const res = await TourService.getTours(
+      `page=${current}&limit=${pageSize}&sortBycreatedAt=true&sortOrder=DESC`
+    );
     if (res && res.data.EC == 0) {
       let cus = res.data.DT.tours.map((item) => ({
         ...item,
@@ -352,6 +355,7 @@ function ListTour() {
             onClick={() => {
               setCurrent(1);
               getListTours();
+              formTour.resetFields();
             }}
           />
         </div>
@@ -362,6 +366,7 @@ function ListTour() {
           <Form
             name="basic"
             onFinish={onFinishSearchTour}
+            form={formTour}
             autoComplete="off"
             className={cx("m-auto")}
           >

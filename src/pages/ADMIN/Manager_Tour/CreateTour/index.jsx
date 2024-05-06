@@ -242,7 +242,7 @@ function CreateTour() {
       numberMonth: values.numberMonth,
     };
 
-    const res = await CalendarService.createCalendar(dataCalendar);
+    const res = await CalendarService.createCalendarWithMonth(dataCalendar);
 
     if (res && res.data.EC === 0) {
       toast.success("Tạo lịch tour thành công");
