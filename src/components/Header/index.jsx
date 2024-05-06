@@ -117,11 +117,11 @@ function Header() {
   const itemsDropdownNotLogin = [
     {
       label: (
-        <div className={cx(" bg-primary mt-1 px-5 py-1 text-center  ")}>
-          <Link className={cx("text-white ", "textLogin")} to="/login">
+        <Link className={cx("text-white ", "textLogin")} to="/login">
+          <div className={cx(" bg-primary mt-1 px-5 py-1 text-center  ")}>
             Đăng nhập
-          </Link>
-        </div>
+          </div>
+        </Link>
       ),
       key: "0",
     },

@@ -7,7 +7,12 @@ import { useEffect, useState } from "react";
 import { Space, Table, Tag, Input, Form, Button, Tabs } from "antd";
 
 import moment from "moment";
-import { IconEdit, IconPencilMinus, IconTrash } from "@tabler/icons-react";
+import {
+  IconEdit,
+  IconPencilMinus,
+  IconTrash,
+  IconListDetails,
+} from "@tabler/icons-react";
 import { AudioOutlined } from "@ant-design/icons";
 import { IconList } from "@tabler/icons-react";
 
@@ -16,6 +21,7 @@ import CustomerService from "../../../../services/CustomerService";
 import ModalEditCustomer from "../ModalEditCustomer";
 import ModalDeleteCustomer from "../ModalDeleteCustomer";
 import ModalCreateCustomer from "../ModalCreateCustomer";
+import ModalDetailCustomer from "../ModalDetailCustomer";
 
 function ListCustomer() {
   const [pageSize, setPageSize] = useState(10);
@@ -37,6 +43,14 @@ function ListCustomer() {
   const [isShowModalCreateCustomer, setIsShowModalCreateCustomer] =
     useState(false);
   const [dataModalCreateCustomer, setDataModalCreateCustomer] = useState({});
+  const [isShowModalDetailCustomer, setIsShowModalDetailCustomer] =
+    useState(false);
+  const [dataModalDetailCustomer, setDataModalDetailCustomer] = useState({});
+  const handleModalDetailCustomer = (data) => {
+    setIsShowModalDetailCustomer(true);
+    setDataModalDetailCustomer(data);
+  };
+
   const handleModalUpdateCustomer = (data) => {
     setIsShowModalUpdateCustomer(true);
     setDataModalUpdateCustomer(data);
@@ -83,6 +97,8 @@ function ListCustomer() {
       title: "Mã khách hàng",
       dataIndex: "id",
       key: "id",
+      sorter: (a, b) => a?.id - b?.id,
+      width: 100,
     },
 
     {
@@ -109,12 +125,13 @@ function ListCustomer() {
       },
     },
     {
-      title: "Số hóa đơn",
+      title: "Số bill",
       dataIndex: "",
       key: "",
       render: (data) => {
         return <Tag color="#87d068">{data?.booking}</Tag>;
       },
+      sorter: (a, b) => a?.booking - b?.booking,
     },
 
     {
@@ -131,7 +148,19 @@ function ListCustomer() {
       key: "Action",
       render: (record) => {
         return (
-          <div className={cx("poiter d-flex")}>
+          <div className={cx("poiter d-flex justify-content-end ")}>
+            <IconListDetails
+              onClick={() => handleModalDetailCustomer(record)}
+              color="blue"
+              width={20}
+              className={cx("poiter")}
+            />
+            <IconPencilMinus
+              onClick={() => handleModalUpdateCustomer(record)}
+              color="orange"
+              width={20}
+              className={cx("poiter", "mx-3")}
+            />
             <IconTrash
               onClick={() => handleModalDeleteCustomer(record)}
               color="red"
@@ -139,12 +168,6 @@ function ListCustomer() {
               className={cx("poiter")}
             />
             <div className={cx("m-2")}></div>
-            <IconPencilMinus
-              onClick={() => handleModalUpdateCustomer(record)}
-              color="orange"
-              width={20}
-              className={cx("poiter")}
-            />
           </div>
         );
       },
@@ -288,6 +311,13 @@ function ListCustomer() {
         setIsShowModalDeleteCustomer={setIsShowModalDeleteCustomer}
         dataModalDeleteCustomer={dataModalDeleteCustomer}
         setDataModalDeleteCustomer={setDataModalDeleteCustomer}
+        getListCustomers={getListCustomers}
+      />
+      <ModalDetailCustomer
+        isShowModalDetailCustomer={isShowModalDetailCustomer}
+        setIsShowModalDetailCustomer={setIsShowModalDetailCustomer}
+        dataModalDetailCustomer={dataModalDetailCustomer}
+        setDataModalDetailCustomer={setDataModalDetailCustomer}
         getListCustomers={getListCustomers}
       />
       <ModalCreateCustomer
