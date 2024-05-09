@@ -17,12 +17,12 @@ function CardNotification(props) {
       <div onClick={hanleOnlick} className={cx("poiter")}>
         <div className={cx("card")}>
           <div className={cx("row")}>
-            <div className={cx("col-lg-9")}>
+            <div className={cx("col-lg-8")}>
               <div className={cx("title")}>
                 <b>{item?.title}</b>
               </div>
             </div>
-            <div className={cx("col-lg-3")}>
+            <div className={cx("col-lg-4")}>
               <div className={cx("date")}>
                 {moment(item?.createdAt).format("DD-MM-YYYY")}
               </div>

@@ -18,6 +18,8 @@
   padding: 20px 0px 10px 10px;
   background-color: #d4d8dc;
   border-radius: 5px;
+  font-weight: 700;
+
 
   .inputSearch {
     padding: 20px 100px;
@@ -26,8 +28,20 @@
   }
 
   .inputSearchPrice {  
-    width: 280px;
-    padding: 16px; 
+    width: 160px;
+    padding: 5px; 
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  .price {
+    display: flex;
+    justify-content: space-around;
+    background-color: white;
+    border-radius: 5px;
+    margin-bottom: 23px;
+    width: 350px;
+    height: 62px;
   }
 
   .btnSearch {

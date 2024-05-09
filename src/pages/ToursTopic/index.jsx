@@ -152,7 +152,7 @@ function ToursTopic() {
   };
 
   const onFinish = async (values) => {
-    const { name, startDay, price } = values;
+    const { name, startDay, priceStart, priceEnd } = values;
 
     const condition = {};
     if (name) {
@@ -161,8 +161,11 @@ function ToursTopic() {
     if (startDay) {
       condition.startDay = moment(startDay?.$d).format("YYYY-MM-DD");
     }
-    if (price) {
-      condition.price = price;
+    if (priceStart) {
+      condition.priceStart = priceStart;
+    }
+    if (priceEnd) {
+      condition.priceEnd = priceEnd;
     }
 
     const stringified = queryString.stringify(condition);
@@ -199,16 +202,31 @@ function ToursTopic() {
               </div>
 
               <div className={cx("mx-2")}>
-                <Form.Item name="price">
-                  <InputNumber
-                    className={cx("inputSearchPrice")}
-                    placeholder="Nhập giá VND"
-                    formatter={(value) =>
-                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                    }
-                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  />
-                </Form.Item>
+                <div className={cx("price")}>
+                  <Form.Item name="priceStart">
+                    <InputNumber
+                      className={cx("inputSearchPrice")}
+                      placeholder="Từ giá VND"
+                      min={0}
+                      formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    />
+                  </Form.Item>
+
+                  <Form.Item name="priceEnd">
+                    <InputNumber
+                      className={cx("inputSearchPrice")}
+                      placeholder="Đến giá VND"
+                      min={0}
+                      formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                      }
+                      parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    />
+                  </Form.Item>
+                </div>
               </div>
 
               <div className={cx("mx-2  ")}>

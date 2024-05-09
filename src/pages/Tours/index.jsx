@@ -68,7 +68,7 @@ function Tours() {
         "type=Tour Vi Vu Cuối Tuần&status=1"
       );
 
-      const tourThamHiem = await TourService.getTours(
+      const tourThamHiem = await TourService.getTours( 
         "type=Tour Thám Hiểm&status=1"
       );
 

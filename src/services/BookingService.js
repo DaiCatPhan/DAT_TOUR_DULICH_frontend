@@ -33,14 +33,11 @@ const vnpay_return = (data) => {
 };
 
 const getListTourFail = (data) => {
-  return axios.get(`/api/v1/booking/readAllFailBooking`);
+  return axios.get(`/api/v1/booking/readAllFailBooking?${data}`);
 };
 
-const cancelCalendarandNotificationBooking = (data) => {
-  return axios.put(
-    `/api/v1/booking/cancelCalendarandNotificationBooking`,
-    data
-  );
+const notificationFailTour = (data) => {
+  return axios.put(`/api/v1/booking/notificationFailTour`, data);
 };
 
 export default {
@@ -52,6 +49,6 @@ export default {
   vnpay_return,
   updatePaid,
   getListTourFail,
-  cancelCalendarandNotificationBooking,
+  notificationFailTour,
   createCancelBooking,
 };

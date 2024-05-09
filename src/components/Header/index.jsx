@@ -45,9 +45,9 @@ function Header() {
   };
 
   const getListNotification = async () => {
-    let condition = ``;
+    let condition = `sortcreatedAt=DESC`; 
     if (user?.id) {
-      condition += `ID_Customer=${user?.id}`;
+      condition += `&ID_Customer=${user?.id}`;
     }
     if (tabNotification) {
       condition += `&${tabNotification}`;

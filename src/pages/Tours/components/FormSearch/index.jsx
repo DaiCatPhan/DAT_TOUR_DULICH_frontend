@@ -15,7 +15,7 @@ import { InputNumber } from "antd";
 function FormSearch() {
   const [name, setName] = useState("");
   const [startDay, setStartDay] = useState("");
-  const [price, setPrice] = useState("");
+  const [priceStart, setPriceStart] = useState("");
   const navigate = useNavigate();
 
   const onChangeDatePickerStartDay = (date) => {
@@ -23,7 +23,7 @@ function FormSearch() {
   };
 
   const onChangePrice = (date) => {
-    setPrice(date);
+    setPriceStart(date);
   };
 
   const onChangeNameTour = (e) => {
@@ -41,8 +41,8 @@ function FormSearch() {
       condition.startDay = moment(startDay?.$d).format("YYYY-MM-DD");
     }
 
-    if (price) {
-      condition.price = price;
+    if (priceStart) {
+      condition.priceStart = priceStart;
     }
     const stringified = queryString.stringify(condition);
 

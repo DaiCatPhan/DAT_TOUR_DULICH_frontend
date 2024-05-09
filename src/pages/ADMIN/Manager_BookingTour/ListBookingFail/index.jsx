@@ -2,27 +2,35 @@ import className from "classnames/bind";
 import styles from "./ListBookingFail.module.scss";
 const cx = className.bind(styles);
 
-import { Table } from "antd";
+import { InputNumber, Table } from "antd";
 import { Tag } from "antd";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import { IconPencilMinus, IconTrash } from "@tabler/icons-react";
 import { Button } from "antd";
 import { toast } from "react-toastify";
+import { Form } from "antd";
 
 import BookingService from "../../../../services/BookingService";
 import ModalCancel from "../components/ModalCancel";
 
 function ListBookingFail() {
+  const [formFilterCancel] = Form.useForm();
   const [listTourFail, setListTourFail] = useState([]);
   const [listCalendarWithTour, setListCalendarWithTour] = useState([]);
   const [active, setActive] = useState(null);
+
+  const [numberDaybeforeGo, setNumberDaybeforeGo] = useState(5);
+  const [conditionTicketThatCancel, setConditionTicketThatCancel] =
+    useState(10);
 
   const [isShowModalCancel, setIsShowModalCancel] = useState(false);
   const [dataModalCancel, setDataModalCancel] = useState({});
 
   const getListTourFail = async () => {
-    const res = await BookingService.getListTourFail();
+    const res = await BookingService.getListTourFail(
+      `numberDaybeforeGo=${numberDaybeforeGo}&conditionTicketThatCancel=${conditionTicketThatCancel}`
+    );
     if (res && res.data.EC == 0) {
       setListTourFail(res.data.DT);
       setListCalendarWithTour(res.data.DT[0]);
@@ -31,6 +39,10 @@ function ListBookingFail() {
   };
 
   useEffect(() => {
+    formFilterCancel.setFieldsValue({
+      numberDaybeforeGo: numberDaybeforeGo,
+      conditionTicketThatCancel: conditionTicketThatCancel,
+    });
     getListTourFail();
   }, []);
 
@@ -39,7 +51,7 @@ function ListBookingFail() {
     setListCalendarWithTour(data);
   };
 
-  const cancelCalendandNoficationTour = async (data) => {
+  const modalNotificationFailTour = async (data) => {
     setIsShowModalCancel(true);
     setDataModalCancel(data);
   };
@@ -47,9 +59,7 @@ function ListBookingFail() {
   const submit = async (data) => {
     const dataSend = dataModalCancel;
     dataSend.notification = data;
-    const res = await BookingService.cancelCalendarandNotificationBooking(
-      dataSend
-    );
+    const res = await BookingService.notificationFailTour(dataSend);
     if (res && res.data.EC === 0) {
       toast.success(res.data.EM);
       getListTourFail();
@@ -93,7 +103,7 @@ function ListBookingFail() {
       },
     },
     {
-      title: "Action",
+      title: "Cập nhật",
       key: "Action",
       render: (record) => {
         return (
@@ -102,18 +112,86 @@ function ListBookingFail() {
               type="primary"
               danger
               size="small"
-              onClick={() => cancelCalendandNoficationTour(record)}
+              onClick={() => modalNotificationFailTour(record)}
             >
-              Hủy tour và gửi thông báo
+              gửi thông báo
             </Button>
+            <div className={cx("mx-2")}></div>
+            {/* <Button
+              type="primary"
+              danger
+              size="small"
+              onClick={() => notificationFailTour(record)}
+            >
+              Hủy tour
+            </Button> */}
           </div>
         );
       },
     },
   ];
+
+  const onFinish = async (values) => {
+    const { numberDaybeforeGo, conditionTicketThatCancel } = values;
+    const res = await BookingService.getListTourFail(
+      `numberDaybeforeGo=${numberDaybeforeGo}&conditionTicketThatCancel=${conditionTicketThatCancel}`
+    );
+    if (res && res.data.EC == 0) {
+      setListTourFail(res.data.DT);
+      setListCalendarWithTour(res.data.DT[0]);
+      setActive(res.data.DT[0].id);
+    }
+  };
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("row", "border_26bed6")}>
+      <div className={cx("px-4")}>
+        <Form name="basic" onFinish={onFinish} form={formFilterCancel}>
+          <div className={cx("form")}>
+            <div>
+              <Form.Item
+                label="Lọc những tour có số ngày trước ngày khởi hành "
+                name="numberDaybeforeGo"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your username!",
+                  },
+                ]}
+              >
+                <InputNumber min={0} />
+              </Form.Item>
+            </div>
+            <div className={cx("mx-3")}></div>
+            <div>
+              <Form.Item
+                label="Lọc những lịch có lượt đặt bé hơn hoặc bằng"
+                name="conditionTicketThatCancel"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your username!",
+                  },
+                ]}
+              >
+                <InputNumber min={0} />
+              </Form.Item>
+            </div>
+            <div>
+              <Form.Item
+                wrapperCol={{
+                  offset: 8,
+                  span: 16,
+                }}
+              >
+                <Button type="primary" htmlType="submit">
+                  Tìm
+                </Button>
+              </Form.Item>
+            </div>
+          </div>
+        </Form>
+      </div>
+      <div className={cx("row p-5", "border_t_26bed6")}>
         <div className={cx("col-lg-4 p-0", "border_26bed6")}>
           <h5 className={cx("title")}>DANH SACH TOUR KHÔNG ĐỦ NGƯỜI ĐẶT</h5>
 
