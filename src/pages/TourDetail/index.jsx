@@ -5,7 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import moment from "moment";
 
-import { IconCheck } from "@tabler/icons-react";
+import { IconCheck, IconCalendarCheck } from "@tabler/icons-react";
 import { InputNumber } from "antd";
 import { useEffect, useMemo, useState } from "react";
 
@@ -14,6 +14,7 @@ import CommentService from "../../services/CommentService.js";
 import functions from "../../components/Functions/function.js";
 
 import ModalBookingTour from "./components/ModalBookingTour/index.jsx";
+import ModalMoreCalendar from "./components/ModalMoreCalendar";
 
 import {
   IconClockHour10,
@@ -33,8 +34,13 @@ function TourDetail() {
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
   const [activeCalendar, setActiveCalendar] = useState({});
-
+  console.log("calendarTour", calendarTour);
   const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
+
+  const [isShowModalMoreCalendar, setIsShowModalMoreCalendar] = useState(false);
+  const handleModalMoreCalendar = () => {
+    setIsShowModalMoreCalendar(true);
+  };
 
   const handleModalBookingTour = () => {
     if (!isAuthenticated) {
@@ -60,7 +66,8 @@ function TourDetail() {
   const getTourById = async () => {
     try {
       const res = await TourService.getTour(
-        `id=${id}&sortStartDayCalendar=ASC&numberCalenadar=3&getAll=false&statusCalendar=1`
+        `id=${id}&sortStartDayCalendar=ASC&getAll=false&statusCalendar=1`
+        // `id=${id}&sortStartDayCalendar=ASC&numberCalenadar=3&getAll=false&statusCalendar=1`
       );
       if (res && res.data.EC === 0 && res.data.DT.id) {
         setTourDetail(res?.data?.DT);
@@ -326,10 +333,15 @@ function TourDetail() {
             <div className={cx("calendar", "bg-white")}>
               <div className={cx("px-3 pt-3 ", "infoCalendar")}>
                 <h5 className={cx("title")}>Lịch Trình và Giá Tour</h5>
-                <div className={cx("mb-3")}>Chọn Lịch Trình và Xem Giá:</div>
+                <div className={cx("iconMore")}>
+                  <div>Chọn Lịch Trình và Xem Giá:</div>
+                  <div className={cx("iconM")}>
+                    <IconCalendarCheck onClick={handleModalMoreCalendar} />
+                  </div>
+                </div>
 
                 <div className={cx("row")}>
-                  {calendarTour?.map((item) => {
+                  {calendarTour.slice(0, 3)?.map((item) => {
                     return (
                       <div className={cx("col-lg-4")} key={item?.id}>
                         <div
@@ -515,6 +527,11 @@ function TourDetail() {
         numberTicketChild={numberTicketChild}
         totalAmount={totalAmount}
         getTourById={getTourById}
+      />
+      <ModalMoreCalendar
+        isShowModalMoreCalendar={isShowModalMoreCalendar}
+        setIsShowModalMoreCalendar={setIsShowModalMoreCalendar}
+        calendarTour={calendarTour}
       />
     </div>
   );

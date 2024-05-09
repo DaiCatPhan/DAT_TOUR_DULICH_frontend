@@ -1,0 +1,63 @@
+.calendarCard {
+  padding: 13px 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+}
+
+ 
+
+.date {
+  border: 2px solid rgba(97, 96, 96, 0.281);
+  cursor: pointer;
+}
+
+.date.active {
+  border: 2px solid #26bed6;
+}
+
+.btnYeuCau {
+  border: 2px solid #f79321;
+  background-color: #f79321;
+  color: white;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 550;
+  padding: 8px 15px;
+  min-width: 147px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f9ab52;
+  }
+}
+
+.btnYeuCau:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnLienHe {
+  border: 2px solid #f79321;
+  color: #f79321;
+  background-color: transparent;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 550;
+  padding: 8px 15px;
+  min-width: 147px;
+  cursor: pointer;
+  transition: 0.5s;
+
+  &:hover {
+    background-color: #f79321;
+    color: white;
+  }
+}
+
+.ss2 {
+  width: 390px;
+  padding: 15px;
+}

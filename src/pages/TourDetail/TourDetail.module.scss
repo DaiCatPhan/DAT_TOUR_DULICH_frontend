@@ -92,6 +92,22 @@
   top: 0;
 }
 
+.iconMore {
+  display: flex;
+  color: #666;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  .iconM {
+    cursor: pointer;
+  }
+  .iconM:hover {
+    color: blue;
+    transform: scale(1.1); 
+  }
+}
+
 .calendar > .infoCalendar {
   background-color: white;
   padding: 20px;
