@@ -134,7 +134,7 @@ function Tours() {
           className={cx("w-100", "imageTourPage")}
           height={500}
         />
-        <div className={cx("formSearch")}>
+        <div className={cx("formSearch")}> 
           <FormSearch />
         </div>
       </div>

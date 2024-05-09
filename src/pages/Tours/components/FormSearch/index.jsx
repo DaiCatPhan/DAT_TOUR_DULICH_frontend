@@ -10,19 +10,20 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { Empty } from "antd";
 import queryString from "query-string";
+import { InputNumber } from "antd";
 
 function FormSearch() {
   const [name, setName] = useState("");
   const [startDay, setStartDay] = useState("");
-  const [startDayEnd, setStartDayEnd] = useState("");
+  const [price, setPrice] = useState("");
   const navigate = useNavigate();
 
   const onChangeDatePickerStartDay = (date) => {
     setStartDay(date);
   };
 
-  const onChangeDatePickerEndDay = (date) => {
-    setStartDayEnd(date);
+  const onChangePrice = (date) => {
+    setPrice(date);
   };
 
   const onChangeNameTour = (e) => {
@@ -40,8 +41,8 @@ function FormSearch() {
       condition.startDay = moment(startDay?.$d).format("YYYY-MM-DD");
     }
 
-    if (startDayEnd) {
-      condition.startDayEnd = moment(startDayEnd?.$d).format("YYYY-MM-DD");
+    if (price) {
+      condition.price = price;
     }
     const stringified = queryString.stringify(condition);
 
@@ -82,7 +83,7 @@ function FormSearch() {
             onChange={onChangeNameTour}
           />
         </div>
-        <div className={cx("my-3")}></div> 
+        <div className={cx("my-3")}></div>
 
         <div className={cx("d-flex flex-wrap justify-content-between ")}>
           <div>
@@ -95,11 +96,14 @@ function FormSearch() {
           </div>
 
           <div>
-            <DatePicker
-              placeholder="Chọn ngày kết thúc"
-              onChange={onChangeDatePickerEndDay}
-              className={cx("input", "DatePicker")}
-              format={"DD-MM-YYYY"}
+            <InputNumber
+              onChange={onChangePrice}
+              className={cx("inputSearchPrice")}
+              placeholder="Nhập giá VND"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+              parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             />
           </div>
           <div>

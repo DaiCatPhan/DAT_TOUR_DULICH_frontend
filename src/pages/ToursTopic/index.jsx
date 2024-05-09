@@ -25,6 +25,7 @@ import {
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import { InputNumber } from "antd";
 import { Menu } from "antd";
 import { Button, Checkbox, Form, Input, DatePicker } from "antd";
 import { useEffect, useState } from "react";
@@ -45,7 +46,7 @@ function ToursTopic() {
   const typeParam = searchParams.get("type");
   const startDayParam = searchParams.get("startDay");
   const endDayParam = searchParams.get("endDay");
-  console.log("tours".tours);
+
   // Gọi API lấy dữ liệu
   const getTours = async () => {
     try {
@@ -151,7 +152,7 @@ function ToursTopic() {
   };
 
   const onFinish = async (values) => {
-    const { name, startDay, startDayEnd } = values;   
+    const { name, startDay, price } = values;
 
     const condition = {};
     if (name) {
@@ -160,12 +161,13 @@ function ToursTopic() {
     if (startDay) {
       condition.startDay = moment(startDay?.$d).format("YYYY-MM-DD");
     }
-    if (startDayEnd) {
-      condition.startDayEnd = moment(startDayEnd?.$d).format("YYYY-MM-DD");
+    if (price) {
+      condition.price = price;
     }
+
     const stringified = queryString.stringify(condition);
 
-    navigate(`?${stringified}`); 
+    navigate(`?${stringified}`);
     getTours();
   };
 
@@ -191,17 +193,20 @@ function ToursTopic() {
                   <DatePicker
                     format="DD/MM/YYYY  "
                     className={cx("inputSearch")}
-                    placeholder="Chọn ngày"
+                    placeholder="Chọn ngày khởi hành"
                   />
                 </Form.Item>
               </div>
 
               <div className={cx("mx-2")}>
-                <Form.Item name="startDayEnd">
-                  <DatePicker
-                    format="DD/MM/YYYY  "
-                    className={cx("inputSearch")}
-                    placeholder="Chọn ngày"
+                <Form.Item name="price">
+                  <InputNumber
+                    className={cx("inputSearchPrice")}
+                    placeholder="Nhập giá VND"
+                    formatter={(value) =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    }
+                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                   />
                 </Form.Item>
               </div>

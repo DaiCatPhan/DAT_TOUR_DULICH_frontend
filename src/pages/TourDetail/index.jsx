@@ -57,7 +57,6 @@ function TourDetail() {
     }
   };
 
-  // Gọi API lấy dữ liệu
   const getTourById = async () => {
     try {
       const res = await TourService.getTour(
@@ -81,7 +80,6 @@ function TourDetail() {
     }
   };
 
-  // Gọi API lấy dữ liệu
   const getCommentTourById = async () => {
     try {
       const res = await CommentService.review(`ID_Tour=${id}&show=1`);
@@ -109,22 +107,35 @@ function TourDetail() {
     });
   };
 
-  //
   const handleNumberTicketAdult = (value) => {
     setNumberTicketAdult(value);
   };
-  //
+
   const handleNumberTicketChild = (value) => {
     setNumberTicketChild(value);
   };
 
-  // Tổng tiền
   const totalAmount = useMemo(() => {
     return (
       numberTicketAdult * activeCalendar?.priceAdult +
       numberTicketChild * activeCalendar?.priceChild
     );
-  }, [numberTicketAdult, numberTicketChild, activeCalendar]); // Thêm adultTickets và childTickets vào dependency array
+  }, [numberTicketAdult, numberTicketChild, activeCalendar]);
+
+  const handleDuration = (day, night) => {
+    if (day === 1 && night === 0) {
+      return <div>Trong ngày</div>;
+    } else {
+      return (
+        <div>
+          <span>{day}</span>
+          <span className={cx("mx-1")}>ngày</span>
+          <span>{night}</span>
+          <span className={cx("mx-1")}>đêm</span>
+        </div>
+      );
+    }
+  };
 
   return (
     <div className={cx("wrapper")}>
@@ -153,9 +164,10 @@ function TourDetail() {
                         <IconClockHour10 className={cx("mb-2")} />
                       </div>
                       <div className={cx("mx-1")}>
-                        {tourDetail?.numbeOfDay}
-                        <span className={cx("mx-1")}>ngày</span>
-                        {tourDetail?.numberOfNight} <span>đêm</span>
+                        {handleDuration(
+                          tourDetail?.numbeOfDay,
+                          tourDetail?.numberOfNight
+                        )}
                       </div>
                     </div>
                     <div>

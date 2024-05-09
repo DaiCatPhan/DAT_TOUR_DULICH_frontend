@@ -10,8 +10,11 @@ import {
 } from "@tabler/icons-react";
 import { Link } from "react-router-dom";
 
+import Function from "../Functions/function";
+
 function CardTour(props) {
   const { item } = props;
+  console.log("item >>", item);
   const { image, name, duration, priceAdult } = item;
   const handleIconVehicle = (vehicle) => {
     if (vehicle == "xe") {
@@ -22,6 +25,22 @@ function CardTour(props) {
       return <IconShip />;
     }
   };
+
+  const handleDuration = (day, night) => {
+    if (day === 1 && night === 0) {
+      return <div>Trong ngày</div>;
+    } else {
+      return (
+        <div>
+          <span>{day}</span>
+          <span className={cx("mx-1")}>ngày</span>
+          <span>{night}</span>
+          <span className={cx("mx-1")}>đêm</span>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("cardTour", "rounded")}>
@@ -35,7 +54,9 @@ function CardTour(props) {
               <div>
                 <IconClockHour3 />
               </div>
-              <div>{item?.duration}</div>
+              <div className={cx("mx-1")}>
+                {handleDuration(item?.numbeOfDay, item?.numberOfNight)}
+              </div>
             </div>
             <div>{handleIconVehicle(item?.vehicle)}</div>
           </div>
@@ -43,7 +64,8 @@ function CardTour(props) {
           <div className={cx("d-flex justify-content-between py-2")}>
             <div></div>
             <h5 className={cx("price")}>
-              15.990.000 <span className={cx("fs-6")}>VND</span>
+              <span>{Function?.formatNumberWithCommas(priceAdult)}</span>
+              <span className={cx("fs-6 mx-1")}>VND</span>
             </h5>
           </div>
         </div>
