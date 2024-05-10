@@ -11,11 +11,17 @@ import { InputNumber } from "antd";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 
+import ModalBookingTour from "../ModalBookingTour";
+
 function ModalMoreCalendar(props) {
   const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
 
-  const { isShowModalMoreCalendar, setIsShowModalMoreCalendar, calendarTour } =
-    props;
+  const {
+    isShowModalMoreCalendar,
+    setIsShowModalMoreCalendar,
+    calendarTour,
+    handleGetMoreCalendar,
+  } = props;
 
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [activeCalendar, setActiveCalendar] = useState({});
@@ -53,11 +59,13 @@ function ModalMoreCalendar(props) {
   }, [numberTicketAdult, numberTicketChild, activeCalendar]);
 
   const handleModalBookingTour = () => {
-    if (!isAuthenticated) {
-      toast.error("Vui lòng đăng nhập để đặt tour");
-      return;
-    }
-    setIsShowModalBookingTour(true);
+    const data = {
+      activeCalendar: activeCalendar,
+      numberTicketAdult: numberTicketAdult,
+      numberTicketChild: numberTicketChild,
+      totalAmount: totalAmount,
+    };
+    handleGetMoreCalendar(data);
   };
 
   return (
@@ -69,9 +77,10 @@ function ModalMoreCalendar(props) {
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
         width={800}
+        footer={null}
       >
         <div>
-          <div className={cx("row border")}>
+          <div className={cx("row ")}>
             <div className={cx("col-lg-6 ")}>
               <div className={cx("row")}>
                 {calendarTour?.map((item) => {
@@ -93,11 +102,11 @@ function ModalMoreCalendar(props) {
               </div>
             </div>
 
-            <div className={cx("col-lg-6")}>
+            <div className={cx("col-lg-6 p-0")}>
               <div className={cx("ss2")}>
                 <div
                   className={cx(
-                    "border   d-flex  justify-content-between align-items-center rounded py-3 my-3 flex-wrap px-2"
+                    "border   d-flex  justify-content-between align-items-center rounded py-3   flex-wrap px-2"
                   )}
                 >
                   <div>Người lớn</div>

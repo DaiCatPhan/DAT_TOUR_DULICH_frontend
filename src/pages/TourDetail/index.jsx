@@ -34,7 +34,6 @@ function TourDetail() {
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
   const [activeCalendar, setActiveCalendar] = useState({});
-  console.log("calendarTour", calendarTour);
   const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
 
   const [isShowModalMoreCalendar, setIsShowModalMoreCalendar] = useState(false);
@@ -122,7 +121,7 @@ function TourDetail() {
     setNumberTicketChild(value);
   };
 
-  const totalAmount = useMemo(() => {
+  let totalAmount = useMemo(() => {
     return (
       numberTicketAdult * activeCalendar?.priceAdult +
       numberTicketChild * activeCalendar?.priceChild
@@ -142,6 +141,15 @@ function TourDetail() {
         </div>
       );
     }
+  };
+
+  const handleGetMoreCalendar = (data) => {
+    setActiveCalendar(data.activeCalendar);
+    setNumberTicketAdult(data.numberTicketAdult);
+    setNumberTicketChild(data.numberTicketChild);
+    totalAmount = data.totalAmount;
+    setIsShowModalBookingTour(true);
+    setIsShowModalMoreCalendar(false);
   };
 
   return (
@@ -532,6 +540,7 @@ function TourDetail() {
         isShowModalMoreCalendar={isShowModalMoreCalendar}
         setIsShowModalMoreCalendar={setIsShowModalMoreCalendar}
         calendarTour={calendarTour}
+        handleGetMoreCalendar={handleGetMoreCalendar}
       />
     </div>
   );

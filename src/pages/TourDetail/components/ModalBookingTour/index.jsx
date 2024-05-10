@@ -17,6 +17,7 @@ import qs from "qs";
 import { useSearchParams, useParams } from "react-router-dom";
 import BookingService from "../../../../services/BookingService";
 import Function from "../../../../components/Functions/function";
+import moment from "moment";
 
 function ModalBookingTour(props) {
   const [searchParams] = useSearchParams();
@@ -130,12 +131,11 @@ function ModalBookingTour(props) {
     data.user = dataCustomer;
 
     const res = await BookingService.createVNP(data);
-    console.log("res , ", res);
     if (res && res.data.EC == 0) {
       window.location.href = res.data.DT.url;
       getTourById();
     } else {
-      toast.error(res.data.EM); 
+      toast.error(res.data.EM);
     }
   };
 
@@ -207,22 +207,33 @@ function ModalBookingTour(props) {
         style={{ top: 15 }}
         footer={null}
       >
-        <div className={cx("color_003c71")}>
+        <div>
           <div className={cx("border p-3", "session1")}>
             <div className={cx("row")}>
-              <div className={cx("col-lg-2  ")}>
-                <img
-                  src={tourDetail?.image}
-                  alt="notFound"
-                  style={{ width: "100px", height: "100px" }}
-                />
-              </div>
+              <div className={cx("col-lg-6  ")}>
+                <div className={cx("d-flex")}>
+                  <img
+                    src={tourDetail?.image}
+                    alt="notFound"
+                    style={{ width: "100px", height: "100px" }}
+                  />
+                  <div className={cx("mx-1")}></div>
 
-              <div className={cx("col-lg-4")}>
-                <div className={cx("name")} x>
-                  {tourDetail?.name}
+                  <div>
+                    <div className={cx("name", "color_003c71")}>
+                      {tourDetail?.name}
+                    </div>
+                    <div className={cx("d-flex my-2")}>
+                      <div>
+                        {moment(activeCalendar?.startDay).format("DD-MM-YYYY")}
+                      </div>
+                      <div className={cx("mx-1")}>/</div>
+                      <div>
+                        {moment(activeCalendar?.endDay).format("DD-MM-YYYY")}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div>ngày khởi hành </div>
               </div>
 
               <div className={cx("col-lg-2")}>

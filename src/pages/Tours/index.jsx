@@ -68,7 +68,7 @@ function Tours() {
         "type=Tour Vi Vu Cuối Tuần&status=1"
       );
 
-      const tourThamHiem = await TourService.getTours( 
+      const tourThamHiem = await TourService.getTours(
         "type=Tour Thám Hiểm&status=1"
       );
 
@@ -134,13 +134,13 @@ function Tours() {
           className={cx("w-100", "imageTourPage")}
           height={500}
         />
-        <div className={cx("formSearch")}> 
+        <div className={cx("formSearch")}>
           <FormSearch />
         </div>
       </div>
 
       <div className={cx("listTourSeened")}>
-        <div className={cx("border p-4")}>
+        <div className={cx("  p-4")}>
           <div className={cx("d-flex justify-content-between mx-2")}>
             <div className={cx("d-flex align-items-center  ")}>
               <div>
@@ -184,7 +184,7 @@ function Tours() {
           </div>
 
           <div className={cx("my-4 ")}>
-            {isAuthenticated ? (
+            {isAuthenticated && toursViewed.length > 0 ? (
               <p className={cx("colorTitle", "fs-2")}>
                 Tours du lịch bạn đã xem gần đây
               </p>
@@ -208,105 +208,350 @@ function Tours() {
         </div>
       </div>
 
-      {/* Tour Du Lịch Hành Hương */}
-      {/* <div className={cx("bg-white border  py-4")}>
-        <div className={cx("listTour")}>
-          <div className={cx("text")}>
-            <h5 className={cx("topicTour")}>Tour Du Lịch Hành Hương</h5>
-            <p className={cx("spanTopic")}>
-              Hành Trình Tâm Linh , Cầu Nguyện An Lành
-            </p>
-          </div>
-          <div className={cx("row m-auto  ")}>
-            {toursDuLichHanhHuong?.tours?.slice(0, 6).map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleClickTour(item)}
-                  className={cx(
-                    "col-lg-4 d-flex justify-content-center mb-3",
-                    "poiter"
-                  )}
-                >
-                  <CardTour item={item} />
-                </div>
-              );
-            })}
-          </div>
-          <div className={cx("text-center   pb-3")}>
-            <Link to={`/tours/topic?type=Tour Du Lịch Hành Hương`}>
-              <button className={cx("btnSeenTour")}>Xem thêm tours</button>
-            </Link>
-          </div>
-        </div>
-      </div> */}
-
-      {/* Tour Du Lịch Tây Bắc */}
-      {/* <div className={cx("bg-grey border py-4")}>
-        <div className={cx("listTour")}>
-          <div className={cx("text")}>
-            <h5 className={cx("topicTour")}>Tour Du Lịch Tây Bắc</h5>
-            <p className={cx("spanTopic")}>
-              Hành Trình Tâm Linh , Cầu Nguyện An Lành
-            </p>
-          </div>
-          <div className={cx("row m-auto  ")}>
-            {toursDuLichDongTayBac?.tours?.slice(0, 6).map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleClickTour(item)}
-                  className={cx(
-                    "col-lg-4 d-flex justify-content-center mb-3",
-                    "poiter"
-                  )}
-                >
-                  <CardTour item={item} />
-                </div>
-              );
-            })}
-          </div>
-          <div className={cx("text-center   pb-3")}>
-            <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
-              <button className={cx("btnSeenTour")}>Xem thêm tours</button>
-            </Link>
-          </div>
-        </div>
-      </div> */}
-
       {/* Tour Du Lịch Miền Nam */}
-      <div className={cx("bg-grey border py-4")}>
-        <div className={cx("listTour")}>
-          <div className={cx("text")}>
-            <h5 className={cx("topicTour")}>Tour Du Lịch Miền Nam</h5>
-            <p className={cx("spanTopic")}>
-              Hành Trình Tâm Linh , Cầu Nguyện An Lành
-            </p>
-          </div>
-          <div className={cx("row m-auto  ")}>
-            {toursMienNam?.tours?.slice(0, 6).map((item) => {
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleClickTour(item)}
-                  className={cx(
-                    "col-lg-4 d-flex justify-content-center mb-3",
-                    "poiter"
-                  )}
-                >
-                  <CardTour item={item} />
-                </div>
-              );
-            })}
-          </div>
-          <div className={cx("text-center   pb-3")}>
-            <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
-              <button className={cx("btnSeenTour")}>Xem thêm tours</button>
-            </Link>
+      {toursMienNam?.tours?.length > 0 && (
+        <div className={cx("bg-white border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Du Lịch Miền Nam</h5>
+              <p className={cx("spanTopic")}>
+                Miền Nam Việt Nam: Đất Trời Nắng Gió và Nét Văn Hóa Sôi Động
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursMienNam?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+
+      {/* Tour Du Lịch Miền Trung */}
+      {toursMienTrung?.tours?.length > 0 && (
+        <div className={cx("bg-grey border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Du Lịch Miền Trung</h5>
+              <p className={cx("spanTopic")}>
+                Miền Trung Việt Nam: Hành Trình Khám Phá Đất Nước Trung Ương
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursMienTrung?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Tour Du Lịch Miền Bắc*/}
+      {toursMienBac?.tours?.length > 0 && (
+        <div className={cx("bg-white border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Du Lịch Miền Bắc</h5>
+              <p className={cx("spanTopic")}>
+                Khám Phá Miền Bắc Việt Nam: Hành Trình Qua Thành Phố Cổ và Cảnh
+                Đẹp Tự Nhiên
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursMienBac?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tour Du Lịch Hành Hương */}
+      {toursDuLichHanhHuong?.tours?.length > 0 && (
+        <div className={cx("bg-grey border  py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Du Lịch Hành Hương</h5>
+              <p className={cx("spanTopic")}>
+                Hành Trình Tâm Linh , Cầu Nguyện An Lành
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursDuLichHanhHuong?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Hành Hương`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tour Du Lịch Tây Bắc */}
+      {toursDuLichDongTayBac?.tours?.length > 0 && (
+        <div className={cx("bg-white border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Du Lịch Tây Bắc</h5>
+              <p className={cx("spanTopic")}>
+                Hành Trình Tâm Linh , Cầu Nguyện An Lành
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursDuLichDongTayBac?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tour Du Lịch Nội Địa Cao Cấp */}
+      {toursNoiDiaCaoCap?.tours?.length > 0 && (
+        <div className={cx("bg-grey border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Nội Địa Cao Cấp</h5>
+              <p className={cx("spanTopic")}>
+                Tour Nội Địa Cao Cấp: Trải Nghiệm Sang Trọng và Đẳng Cấp
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursNoiDiaCaoCap?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tour Du Lịch Trải Nghiệm Địa Phương */}
+      {toursTraiNghiemDiaPhuong?.tours?.length > 0 && (
+        <div className={cx("bg-white border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Trải Nghiệm Địa Phương</h5>
+              <p className={cx("spanTopic")}>
+                Trải Nghiệm Địa Phương: Chuyến Du Lịch Tinh Tế Khám Phá Văn Hóa
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursTraiNghiemDiaPhuong?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tour Du Lịch Tây Nguyên*/}
+      {toursDuLichTayNguyen?.tours?.length > 0 && (
+        <div className={cx("bg-grey border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Tây Nguyên</h5>
+              <p className={cx("spanTopic")}>
+                Khám Phá Tây Nguyên: Hành Trình Đầy Màu Sắc và Văn Hóa
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursDuLichTayNguyen?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tour Du Lịch Vi Vu Cuối Tuần*/}
+      {toursViVuCuoiTuan?.tours?.length > 0 && (
+        <div className={cx("bg-white border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Vi Vu Cuối Tuần</h5>
+              <p className={cx("spanTopic")}>
+                Tour Vi vu Cuối Tuần: Khám Phá Nhanh Gọn Và Đầy Hứng Khởi
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursViVuCuoiTuan?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Tour Du Lịch Thám hiểm*/}
+      {toursThamHiem?.tours?.length > 0 && (
+        <div className={cx("bg-grey border py-4")}>
+          <div className={cx("listTour")}>
+            <div className={cx("text")}>
+              <h5 className={cx("topicTour")}>Tour Thám Hiểm</h5>
+              <p className={cx("spanTopic")}>
+                Tour Thám Hiểm: Khám Phá Những Vùng Đất Hoang Sơ
+              </p>
+            </div>
+            <div className={cx("row m-auto  ")}>
+              {toursThamHiem?.tours?.slice(0, 6).map((item) => {
+                return (
+                  <div
+                    key={item.id}
+                    onClick={() => handleClickTour(item)}
+                    className={cx(
+                      "col-lg-4 d-flex justify-content-center mb-3",
+                      "poiter"
+                    )}
+                  >
+                    <CardTour item={item} />
+                  </div>
+                );
+              })}
+            </div>
+            <div className={cx("text-center   pb-3")}>
+              <Link to={`/tours/topic?type=Tour Du Lịch Miền Nam`}>
+                <button className={cx("btnSeenTour")}>Xem thêm tours</button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </div> 
   );
 }
 
