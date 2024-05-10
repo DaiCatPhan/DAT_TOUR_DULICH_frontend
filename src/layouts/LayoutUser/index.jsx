@@ -19,7 +19,7 @@ import {
   IconGiftCard,
   IconTextPlus,
   IconDashboard,
-} from "@tabler/icons-react";
+} from "@tabler/icons-react"; 
 
 import { Menu } from "antd";
 

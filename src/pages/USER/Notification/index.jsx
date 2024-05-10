@@ -10,11 +10,20 @@ import { Button, Table } from "antd";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import ModalChangeCalendar from "./ModalChangeCalendar";
 
 function Notification() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [notification, setNotification] = useState([]);
+
+  const [isShowModalChangeCalendar, setIsShowModalChangeCalendar] =
+    useState(false);
+  const [dataModalChangeCalendar, setDataModalChangeCalendar] = useState([]);
+  const handleModalChangeCalendar = () => {
+    setIsShowModalChangeCalendar(true);
+    setDataModalChangeCalendar(notification?.calendarReplace);
+  };
 
   const getListNotification = async () => {
     const res = await NotificationService.readID(`ID_Notification=${id}`);
@@ -25,13 +34,26 @@ function Notification() {
     }
   };
 
+  const changeCalendar = async (data) => {
+    const dataChangCalendar = {
+      id: notification?.ID_BookingTour,
+      ID_Calendar: data?.id,
+      updateNotification: "true",
+      ID_Notification: notification?.id,
+    };
+
+    const res = await BookingService.update(dataChangCalendar);
+    if (res && res.data.EC == 0) {
+      toast.success("Chuyển lịch tour thành công");
+      navigate("/user/order-buy");
+    } else {
+      toast.error(res.data.EM);
+    }
+  };
+
   useEffect(() => {
     getListNotification();
   }, [id]);
-
-  const handleReplaceTour = () => {
-    navigate(`/tours/${notification?.Calendar?.Tour?.id}`);
-  };
 
   const handleCancelTour = async () => {
     const dataSend = {
@@ -111,7 +133,7 @@ function Notification() {
       key: "calendar",
       render: (data) => {
         return (
-          <Button onClick={handleReplaceTour} type="primary">
+          <Button onClick={handleModalChangeCalendar} type="primary">
             Chuyển lịch tour
           </Button>
         );
@@ -152,6 +174,13 @@ function Notification() {
           )}
         </div>
       </div>
+      <ModalChangeCalendar
+        isShowModalChangeCalendar={isShowModalChangeCalendar}
+        setIsShowModalChangeCalendar={setIsShowModalChangeCalendar}
+        dataModalChangeCalendar={dataModalChangeCalendar}
+        setDataModalChangeCalendar={setDataModalChangeCalendar}
+        changeCalendar={changeCalendar}
+      />
     </div>
   );
 }

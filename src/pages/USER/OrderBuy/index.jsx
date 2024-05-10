@@ -9,7 +9,7 @@ import ModalCancelBooking from "./components/ModalCancelBooking";
 import ModalDetailBillBooking from "./components/ModalDetailBillBooking";
 import ModalEvalBooking from "./components/ModalEvalBooking";
 
-import Function from "../../../components/Functions/function";
+import Function from "../../../components/Functions/function"; 
 
 import { Space, Table, Tag } from "antd";
 import { Tabs } from "antd";
