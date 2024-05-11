@@ -158,7 +158,7 @@ function ModalBillPDF(props) {
                           người lớn : {dataModalBillPDF?.numberTicketAdult}
                         </Text>
                         <Text>
-                          trẻ em : {dataModalBillPDF?.numberTicketChild}
+                          trẻ em : {dataModalBillPDF?.numberTicketChild || 0}
                         </Text>
                       </View>
                     </View>

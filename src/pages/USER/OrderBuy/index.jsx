@@ -9,7 +9,7 @@ import ModalCancelBooking from "./components/ModalCancelBooking";
 import ModalDetailBillBooking from "./components/ModalDetailBillBooking";
 import ModalEvalBooking from "./components/ModalEvalBooking";
 
-import Function from "../../../components/Functions/function"; 
+import Function from "../../../components/Functions/function";
 
 import { Space, Table, Tag } from "antd";
 import { Tabs } from "antd";
@@ -307,7 +307,7 @@ function OrderBuy() {
     <div className={cx("wrapper")}>
       <div className={cx("p-2")}>
         <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-        <Table dataSource={listBookingTour} columns={columns} />;
+        <Table dataSource={listBookingTour} columns={columns} />
       </div>
 
       <ModalCancelBooking

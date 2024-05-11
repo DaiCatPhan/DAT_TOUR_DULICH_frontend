@@ -20,7 +20,6 @@ function ModalDetailBillBooking(props) {
     getListBookingTour,
   } = props;
   const { Calendar, Customer, Voucher } = dataModalDetailBillBooking;
-  console.log("dataModalDetailBillBooking", dataModalDetailBillBooking);
 
   const [confirmLoading, setConfirmLoading] = useState(false);
 
@@ -67,11 +66,12 @@ function ModalDetailBillBooking(props) {
             <div className={cx("nameTour")}>{Calendar?.Tour?.name}</div>
             <div>
               <div className={cx("row  my-2")}>
-                <div className={cx("col-lg-3")}>Mã Tour</div>
+                <div className={cx("col-lg-3")}>Mã đơn </div>
                 <div className={cx("col-lg-3")}>
-                  <b>{Calendar?.ID_Tour}</b>
+                  <b>{dataModalDetailBillBooking?.id}</b>
                 </div>
               </div>
+
               <div className={cx("row  my-2")}>
                 <div className={cx("col-lg-3")}>Thời gian</div>
                 <div className={cx("col-lg-3 fw-bold")}>
@@ -122,7 +122,7 @@ function ModalDetailBillBooking(props) {
               <div className={cx("col-lg-3 fw-bold")}>
                 <span>x</span>
                 <span className={cx("mx-1")}>
-                  {dataModalDetailBillBooking?.numberTicketChild}
+                  {dataModalDetailBillBooking?.numberTicketChild || 0}
                 </span>
               </div>
             </div>
@@ -142,7 +142,7 @@ function ModalDetailBillBooking(props) {
               </div>
             </div>
             <div className={cx("row my-1")}>
-              <div className={cx("col-lg-3")}>Email</div> 
+              <div className={cx("col-lg-3")}>Email</div>
               <div className={cx("col-lg my-2")}>
                 <b>{Customer?.email}</b>
               </div>
@@ -184,3 +184,12 @@ function ModalDetailBillBooking(props) {
 }
 
 export default ModalDetailBillBooking;
+
+
+
+
+
+
+
+
+

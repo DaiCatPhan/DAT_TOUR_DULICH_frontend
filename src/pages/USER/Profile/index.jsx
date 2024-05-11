@@ -79,7 +79,15 @@ function Profile() {
               rules={[
                 {
                   required: true,
-                  message: "Số điện thoại không được để trống !",
+                  message: "Vui lòng nhập số điện thoại !",
+                },
+                {
+                  pattern: /^[0-9]+$/,
+                  message: "Vui lòng nhập một số điện thoại hợp lệ!",
+                },
+                {
+                  len: 10,
+                  message: "Vui lòng nhập số điện thoại đúng chữ số!",
                 },
               ]}
             >
@@ -96,6 +104,10 @@ function Profile() {
                 },
               ]}
             >
+              <Input />
+            </Form.Item>
+
+            <Form.Item label="Đại chỉ" name="address">
               <Input />
             </Form.Item>
 

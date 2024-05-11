@@ -79,7 +79,7 @@ function RegisterPage() {
                   }}
                 >
                   <Divider>
-                    <p>Đăng ký tài khoản</p>
+                    <p>ĐĂNG KÝ TÀI KHOẢN</p>
                   </Divider>
 
                   <Form.Item
@@ -125,7 +125,7 @@ function RegisterPage() {
                       },
                       {
                         pattern: /^[0-9]+$/,
-                        message: "Vui lòng nhập một số điện thoại hợp lệ!",
+                        message: "Vui lòng nhập một số điện thoại hợp lệ!", 
                       },
                       {
                         len: 10,

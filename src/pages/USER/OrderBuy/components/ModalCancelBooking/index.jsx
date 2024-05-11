@@ -65,7 +65,7 @@ function ModalCancelBooking(props) {
         <div className={cx("cancelBooking")}>
           <h4 className={cx("text-center text-danger")}>YÊU CẦU HỦY TOUR</h4>
           <div>
-            <b>MÃ TOUR: {dataModalCancelBooking.id}</b>
+            <b>MÃ ĐẶT TOUR: {dataModalCancelBooking.id}</b>
           </div>
           <div>
             <div className={cx("titleReason")}>Lí do hủy tour</div>

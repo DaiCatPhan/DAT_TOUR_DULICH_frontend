@@ -62,7 +62,7 @@ function StoreVoucher() {
     <div className={cx("container")}>
       <div className={cx("storeVoucher")}>
         <div className={cx("d-flex align-items-center")}>
-          <div className={cx("fs-4")}>Kho voucher</div>
+          <div className={cx("fs-4")}>Voucher của tôi</div>
           <div className={cx("mx-4", "poiter")}>
             <IconRefresh className={cx("text-success")} onClick={F5_data} />
           </div>

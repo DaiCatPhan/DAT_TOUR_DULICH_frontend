@@ -4,13 +4,13 @@ const cx = className.bind(styles);
 
 function Footer() {
   return (
-    <div className={cx("  d-flex p-5 border")}>
+    <div className={cx("  d-flex p-5")}>
       <div>
         <div className={cx("row")}>
           <div className={cx("col-lg-4")}>
-            <div className={cx("title")}>Về iVIVU.com</div>
+            <div className={cx("title")}>Về Dulich.com</div>
             <div className={cx("text-13")}>Chúng tôi</div>
-            <div className={cx("text-13")}>iVIVU Blog</div>
+            <div className={cx("text-13")}>Dulich Blog</div>
             <div className={cx("text-13")}>PMS - Miễn phí</div>
           </div>
           <div className={cx("col-lg-4")}>
@@ -70,14 +70,6 @@ function Footer() {
           </div>
         </div>
         <div className={cx("row")}>
-          <div className={cx("text-15 ")}>
-            HCM: Lầu 2, Tòa nhà Anh Đăng, 215 Nam Kỳ Khởi Nghĩa, Phường 7, Quận
-            3, Tp. Hồ Chí Minh (Xem bản đồ)
-          </div>
-          <div className={cx("text-15 my-2")}>
-            HN: P308, Tầng 3, tòa nhà The One, số 2 Chương Dương Độ, P.Chương
-            Dương, Q.Hoàn Kiếm, Hà Nội (Xem bản đồ)
-          </div>
           <div className={cx("text-15")}>
             Cần Thơ: Tầng 7 - Tòa nhà STS - 11B Đại Lộ Hòa Bình, P. Tân An, Q.
             Ninh Kiều, TP. Cần Thơ (Xem bản đồ)

@@ -85,7 +85,7 @@ function LoginPage() {
                   }}
                 >
                   <Divider>
-                    <p>Hoặc đăng nhập với email</p>
+                    <p>ĐĂNG NHẬP</p>
                   </Divider>
 
                   <Form.Item
