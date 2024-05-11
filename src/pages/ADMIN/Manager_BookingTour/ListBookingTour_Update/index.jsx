@@ -21,9 +21,8 @@ import {
   IconRotate,
   IconTrash,
 } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-
 import BookingService from "../../../../services/BookingService";
 import ModalUpdateStatusBooking from "../components/ModalUpdateStatusBooking";
 import ModalReasonCancel from "../components/ModalReasonCancel";
@@ -36,6 +35,15 @@ function ListBookingTour_Update() {
   const [current, setCurrent] = useState(1);
   const [total, setTotal] = useState(20);
   const [listBookingTour, setListBookingTour] = useState([]);
+  const [
+    listBookingTourCancelThatCountNumber,
+    setlistBookingTourCancelThatCountNumber,
+  ] = useState([]);
+
+  console.log(
+    "listBookingTourCancelThatCountNumber",
+    listBookingTourCancelThatCountNumber
+  );
   const [statusTab, setStatusTab] = useState(
     "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN"
   );
@@ -69,6 +77,13 @@ function ListBookingTour_Update() {
       setListBookingTour(cus);
       setTotal(res.data.DT.totalRows);
     }
+
+    const res2 = await BookingService.readAll(
+      `status=ĐÃ HỦY&sortcreatedAt=DESC`
+    );
+    if (res2 && res2.data.EC == 0) {
+      setlistBookingTourCancelThatCountNumber(res2.data.DT.rows);
+    }
   };
 
   useEffect(() => {
@@ -96,22 +111,6 @@ function ListBookingTour_Update() {
       return <Tag color="red">HOÀN TIỀN</Tag>;
     }
   };
-
-  const itemsTab = [
-    {
-      key: "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN",
-      label: <div className={cx("px-3")}>ĐÃ THANH TOÁN</div>,
-    },
-    {
-      key: "status=ĐÃ HỦY",
-      label: <div className={cx("px-3")}>HỦY TOUR</div>,
-    },
-
-    {
-      key: "",
-      label: "",
-    },
-  ];
 
   const onChangeTab = (key) => {
     setStatusTab(key);
@@ -229,7 +228,10 @@ function ListBookingTour_Update() {
       title: "khách hàng",
       key: "customer",
       render: (data) => (
-        <div className={cx('text-primary','poiter')} onClick={() => handleModalReasonCancel(data)}>
+        <div
+          className={cx("text-primary", "poiter")}
+          onClick={() => handleModalReasonCancel(data)}
+        >
           {data?.Customer?.email}
         </div>
       ),
@@ -293,6 +295,35 @@ function ListBookingTour_Update() {
           </div>
         );
       },
+    },
+  ];
+
+  const numberCancelTourNotRefundMoney = useMemo(() => {
+    return listBookingTourCancelThatCountNumber.reduce((total, item) => {
+      if (item.payment_status != "HOÀN TIỀN" && item.status == "ĐÃ HỦY") {
+        return (total += 1);
+      }
+      return total;
+    }, 0);
+  }, [listBookingTourCancelThatCountNumber]);
+
+  const itemsTab = [
+    {
+      key: "status=ĐÃ DUYỆT&payment_status=ĐÃ THANH TOÁN",
+      label: <div className={cx("px-3")}>ĐÃ THANH TOÁN</div>,
+    },
+    {
+      key: "status=ĐÃ HỦY",
+      label: (
+        <Badge count={numberCancelTourNotRefundMoney} showZero>
+          <div className={cx("px-3")}>HỦY TOUR</div>
+        </Badge>
+      ),
+    },
+
+    {
+      key: "",
+      label: "",
     },
   ];
 

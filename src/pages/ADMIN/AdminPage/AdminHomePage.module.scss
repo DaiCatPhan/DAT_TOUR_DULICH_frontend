@@ -18,6 +18,18 @@
     color: grey;
     margin: 40px;
   }
+  .item4 {
+    font-size: 17px;
+    color: grey;
+    margin: 0 80px;
+  }
+
+  .item5 {
+    font-size: 17px;
+    color: grey;
+    margin: 0 120px;
+    margin-top: 40px;
+  }
 }
 
 .col_right {
@@ -46,9 +58,10 @@
 
 .card {
   display: flex;
-  justify-content: center;
+  justify-content: end;
   align-items: center;
-  margin-bottom: 20px;
+  margin-top: 40px;
+  margin-bottom: 50px;
 
   .item {
     border: 1px solid orange;

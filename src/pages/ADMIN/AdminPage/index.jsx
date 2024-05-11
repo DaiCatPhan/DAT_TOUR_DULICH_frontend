@@ -12,8 +12,8 @@ function AdminHomePage() {
         <div className={cx("col-lg-6  ")}>
           <div className={cx("col_left")}>
             <div className={cx("item1")}>
-              <button className={cx("btn btn-warning color-black")}>
-                Know before you go
+              <button className={cx("btn btn-warning text-white")}>
+                Du lịch mọi nơi
               </button>
               <img
                 width={30}
@@ -24,14 +24,23 @@ function AdminHomePage() {
               />
             </div>
             <div className={cx("item2")}>
-              Traveling opens the door to creating
-              <span className={cx("text-warning mx-2")}>memories</span>
+              Du lịch mở ra cơ hội tạo ra những
+              <span className={cx("text-warning mx-2")}>kỷ niệm</span>
             </div>
             <div className={cx("item3")}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Consequuntur eos suscipit quisquam ratione! Unde nam reprehenderit
-              dolor, quaerat eligendi debitis adipisci eaque sequi ipsam omnis
-              earum facere vel molestias assumenda.
+              <b>Điểm đến du lịch</b>: Khám phá về các địa điểm du lịch phổ biến
+              trên thế giới như Đạt lạt, Phú Quốc, Nha Trang và nhiều nơi
+              khác. Mỗi địa điểm đều có những điểm đến hấp dẫn riêng, với lịch
+              sử, văn hóa, và danh lam thắng cảnh độc đáo.
+            </div>
+            <div className={cx("item4")}>
+              <b>Ẩm thực</b>: Khám phá văn hóa ẩm thực đặc trưng của các quốc
+              gia và khu vực, từ món ăn đường phố đến ẩm thực cao cấp.
+            </div>
+            <div className={cx("item5")}>
+              <b>Lịch sử và văn hóa</b>: Tìm hiểu về lịch sử và văn hóa địa
+              phương thông qua các tour tham quan di tích, bảo tàng, lễ hội và
+              sự kiện đặc biệt.
             </div>
           </div>
         </div>
