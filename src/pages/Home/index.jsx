@@ -15,14 +15,14 @@ import TourService from "../../services/TourService";
 
 function HomePage() {
   const navigate = useNavigate();
-  const [listTourMostPopular, setListTourMostPopular] = useState([]);
+  const [listTourMostPopular, setListTourMostPopular] = useState([]); 
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(4);
+  const [limit, setLimit] = useState(8);
   const [totalPage, setTotalPage] = useState(20);
 
   const getListTourMostPopular = async () => {
     const res = await TourService.readAllMostPopular(
-      `page=${page}&limit=4&sortOrder=DESC&sortBooking=true`
+      `page=${page}&limit=8&sortOrder=DESC&sortBooking=true`
     );
     if (res && res.data.EC == 0) {
       setListTourMostPopular(res.data.DT);
