@@ -6,13 +6,15 @@ import { InputNumber, Table } from "antd";
 import { Tag } from "antd";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { IconPencilMinus, IconTrash } from "@tabler/icons-react";
+import { IconPencilMinus, IconTrash, IconEye } from "@tabler/icons-react";
 import { Button } from "antd";
 import { toast } from "react-toastify";
 import { Form } from "antd";
 
 import BookingService from "../../../../services/BookingService";
 import ModalCancel from "../components/ModalCancel";
+import ModalPeopleFailCalendar from "../components/ModalPeopleFailCalendar";
+import { IconListDetails } from "@tabler/icons-react";
 
 function ListBookingFail() {
   const [formFilterCancel] = Form.useForm();
@@ -26,6 +28,11 @@ function ListBookingFail() {
 
   const [isShowModalCancel, setIsShowModalCancel] = useState(false);
   const [dataModalCancel, setDataModalCancel] = useState({});
+
+  const [isShowModalPeopleFailCalendar, setIsShowModalPeopleFailCalendar] =
+    useState(false);
+  const [dataModalPeopleFailCalendar, setDataModalPeopleFailCalendar] =
+    useState({});
 
   const getListTourFail = async () => {
     const res = await BookingService.getListTourFail(
@@ -54,6 +61,11 @@ function ListBookingFail() {
   const modalNotificationFailTour = async (data) => {
     setIsShowModalCancel(true);
     setDataModalCancel(data);
+  };
+
+  const viewCustomer = async (data) => {
+    setIsShowModalPeopleFailCalendar(true);
+    setDataModalPeopleFailCalendar(data);
   };
 
   const submit = async (data) => {
@@ -117,14 +129,12 @@ function ListBookingFail() {
               gửi thông báo
             </Button>
             <div className={cx("mx-2")}></div>
-            {/* <Button
-              type="primary"
-              danger
-              size="small"
-              onClick={() => notificationFailTour(record)}
+            <IconListDetails
+              className={cx("iconDetail")}
+              onClick={() => viewCustomer(record)}
             >
               Hủy tour
-            </Button> */}
+            </IconListDetails>
           </div>
         );
       },
@@ -228,6 +238,13 @@ function ListBookingFail() {
         setDataModalCancel={setDataModalCancel}
         listCalendarWithTour={listCalendarWithTour}
         submit={submit}
+      />
+
+      <ModalPeopleFailCalendar
+        isShowModalPeopleFailCalendar={isShowModalPeopleFailCalendar}
+        setIsShowModalPeopleFailCalendar={setIsShowModalPeopleFailCalendar}
+        dataModalPeopleFailCalendar={dataModalPeopleFailCalendar}
+        setDataModalPeopleFailCalendar={setDataModalPeopleFailCalendar}
       />
     </div>
   );

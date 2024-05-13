@@ -44,3 +44,13 @@
 .form {
   display: flex;
 }
+
+.iconDetail {
+  border: 1px solid greenyellow;
+  padding: 2px;
+  color: green;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
