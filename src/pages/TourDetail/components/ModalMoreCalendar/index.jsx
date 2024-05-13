@@ -18,7 +18,7 @@ function ModalMoreCalendar(props) {
 
   const {
     isShowModalMoreCalendar,
-    setIsShowModalMoreCalendar,
+    setIsShowModalMoreCalendar, 
     calendarTour,
     handleGetMoreCalendar,
   } = props;
@@ -59,6 +59,10 @@ function ModalMoreCalendar(props) {
   }, [numberTicketAdult, numberTicketChild, activeCalendar]);
 
   const handleModalBookingTour = () => {
+    if (!isAuthenticated) {
+      toast.error("Vui lòng đăng nhập để đặt tour");
+      return;
+    }
     const data = {
       activeCalendar: activeCalendar,
       numberTicketAdult: numberTicketAdult,

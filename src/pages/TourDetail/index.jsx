@@ -27,7 +27,7 @@ import { Progress } from "antd";
 import { useSelector } from "react-redux";
 
 function TourDetail() {
-  const isAuthenticated = useSelector((state) => state.account.isAuthenticated);
+  let isAuthenticated = useSelector((state) => state.account.isAuthenticated);
   const [tourDetail, setTourDetail] = useState({});
   const [calendarTour, setCalendarTour] = useState([]);
   const [commentTour, setCommentTour] = useState([]);
@@ -47,6 +47,8 @@ function TourDetail() {
       toast.error("Vui lòng đăng nhập để đặt tour");
       return;
     }
+
+    console.log("isAuthenticated", isAuthenticated);
     setIsShowModalBookingTour(true);
   };
 
