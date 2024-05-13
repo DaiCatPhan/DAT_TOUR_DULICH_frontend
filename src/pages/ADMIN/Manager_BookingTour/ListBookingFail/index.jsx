@@ -13,7 +13,7 @@ import { Form } from "antd";
 
 import BookingService from "../../../../services/BookingService";
 import ModalCancel from "../components/ModalCancel";
-import ModalPeopleFailCalendar from "../components/ModalPeopleFailCalendar";
+import ModalPeopleFailCalendar from "../components/ModalPeopleFailCalendar"; 
 import { IconListDetails } from "@tabler/icons-react";
 
 function ListBookingFail() {
@@ -126,7 +126,7 @@ function ListBookingFail() {
               size="small"
               onClick={() => modalNotificationFailTour(record)}
             >
-              gửi thông báo
+              gửi thông báo 
             </Button>
             <div className={cx("mx-2")}></div>
             <IconListDetails

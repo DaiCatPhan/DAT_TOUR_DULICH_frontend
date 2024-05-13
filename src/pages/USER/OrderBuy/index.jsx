@@ -135,7 +135,7 @@ function OrderBuy() {
             </div>
           </div>
 
-          <div className={cx("d-flex")}>
+          <div className={cx("d-flex align-items-center")}>
             <div>
               <img
                 src={data?.Calendar?.Tour?.image || ""}
@@ -147,6 +147,11 @@ function OrderBuy() {
             <div className={cx("contentCard")}>
               <div className={cx("name")}>
                 <div>{data?.Calendar?.Tour?.name || ""}</div>
+              </div>
+              <div>
+                <div>
+                  Mã đơn: <b>{data?.id}</b>
+                </div>
               </div>
               <div className={cx("d-flex")}>
                 <div>Khởi hành : </div>

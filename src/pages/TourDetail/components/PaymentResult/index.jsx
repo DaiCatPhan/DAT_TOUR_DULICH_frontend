@@ -120,7 +120,7 @@ function PaymentResult() {
   };
 
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx("wrapper")}> 
       <ResultComponentSuscess />
       <ResultComponentError />
     </div>

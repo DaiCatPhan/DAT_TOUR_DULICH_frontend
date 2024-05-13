@@ -8,7 +8,7 @@ import moment from "moment";
 import { IconCheck, IconCalendarCheck } from "@tabler/icons-react";
 import { InputNumber } from "antd";
 import { useEffect, useMemo, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import TourService from "../../services/TourService";
 import CommentService from "../../services/CommentService.js";
 import functions from "../../components/Functions/function.js";
@@ -33,6 +33,7 @@ function TourDetail() {
   const [commentTour, setCommentTour] = useState([]);
   const [processTour, setProcessTour] = useState({});
   let { id } = useParams();
+  const navigate = useNavigate();
   const [activeCalendar, setActiveCalendar] = useState({});
   const [isShowModalBookingTour, setIsShowModalBookingTour] = useState(false);
 
@@ -150,6 +151,14 @@ function TourDetail() {
     totalAmount = data.totalAmount;
     setIsShowModalBookingTour(true);
     setIsShowModalMoreCalendar(false);
+  };
+
+  const handleChat = () => {
+    if (!isAuthenticated) {
+      toast.error("Vui lòng đăng nhập để được liên hệ chat");
+      return;
+    }
+    navigate("/user/message");
   };
 
   return (
@@ -446,7 +455,9 @@ function TourDetail() {
 
                 <div className={cx("d-flex justify-content-between")}>
                   <div>
-                    <button className={cx("btnLienHe")}>Liên hệ tư vấn</button>
+                    <button className={cx("btnLienHe")} onClick={handleChat}>
+                      Liên hệ tư vấn
+                    </button>
                   </div>
                   <div>
                     {activeCalendar?.remainingSeats == 0 ? (
